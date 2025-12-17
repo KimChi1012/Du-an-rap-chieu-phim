@@ -1,0 +1,294 @@
+.user-sidebar {
+  position: fixed;
+  top: 0;
+  left: -370px;
+  width: 350px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -2px 0 8px rgba(233, 176, 22, 0.767);
+  transition: left 0.3s ease;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.user-sidebar.active {
+  left: 0;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.user-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-bottom: none;
+  position: relative;
+}
+
+.user-header::after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  width: 85%;
+  border-bottom: 1px solid #eee;
+}
+
+.avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.user-info p {
+  margin: 0;
+  color: #ccc;
+  width: 100%;
+  position: relative;
+  top: -20px;
+}
+
+.user-info.logged-in {
+  margin-top: 40px;
+}
+
+.user-info.logged-in p {
+  line-height: 1;
+}
+
+#userName {
+  font-family: "WindSong", cursive;
+  font-size: 20px;
+  background: var(--gradient-text-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding: 10px 10px;
+  overflow: visible;
+  position: relative;
+  left: -10px;
+}
+
+.user-name b {
+  font-family: "Stint Ultra Expanded", Georgia, serif !important;
+  font-size: 18px !important;
+  background: var(--gradient-text-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding: 10px 10px;
+  overflow: visible;
+  position: relative;
+  left: -10px;
+  font-weight: normal !important;
+  white-space: nowrap;
+  max-width: 280px;
+}
+
+.user-info.logged-in .user-email {
+  color: #ccc;
+  font-size: 0.9em;
+}
+
+.user-content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.user-content button {
+  padding: 10px 15px;
+  border: none;
+  background: var(--gradient-main);
+  color: #fff;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: left;
+  position: relative;
+  top: -75px;
+  left: 70px;
+  width: 120px;
+  text-align: center;
+  font-size: 15px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-content button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.user-content p {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+  margin-top: -50px;
+}
+
+.user-sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px 10px;
+  width: 220px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  margin: 0 -20px;
+  color: #777;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  position: relative;
+  top: -20px;
+}
+
+.menu-item i {
+  font-size: 18px;
+  color: #777;
+  position: relative;
+  left: 10px;
+}
+
+.menu-item span {
+  flex: 1;
+}
+
+.menu-item:hover {
+  background: linear-gradient(
+    to right,
+    rgba(255, 217, 0, 0.088),
+    rgba(255, 215, 0, 0.05)
+  );
+  transform: translateX(2px);
+  transition: all 0.25s ease;
+}
+
+.menu-item:hover::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, #e59d2c, #8a3b08);
+}
+
+.menu-item .text-gradient {
+  position: relative;
+  top: 25px;
+  left: 10px;
+}
+
+.menu-item:hover .text-gradient,
+.menu-item:hover i {
+  background: var(--gradient-text-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.menu-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+  margin: 10px 0;
+  position: relative;
+  top: -20px;
+}
+
+.menu-item.admin-item {
+  background: linear-gradient(
+    to right,
+    rgba(138, 59, 8, 0.05),
+    rgba(229, 157, 44, 0.05)
+  );
+  border-left: 3px solid transparent;
+  border-image: linear-gradient(to bottom, #e59d2c, #8a3b08) 1;
+}
+
+.menu-item.admin-item:hover {
+  background: linear-gradient(
+    to right,
+    rgba(138, 59, 8, 0.1),
+    rgba(229, 157, 44, 0.1)
+  );
+}
+
+.user-footer {
+  padding: 10px;
+  border-top: none;
+  align-items: center;
+  position: relative;
+}
+
+.user-footer::after {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 20px;
+  width: 85%;
+  border-top: 1px solid #eee;
+}
+
+.user-footer.logged-in::after {
+  top: -5px;
+}
+
+.logout-section {
+  text-align: center;
+}
+
+.logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #777;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.logout i {
+  font-size: 16px;
+}
+
+.logout:hover {
+  background: var(--gradient-text-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
