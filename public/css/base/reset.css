@@ -10,7 +10,12 @@ html, body {
   margin: 0;
 }
 
-body {
+.page-layout {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+#content {
+  flex: 1;
 }

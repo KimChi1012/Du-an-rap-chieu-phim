@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const currentPage = getCurrentPage();
 
     await includeHTML("header", "header.html");
+    await includeHTML("footer", "footer.html");
 
     await new Promise(resolve => setTimeout(resolve, 200));
 
