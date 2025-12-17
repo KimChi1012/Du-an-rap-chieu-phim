@@ -1,0 +1,19 @@
+@keyframes scrollLeft {
+  to { left: -200px; }
+}
+
+@keyframes rotate {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+@keyframes typing {
+  0% { width: 0; }
+  40% { width: 58%; }
+  60% { width: 58%; }
+  100% { width: 0; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}

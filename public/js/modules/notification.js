@@ -75,7 +75,10 @@ function initLinkInterception() {
       'Phim đang chiếu',
       'Phim sắp chiếu',
       'Ưu đãi đặc biệt',
-      'Giới thiệu'
+      'Giới thiệu',
+      'Chính sách bảo mật',
+      'Điều khoản sử dụng',
+      'Bản quyền web'
     ];
 
     if (blockedTexts.includes(text)) {

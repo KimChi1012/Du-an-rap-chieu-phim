@@ -1,0 +1,19 @@
+body::-webkit-scrollbar,
+.offer-modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track,
+.offer-modal::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+body::-webkit-scrollbar-thumb,
+.offer-modal::-webkit-scrollbar-thumb {
+  background: var(--gradient-main);
+}
+
+body::-webkit-scrollbar-thumb:hover,
+.offer-modal::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #e59d2c, #2e4365);
+}

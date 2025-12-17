@@ -17,6 +17,7 @@ import { initDropdown } from './modules/dropdown.js';
 import { initUserSidebar } from './modules/user-sidebar.js';
 import { loadUserInfo } from './modules/user-info.js';
 import { initNotification } from './modules/notification.js';
+import { initBannerSlider } from "./modules/banner-slider.js";
 
 function getCurrentPage() {
   const path = window.location.pathname;
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const currentPage = getCurrentPage();
 
     await includeHTML("header", "header.html");
+    await includeHTML("footer", "footer.html");
 
     await new Promise(resolve => setTimeout(resolve, 200));
 
@@ -41,6 +43,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadUserInfo();
     initNotification();
     await initPageSpecific();
+
+    if (currentPage === "index.html" || currentPage === "") {
+      await initBannerSlider();
+    }
   } catch (error) {
     console.error("Error initializing application:", error);
   }
