@@ -19,6 +19,8 @@ import { loadUserInfo } from './modules/user-info.js';
 import { initNotification } from './modules/notification.js';
 import { initBannerSlider } from "./modules/banner-slider.js";
 import { initUserManagement } from './modules/qlnguoidung.js';
+import { initVideoModal } from "./modules/video-modal.js";
+import { initMovieSlider } from "./modules/movie-slider.js";
 
 function getCurrentPage() {
   const path = window.location.pathname;
@@ -35,11 +37,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const currentPage = getCurrentPage();
 
-    const isAdmin = document.body.dataset.page === "admin";
-    
+    const isAdmin = document.body.dataset.page === 'admin';
     if (!isAdmin) {
-       await includeHTML('header', 'includes/header.html');
-       await includeHTML('footer', 'includes/footer.html');
+      await includeHTML('header', 'header.html');
+      await includeHTML('footer', 'footer.html');
     }
 
     await new Promise(resolve => setTimeout(resolve, 200));
@@ -47,17 +48,49 @@ document.addEventListener("DOMContentLoaded", async () => {
     initUserSidebar();
     initDropdown();
     await loadUserInfo();
+    initVideoModal();
     initNotification();
     await initPageSpecific();
-    
+
     if (document.getElementById('userTable') || document.getElementById('userModal')) {
-        initUserManagement();
-        console.log('✅ User Management đã được khởi tạo');
+      initUserManagement();
+      console.log('✅ User Management đã được khởi tạo');
     }
 
     if (currentPage === "index.html" || currentPage === "") {
       await initBannerSlider();
+
+      await Promise.all([
+        initMovieSlider(
+          "#now-showing",
+          "../api/movie/get_now_showing.php",
+          "Chưa có phim đang chiếu."
+        )
+      ]);
+
+      setTimeout(() => {
+        const showMoreNowBtn = document.getElementById("show-more-now");
+
+        if (showMoreNowBtn) {
+          showMoreNowBtn.onclick = function () {
+            showNotification(
+              "Trang danh sách Phim đang chiếu đang được phát triển. Vui lòng quay lại sau!",
+              "info"
+            );
+          };
+        }
+      }, 1000);
     }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        const videoModal = document.getElementById("video-modal");
+
+        if (videoModal?.style.display === "block") {
+          window.closeVideoModal();
+        }
+      }
+    });
   } catch (error) {
     console.error("Error initializing application:", error);
   }

@@ -27,6 +27,24 @@
       </p>
     </div>
   </section>
+
+  <section id="now-showing" class="now-showing">
+    <h2>PHIM ĐANG CHIẾU</h2>
+    <div class="movie-slider-container">
+      <button class="prev-movie">❮</button>
+      <div class="movie-slider"></div>
+      <button class="next-movie">❯</button>
+    </div>
+    <div class="movie-dots"></div>
+    <button class="show-more-btn" id="show-more-now"><span class="text-gradient">Xem thêm</span></button>
+  </section>
+
+  <div id="video-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <iframe id="youtubeVideo" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
   
   <footer id="footer"></footer>
   <script src="js/script.js" type="module" defer></script>

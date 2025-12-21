@@ -1,4 +1,5 @@
-.login-btn {
+.login-btn,
+.show-more-btn {
   border: 2px solid transparent;
   border-radius: 15px;
   background: linear-gradient(#fff, #fff) padding-box,
@@ -12,7 +13,8 @@
   position: relative;
 }
 
-.login-btn .text-gradient {
+.login-btn .text-gradient,
+.show-more-btn .text-gradient {
   background: var(--gradient-text-main);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -39,12 +41,30 @@
   right: 0;
 }
 
-.login-btn * {
+.show-more-btn::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 0;
+  background: var(--gradient-main);
+  transition: 0.5s ease;
+  z-index: 0;
+}
+
+.show-more-btn:hover::before {
+  height: 100%;
+}
+
+.login-btn *,
+.show-more-btn * {
   position: relative;
   z-index: 1;
 }
 
-.login-btn:hover .text-gradient {
+.login-btn:hover .text-gradient,
+.show-more-btn:hover .text-gradient {
   background: none;
   -webkit-background-clip: initial;
   -webkit-text-fill-color: initial;
@@ -56,6 +76,16 @@
   position: absolute;
   bottom: 10px;
   right: 130px;
+}
+
+.show-more-btn {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-left: 0;
+  z-index: 100;
+  pointer-events: auto;
 }
 
 .overlay {
