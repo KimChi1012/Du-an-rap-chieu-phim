@@ -18,6 +18,7 @@ import { initUserSidebar } from './modules/user-sidebar.js';
 import { loadUserInfo } from './modules/user-info.js';
 import { initNotification } from './modules/notification.js';
 import { initBannerSlider } from "./modules/banner-slider.js";
+import { initUserManagement } from './modules/qlnguoidung.js';
 
 function getCurrentPage() {
   const path = window.location.pathname;
@@ -27,22 +28,32 @@ function getCurrentPage() {
 
 async function initPageSpecific() {
   const currentPage = getCurrentPage();
+  console.log('📄 Current page:', currentPage);
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const currentPage = getCurrentPage();
 
-    await includeHTML("header", "header.html");
-    await includeHTML("footer", "footer.html");
+    const isAdmin = document.body.dataset.page === "admin";
+    
+    if (!isAdmin) {
+       await includeHTML('header', 'includes/header.html');
+       await includeHTML('footer', 'includes/footer.html');
+    }
 
     await new Promise(resolve => setTimeout(resolve, 200));
-
+    
     initUserSidebar();
     initDropdown();
     await loadUserInfo();
     initNotification();
     await initPageSpecific();
+    
+    if (document.getElementById('userTable') || document.getElementById('userModal')) {
+        initUserManagement();
+        console.log('✅ User Management đã được khởi tạo');
+    }
 
     if (currentPage === "index.html" || currentPage === "") {
       await initBannerSlider();
