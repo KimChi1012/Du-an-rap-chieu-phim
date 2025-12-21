@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Cinema - Quản lí người dùng</title>
+    <link rel="icon" type="image/png" sizes="1000x1000" href="images/logo-hc.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script type="module" src="js/script.js"></script>
+</head>
+
+<body class="bg-white-50" data-page="admin">
+<div class="flex h-screen">
+    
+    <!-- Sidebar -->
+    <div id="shared-sidebar" class="w-65"></div>
+
+    <div class="flex-1 overflow-auto">
+        <!-- Header -->
+        <div id="shared-header"></div>
+
+            <main class="p-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b pb-4">Quản lí người dùng</h1>
+
+            <!-- ====== CARDS THỐNG KÊ USER ====== -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+                <!-- Tổng người dùng -->
+                <div class="user-stats-card">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-xl font-bold text-gray-500">Tổng người dùng</p>
+                            <p class="text-2xl font-bold mt-2 text-gray-800">324</p>
+                        </div>
+                        <div class="bg-yellow-50 text-yellow-600 p-3 rounded-lg">
+                            <span class="text-3xl emoji">👥</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin -->
+                <div class="user-stats-card">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-xl font-bold text-gray-500">Quản trị viên</p>
+                            <p class="text-2xl font-bold text-gray-800 mt-2">5</p>
+                        </div>
+                        <div class="bg-purple-50 text-purple-600 p-3 rounded-lg">
+                            <span class="text-3xl emoji">🛡️</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Khách hàng -->
+                <div class="user-stats-card">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-xl font-bold text-gray-500">Khách hàng</p>
+                            <p class="text-2xl font-bold text-gray-800 mt-2">298</p>
+                        </div>
+                        <div class="bg-blue-50 text-green-600 p-3 rounded-lg">
+                            <span class="text-3xl emoji">👤</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== BẢNG NGƯỜI DÙNG ====== -->
+            <div class="user-table-container">
+                <div class="flex items-center mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Danh sách người dùng</h2>
+                    <div class="search-container">
+                        <div class="search-border-gradient">
+                            <input
+                                id="searchInput"
+                                type="text"
+                                placeholder="Tìm theo tên, email, SĐT, quyền..."
+                                class="search-input"
+                                oninput="window.userManagement.searchUsers()"
+                            >
+                        </div>
+                        <i class="fa fa-search search-icon"></i>
+                    </div>
+                    <button onclick="window.userManagement.openAdd()" class="add-user-button">
+                        <i class="fa fa-plus emoji"></i>Thêm người dùng
+                    </button>
+                </div>
+
+                <div class="table-scroll-area">
+                    <table class="user-table">
+                        <thead class="table-header-gradient">
+                            <tr>
+                                <th class="table-header-cell w-[100px]">Mã ND</th>
+                                <th class="table-header-cell w-[180px]">Họ Tên</th>
+                                <th class="table-header-cell w-[240px]">Email</th>
+                                <th class="table-header-cell w-[140px] text-center">SĐT</th>
+                                <th class="table-header-cell w-[140px] text-center">Ngày Sinh</th>
+                                <th class="table-header-cell w-[160px]">Thành Phố</th>
+                                <th class="table-header-cell w-[160px]">Tên ĐN</th>
+                                <th class="table-header-cell w-[120px] text-center">Mật Khẩu</th>
+                                <th class="table-header-cell w-[160px] text-center">Quyền hạn</th>
+                                <th class="table-header-cell w-[120px] text-center">Avatar</th>
+                                <th class="table-header-cell w-[140px] text-center">Ngày Tạo</th>
+                                <th class="table-header-cell w-[160px] text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTable" class="divide-y divide-gray-100 bg-white"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<!-- MODAL -->
+<div id="userModal" class="user-modal hidden" onclick="window.userManagement.handleModalClick(event)">
+    <div class="user-modal-content" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center mb-2">
+            <h3 id="modalTitle" class="text-base font-semibold"></h3>
+            <button onclick="window.userManagement.closeModal()" class="text-gray-500 hover:text-gray-700 text-lg">&times;</button>
+        </div>
+
+        <div class="user-form-grid">
+            <div class="form-field full-width">
+                <label class="form-label">Mã người dùng</label>
+                <input id="MaND" class="form-input bg-gray-100" readonly placeholder="Tự động tạo">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Họ tên <span class="required">*</span></label>
+                <input id="HoTen" class="form-input" placeholder="Nhập họ và tên">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Email <span class="required">*</span></label>
+                <input id="Email" class="form-input" type="email" placeholder="example@email.com">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">SĐT</label>
+                <input
+                    id="SoDT"
+                    class="form-input"
+                    type="tel"
+                    maxlength="11"
+                    oninput="window.userManagement.limitPhone(this)"
+                    placeholder="Số điện thoại (9-11 chữ số)">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Ngày sinh</label>
+                <input id="NgaySinh" type="date" class="form-input">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Tỉnh/Thành phố <span class="required">*</span></label>
+                <select id="ThanhPho" class="form-select">
+                    <option value="">-- Chọn tỉnh/thành phố --</option>
+                    <option value="An Giang">An Giang</option>
+                    <option value="Bắc Ninh">Bắc Ninh</option>
+                    <option value="Cà Mau">Cà Mau</option>
+                    <option value="Cao Bằng">Cao Bằng</option>
+                    <option value="Cần Thơ">Cần Thơ</option>
+                    <option value="Đà Nẵng">Đà Nẵng</option>
+                    <option value="Đắk Lắk">Đắk Lắk</option>
+                    <option value="Điện Biên">Điện Biên</option>
+                    <option value="Đồng Nai">Đồng Nai</option>
+                    <option value="Đồng Tháp">Đồng Tháp</option>
+                    <option value="Gia Lai">Gia Lai</option>
+                    <option value="Hà Nội">Hà Nội</option>
+                    <option value="Hà Tĩnh">Hà Tĩnh</option>
+                    <option value="Hải Phòng">Hải Phòng</option>
+                    <option value="Huế">Huế</option>
+                    <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                    <option value="Hưng Yên">Hưng Yên</option>
+                    <option value="Khánh Hòa">Khánh Hòa</option>
+                    <option value="Lai Châu">Lai Châu</option>
+                    <option value="Lâm Đồng">Lâm Đồng</option>
+                    <option value="Lạng Sơn">Lạng Sơn</option>
+                    <option value="Lào Cai">Lào Cai</option>
+                    <option value="Nghệ An">Nghệ An</option>
+                    <option value="Ninh Bình">Ninh Bình</option>
+                    <option value="Phú Thọ">Phú Thọ</option>
+                    <option value="Quảng Ngãi">Quảng Ngãi</option>
+                    <option value="Quảng Ninh">Quảng Ninh</option>
+                    <option value="Quảng Trị">Quảng Trị</option>
+                    <option value="Sơn La">Sơn La</option>
+                    <option value="Tây Ninh">Tây Ninh</option>
+                    <option value="Thái Nguyên">Thái Nguyên</option>
+                    <option value="Thanh Hóa">Thanh Hóa</option>
+                    <option value="Vĩnh Long">Vĩnh Long</option>
+                    <option value="Tuyên Quang">Tuyên Quang</option>
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Tên đăng nhập <span class="required">*</span></label>
+                <input id="TenDN" class="form-input" placeholder="Tên đăng nhập">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Quyền hạn <span class="required">*</span></label>
+                <select id="QuyenHan" class="form-select">
+                    <option value="">-- Chọn quyền hạn --</option>
+                    <option value="Khách hàng">👤 Khách hàng</option>
+                    <option value="Quản trị viên">🛡️ Quản trị viên</option>
+                </select>
+            </div>
+
+            <div id="currentPasswordDiv" class="form-field hidden full-width">
+                <label class="form-label">Mật khẩu hiện tại <span class="required">*</span></label>
+                <input id="MatKhauHienTai" type="password" class="form-input" placeholder="Nhập mật khẩu hiện tại">
+            </div>
+
+            <div id="addPasswordDiv" class="form-field full-width">
+                <label class="form-label">Mật khẩu <span class="required">*</span></label>
+                <input id="MatKhau" type="password" class="form-input" placeholder="Nhập mật khẩu (ít nhất 6 ký tự)">
+            </div>
+
+            <div id="newPasswordDiv" class="form-field hidden full-width">
+                <label class="form-label">Mật khẩu mới (tùy chọn)</label>
+                <input id="MatKhauMoi" type="password" class="form-input" placeholder="Nhập mật khẩu mới">
+            </div>
+
+            <div class="form-field full-width">
+                <label class="form-label">Avatar</label>
+                <div class="flex items-center gap-3">
+                    <input type="file" id="AvatarFile" accept="image/*" class="form-input flex-1" onchange="window.userManagement.previewAvatar(this)">
+                    <input id="Avatar" type="hidden">
+                    <div id="avatarPreview" class="hidden flex items-center gap-2">
+                        <img id="previewImg" class="avatar-preview" alt="Avatar preview">
+                        <button type="button" onclick="window.userManagement.removeAvatar()" class="text-red-500 text-xs hover:text-red-700">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-buttons">
+            <button onclick="window.userManagement.closeModal()" class="modal-button cancel">Hủy</button>
+            <button onclick="window.userManagement.saveUser()" class="modal-button save">Lưu</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

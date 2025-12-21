@@ -3,6 +3,9 @@ let autoHideTimeout = null;
 function getIconClass(type) {
   const icons = {
     info: 'fa-solid fa-info-circle',
+    success: 'fa-solid fa-check-circle',
+    error: 'fa-solid fa-exclamation-circle',
+    warning: 'fa-solid fa-exclamation-triangle'
   };
   return icons[type] || icons.info;
 }
@@ -11,7 +14,7 @@ export function showNotification(message, type = 'info', duration = 5000) {
   closeNotification();
 
   const notification = document.createElement('div');
-  notification.className = `notification notification-${type}`;
+  notification.className = 'notification notification-show';
   notification.innerHTML = `
     <div class="notification-content">
       <i class="notification-icon ${getIconClass(type)}" aria-hidden="true"></i>
