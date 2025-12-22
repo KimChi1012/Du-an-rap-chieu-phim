@@ -1,0 +1,274 @@
+.auth {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  background-image: url('../../images/background.png');
+}
+
+.auth-container {
+  width: 950px;
+  max-width: 95%;
+  margin: 20px;
+}
+
+.auth-card {
+  position: relative;
+  width: 100%;
+  height: 580px;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 30px 80px rgba(138, 59, 8, 0.15), 0 10px 30px rgba(229, 157, 44, 0.1);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  display: flex;
+  border: 1px solid rgba(229, 157, 44, 0.1);
+}
+
+
+.auth-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(180deg,#8a3b08 15%,#e59d2c 40%,#fff 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+.auth-card.register-mode .auth-panel {
+  transform: translateX(122%);
+}
+
+.panel-content {
+  padding: 50px 40px;
+}
+
+.panel-content h2 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.panel-content p {
+  font-size: 18px;
+  opacity: 0.9;
+  margin-bottom: 35px;
+  line-height: 1.5;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.panel-btn {
+  background: transparent;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  padding: 14px 40px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.panel-btn:hover {
+  background-color: #ffffff;
+  color: #8a3b08;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+}
+
+
+.auth-forms {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+}
+
+
+.form {
+  width: 55%;
+  padding: 70px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+.form-login {
+  right: 0;
+  opacity: 1;
+  visibility: visible;
+}
+
+
+.form-register {
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+
+.auth-card.register-mode .form-login {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.auth-card.register-mode .form-register {
+  opacity: 1;
+  visibility: visible;
+}
+
+.form h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  background: var(--gradient-text-main);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+.form input {
+  width: 100%;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  border: 2px solid #e1e5e9;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+  box-sizing: border-box;
+}
+
+.form input:focus {
+  border-color: #e59d2c;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(229, 157, 44, 0.1);
+}
+
+.form input::placeholder {
+  color: #9ca3af;
+}
+
+.form input:hover {
+  border-color: rgba(229, 157, 44, 0.5);
+}
+
+.password-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.password-wrapper input {
+  padding-right: 20px;
+  margin-bottom: 0;
+}
+
+.eye {
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eye:hover {
+  background: rgba(229, 157, 44, 0.1);
+}
+
+.eye i {
+  font-size: 18px;
+  color: #9ca3af;
+  transition: color 0.3s ease;
+}
+
+.eye.visible i,
+.eye:hover i {
+  color: #e59d2c;
+}
+
+.form button[type="submit"] {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(90deg,#8a3b08 15%,#e59d2c 40%,#fff 100%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(229, 157, 44, 0.3);
+}
+
+.form button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(229, 157, 44, 0.4);
+}
+
+.form button[type="submit"]:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
+.back-to-home {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.back-link:hover {
+  background: var(--gradient-text-main);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-color: rgba(229, 157, 44, 0.1);
+  transform: translateX(-2px);
+}

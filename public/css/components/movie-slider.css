@@ -73,12 +73,6 @@
   justify-content: center;
 }
 
-@supports selector(:has(*)) {
-  .movie-slider:has(.movie-card:nth-child(-n+4)) {
-    justify-content: center;
-  }
-}
-
 .movie-slider.dragging {
   scroll-behavior: auto;
   cursor: grabbing;

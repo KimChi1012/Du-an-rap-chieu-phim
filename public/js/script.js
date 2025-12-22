@@ -21,6 +21,7 @@ import { initBannerSlider } from "./modules/banner-slider.js";
 import { initUserManagement } from './modules/qlnguoidung.js';
 import { initVideoModal } from "./modules/video-modal.js";
 import { initMovieSlider } from "./modules/movie-slider.js";
+import { initAuth } from './modules/auth.js';
 
 function getCurrentPage() {
   const path = window.location.pathname;
@@ -31,6 +32,12 @@ function getCurrentPage() {
 async function initPageSpecific() {
   const currentPage = getCurrentPage();
   console.log('📄 Current page:', currentPage);
+
+  // Initialize auth for login-register page
+  if (currentPage === 'login-register.html') {
+    initAuth();
+    console.log('✅ Auth module initialized');
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

@@ -24,19 +24,15 @@ export function initUserSidebar() {
       return;
     }
 
-    if (e.target.matches('#signin-btn') || e.target.closest('#signin-btn')) {
-      showNotification('Tính năng đăng nhập đang được phát triển. Vui lòng quay lại sau!', 'info');
-      return;
-    }
-
-    if (e.target.matches('#header-login-btn') || e.target.closest('#header-login-btn')) {
-      showNotification('Tính năng đăng nhập/đăng ký đang được phát triển. Vui lòng quay lại sau!', 'info');
-      return;
-    }
-
-    if (e.target.matches('#header-logout-btn') || e.target.closest('#header-logout-btn')) {
+    if (
+      e.target.matches('#signin-btn') ||
+      e.target.closest('#signin-btn') ||
+      e.target.matches('#header-login-btn') ||
+      e.target.closest('#header-login-btn')
+    ) {
       e.preventDefault();
-      showNotification('Tính năng đăng xuất đang được phát triển. Vui lòng quay lại sau!', 'info');
+      e.stopPropagation();
+      window.location.href = 'login-register.html';
       return;
     }
   });
