@@ -56,6 +56,47 @@
       <iframe id="youtubeVideo" width="560" height="315" frameborder="0" allowfullscreen></iframe>
     </div>
   </div>
+
+  <section id="special-offers" class="special-offers">
+    <h2>ƯU ĐÃI ĐẶC BIỆT</h2>
+    <div class="offer-slider-container">
+      <button class="prev-offer">❮</button>
+      <div class="offer-slider"></div>
+      <button class="next-offer">❯</button>
+    </div>
+    <div class="offer-dots"></div>
+  </section>
+
+  <div id="offer-modal" class="offer-modal">
+    <div class="offer-modal-content">
+      <span class="close-offer">&times;</span>
+      <div class="offer-details">
+        <div class="offer-left">
+          <img id="offerImg" src="" alt="" class="offer-img">
+          <div class="social-icons">
+            <a href="#" class="social-link" onclick="event.preventDefault();">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-link" onclick="event.preventDefault();">
+              <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="#" class="social-link" onclick="event.preventDefault();">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link" onclick="event.preventDefault();">
+              <i class="fab fa-pinterest-p"></i>
+            </a>
+          </div>
+        </div>
+        <div class="offer-right">
+          <h3 id="offerTitle"></h3>
+          <p id="offerDate" class="date"></p>
+          <p id="offerDesc"></p>
+          <img id="offerThumbnail" src="" alt="" class="thumbnail">
+        </div>
+      </div>
+    </div>
+  </div>
   
   <footer id="footer"></footer>
   <script src="js/script.js" type="module" defer></script>

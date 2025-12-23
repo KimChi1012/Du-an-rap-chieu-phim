@@ -1,4 +1,3 @@
-import { createMovieUrl } from './url-utils.js';
 import { showNotification } from './notification.js';
 
 export async function initMovieSlider(sectionId, apiUrl, emptyText) {
