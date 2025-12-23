@@ -75,7 +75,6 @@ function initLinkInterception() {
     const text = link.textContent.trim();
     const blockedTexts = [
       'Tìm kiếm',
-      'Phim sắp chiếu',
       'Ưu đãi đặc biệt',
       'Giới thiệu',
       'Chính sách bảo mật',

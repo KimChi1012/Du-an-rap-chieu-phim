@@ -33,7 +33,6 @@ async function initPageSpecific() {
   const currentPage = getCurrentPage();
   console.log('📄 Current page:', currentPage);
 
-  // Initialize auth for login-register page
   if (currentPage === 'login-register.html') {
     initAuth();
     console.log('✅ Auth module initialized');
@@ -72,16 +71,30 @@ document.addEventListener("DOMContentLoaded", async () => {
           "#now-showing",
           "../api/movie/get_now_showing.php",
           "Chưa có phim đang chiếu."
+        ),
+        initMovieSlider(
+          "#coming-soon",
+          "../api/movie/get_coming_soon.php",
+          "Chưa có phim sắp chiếu."
         )
       ]);
 
       setTimeout(() => {
         const showMoreNowBtn = document.getElementById("show-more-now");
+        const showMoreComingBtn = document.getElementById("show-more-coming");
 
         if (showMoreNowBtn) {
           showMoreNowBtn.onclick = function () {
             showNotification(
               "Trang danh sách Phim đang chiếu đang được phát triển. Vui lòng quay lại sau!",
+              "info"
+            );
+          };
+        }
+        if (showMoreComingBtn) {
+          showMoreComingBtn.onclick = function () {
+            showNotification(
+              "Trang danh sách Phim sắp chiếu đang được phát triển. Vui lòng quay lại sau!",
               "info"
             );
           };

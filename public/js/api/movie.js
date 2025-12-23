@@ -8,4 +8,14 @@ export class MovieAPI {
             throw error;
         }
     }
+
+    static async getComingSoon() {
+        try {
+            const response = await fetch('../api/movie/get_coming_soon.php');
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching coming soon movies:', error);
+            throw error;
+        }
+    }
 }
