@@ -21,6 +21,7 @@ import { initBannerSlider } from "./modules/banner-slider.js";
 import { initUserManagement } from './modules/qlnguoidung.js';
 import { initVideoModal } from "./modules/video-modal.js";
 import { initMovieSlider } from "./modules/movie-slider.js";
+import { initOfferModal, initOfferSlider } from "./modules/offer-slider.js";
 import { initAuth } from './modules/auth.js';
 
 function getCurrentPage() {
@@ -79,6 +80,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         )
       ]);
 
+      initOfferModal();
+      await initOfferSlider(
+        "#special-offers",
+        "../api/offer/get_offers.php",
+        "Chưa có ưu đãi đặc biệt."
+      );
+
       setTimeout(() => {
         const showMoreNowBtn = document.getElementById("show-more-now");
         const showMoreComingBtn = document.getElementById("show-more-coming");
@@ -105,9 +113,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         const videoModal = document.getElementById("video-modal");
+        const offerModal = document.getElementById("offer-modal");
 
         if (videoModal?.style.display === "block") {
           window.closeVideoModal();
+        }
+        if (offerModal?.style.display === "block") {
+          window.closeOfferModal();
         }
       }
     });

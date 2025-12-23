@@ -1,0 +1,258 @@
+.special-offers {
+  margin-top: 60px;
+  padding: 50px 0;
+  background: url('../../images/background.png') no-repeat center/cover;
+  text-align: center;
+  min-height: 600px;
+}
+
+.special-offers h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.offer-slider-container::before,
+.offer-slider-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 80px;
+  height: 100%;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.offer-slider-container::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+}
+
+.offer-slider-container::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+}
+
+.offer-slider-container:hover .prev-offer,
+.offer-slider-container:hover .next-offer {
+  opacity: 1;
+}
+
+.offer-slider-container {
+  position: relative;
+  width: 87%;
+  max-width: none;
+  margin: 0 auto;
+  overflow: visible;
+  border-radius: 0;
+  background: transparent;
+}
+
+.offer-slider {
+  display: flex;
+  gap: 61.5px;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  padding-bottom: 16px;
+  user-select: none;
+  -webkit-user-drag: none;
+  justify-content: center;
+  cursor: grab;
+  scroll-snap-type: x mandatory;
+  will-change: scroll-position;
+  -webkit-overflow-scrolling: touch;
+  transform: translateZ(0);
+}
+
+.offer-slider.dragging {
+  scroll-behavior: auto;
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+
+.offer-card {
+  overflow: hidden;
+  text-align: left;
+  flex: 0 0 400px;
+  height: 515px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  justify-content: center;
+  scroll-snap-align: start;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.offer-card img {
+  width: 100%;
+  height: 350px;
+  object-fit: fill;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.offer-card:hover img {
+  transform: scale(1.05);
+}
+
+.offer-card h3 {
+  font-size: 18px;
+  text-align: justify;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  overflow: hidden;
+}
+
+.offer-card p {
+  position: relative;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: -15px;
+  line-height: 1.4;
+  text-align: justify;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  white-space: normal;
+  min-height: 0;
+}
+
+.offer-card p::after {
+  content: "[...]";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding-left: 1px;
+  background: #fff;
+  color: #555;
+}
+
+.prev-offer,
+.next-offer {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  color: #fff;
+  border: none;
+  font-size: 40px;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.prev-offer {
+  left: 20px;
+}
+
+.next-offer {
+  right: 20px;
+}
+
+.prev-offer:hover,
+.next-offer:hover {
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.offer-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  bottom: 15px;
+}
+
+.offer-dots {
+  margin-top: 20px;
+}
+
+.offer-dots span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  background: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.offer-dots .active {
+  background: var(--gradient-main);
+}
+
+.offer-left {
+  flex: 0.7;
+  min-width: 280px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 500px;
+}
+
+.offer-img {
+  object-fit: fill;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.offer-right {
+  flex: 1.3;
+  min-width: 450px;
+  padding-left: 30px;
+  display: flex;
+  flex-direction: column;
+  text-align: justify;
+}
+
+.offer-right h3 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: 100%;
+}
+
+.offer-right .date {
+  font-size: 14px;
+  color: #8a3b08;
+  margin-bottom: 15px;
+  font-weight: bold;
+  background: linear-gradient(#e59d2c, #bc7709);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  align-self: flex-start;
+}
+
+.offer-right #offerDesc {
+  font-size: 14px;
+  color: #000;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.thumbnail {
+  width: 500px;
+  height: 500px;
+  object-fit: fill;
+  align-self: center;
+  margin-top: auto;
+}
