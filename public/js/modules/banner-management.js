@@ -31,13 +31,49 @@ class BannerManagement {
         if (searchInput) {
             searchInput.addEventListener('input', () => this.searchBanners());
         }
+
+        // Add button
+        const addButton = document.querySelector('.add-user-button');
+        if (addButton) {
+            addButton.onclick = () => this.openAdd();
+        }
+
+        // Modal events
+        if (this.modal) {
+            this.modal.addEventListener('click', (e) => this.handleModalClick(e));
+        }
+
+        // Close modal buttons
+        document.querySelectorAll('.modal-button.cancel, .text-gray-500').forEach(btn => {
+            btn.onclick = () => this.closeModal();
+        });
+
+        // Save button
+        const saveButton = document.querySelector('.modal-button.save');
+        if (saveButton) {
+            saveButton.onclick = () => this.saveBanner();
+        }
+
+        // File input
+        const fileInput = document.getElementById('HinhAnhFile');
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => this.previewImage(e.target));
+        }
+
+        // Remove image button
+        const removeImageBtn = document.querySelector('.text-red-500');
+        if (removeImageBtn) {
+            removeImageBtn.onclick = () => this.removeImage();
+        }
     }
 
+    /* ================= LOAD ================= */
     async loadBanners() {
         try {
             this.banners = await this.api.getBanners();
             this.renderTable(this.banners);
             
+            // Test search function sau khi load data
             if (this.banners.length > 0) {
                 this.testSearch();
             }
@@ -95,9 +131,11 @@ class BannerManagement {
                 </td>
             `;
 
+            // Gắn event
             tr.querySelector('.edit-btn').addEventListener('click', () => this.openEdit(b));
             tr.querySelector('.delete-btn').addEventListener('click', () => this.deleteBanner(b.MaQC));
 
+            // Click ảnh để preview
             const img = tr.querySelector('.banner-thumbnail');
             if (img) {
                 img.addEventListener('click', () => this.previewBannerImage(b.Banner, b.TenQC));
@@ -107,6 +145,8 @@ class BannerManagement {
         });
     }
 
+    /* ================= SEARCH ================= */
+    // Hàm chuyển đổi có dấu thành không dấu
     removeAccents(str) {
         return str.normalize('NFD')
                   .replace(/[\u0300-\u036f]/g, '')
@@ -114,6 +154,7 @@ class BannerManagement {
                   .replace(/Đ/g, 'D');
     }
 
+    // Test function để kiểm tra chức năng tìm kiếm
     testSearch() {
         const testCases = [
             { input: 'tu chien', expected: 'TỬ CHIẾN TRÊN KHÔNG' },
@@ -143,6 +184,7 @@ class BannerManagement {
     searchBanners() {
         const key = document.getElementById('searchInput').value.toLowerCase().trim();
         
+        // Nếu không có từ khóa, hiển thị tất cả
         if (!key) {
             this.renderTable(this.banners);
             return;
@@ -153,7 +195,8 @@ class BannerManagement {
         const filtered = this.banners.filter(b => {
             const tenQC = b.TenQC.toLowerCase();
             const tenQCNoAccent = this.removeAccents(tenQC);
-
+            
+            // Chỉ tìm kiếm trong tên quảng cáo (có dấu và không dấu)
             return tenQC.includes(key) || 
                    tenQCNoAccent.includes(key) || 
                    tenQC.includes(keyNoAccent) || 
@@ -162,7 +205,63 @@ class BannerManagement {
         
         this.renderTable(filtered);
         
+        // Hiển thị số kết quả tìm kiếm
         console.log(`🔍 Tìm thấy ${filtered.length}/${this.banners.length} banner với từ khóa: "${key}"`);
+    }
+
+    /* ================= MODAL ================= */
+    async openAdd() {
+        this.mode = 'add';
+        this.editingMaQC = null;
+        document.getElementById('modalTitle').innerText = 'Thêm banner';
+        this.resetForm();
+
+        // Hiển thị "Đang tạo mã..." ngay lập tức
+        document.getElementById('MaBanner').value = 'Đang tạo mã...';
+        
+        // Hiển thị modal trước để người dùng thấy ngay
+        this.openModal();
+
+        try {
+            const maQC = await this.api.getNewMaQC();
+            document.getElementById('MaBanner').value = maQC;
+        } catch (error) {
+            document.getElementById('MaBanner').value = 'Lỗi tạo mã';
+        }
+    }
+
+    openEdit(banner) {
+        this.mode = 'edit';
+        this.editingMaQC = banner.MaQC;
+        document.getElementById('modalTitle').innerText = 'Sửa banner';
+
+        document.getElementById('MaBanner').value = banner.MaQC;
+        document.getElementById('TenBanner').value = banner.TenQC;
+        document.getElementById('LienKet').value = banner.Link || '';
+        
+        // Enable inputs and show save button
+        document.querySelectorAll('#bannerModal input').forEach(i => i.disabled = false);
+        document.querySelector('.modal-button.save').style.display = 'inline-block';
+
+        if (banner.Banner) {
+            document.getElementById('previewImg').src = banner.Banner;
+            document.getElementById('imagePreview').classList.remove('hidden');
+            document.getElementById('HinhAnh').value = banner.Banner;
+        }
+
+        this.openModal();
+    }
+
+    openModal() {
+        this.modal.classList.remove('hidden');
+    }
+
+    closeModal() {
+        this.modal.classList.add('hidden');
+    }
+
+    handleModalClick(e) {
+        if (e.target === this.modal) this.closeModal();
     }
 
     resetForm() {
@@ -172,8 +271,130 @@ class BannerManagement {
         document.getElementById('HinhAnhFile').value = '';
         document.getElementById('HinhAnh').value = '';
         document.getElementById('imagePreview').classList.add('hidden');
+        
+        // Đảm bảo các input được kích hoạt và nút lưu hiển thị
+        document.querySelectorAll('#bannerModal input').forEach(i => i.disabled = false);
+        document.querySelector('.modal-button.save').style.display = 'inline-block';
+        document.querySelector('.modal-button.save').disabled = false;
     }
 
+    /* ================= SAVE ================= */
+    async saveBanner() {
+        // Kiểm tra mã quảng cáo
+        const maQC = document.getElementById('MaBanner').value;
+        if (!maQC || maQC === 'Đang tạo mã...' || maQC === 'Lỗi tạo mã') {
+            showNotification('Vui lòng đợi hệ thống tạo mã quảng cáo hoặc thử lại!', 'warning');
+            return;
+        }
+
+        // Kiểm tra tên banner
+        const tenBanner = document.getElementById('TenBanner').value.trim();
+        if (!tenBanner) {
+            showNotification('Vui lòng nhập tên quảng cáo!', 'warning');
+            document.getElementById('TenBanner').focus();
+            return;
+        }
+
+        const saveButton = document.querySelector('.modal-button.save');
+        const originalText = saveButton.textContent;
+        
+        try {
+            // Hiển thị trạng thái đang lưu
+            saveButton.textContent = 'Đang lưu...';
+            saveButton.disabled = true;
+
+            const formData = new FormData();
+
+            // CHỈ GỬI MaQC KHI SỬA
+            if (this.mode === 'edit') {
+                formData.append('MaQC', document.getElementById('MaBanner').value.trim());
+            }
+
+            formData.append('TenQC', tenBanner);
+            const linkValue = document.getElementById('LienKet').value.trim();
+            if (linkValue !== '') {
+                formData.append('Link', linkValue);
+            }
+
+            const file = document.getElementById('HinhAnhFile').files[0];
+            if (file) {
+                formData.append('Banner', file);
+            }
+
+            let result;
+            if (this.mode === 'add') {
+                result = await this.api.addBanner(formData);
+            } else {
+                result = await this.api.updateBanner(formData);
+            }
+
+            // HIỂN THỊ MÃ QUẢNG CÁO VỪA SINH (nếu cần)
+            if (this.mode === 'add' && result.MaQC) {
+                document.getElementById('MaBanner').value = result.MaQC;
+            }
+
+            this.closeModal();
+            // Load lại bảng dữ liệu thay vì load cả trang
+            await this.loadBanners();
+            
+        } catch (error) {
+            // Error already handled in API
+        } finally {
+            // Khôi phục trạng thái nút
+            saveButton.textContent = originalText;
+            saveButton.disabled = false;
+        }
+    }
+
+    /* ================= DELETE ================= */
+    async deleteBanner(maQC) {
+        const banner = this.banners.find(b => b.MaQC === maQC);
+        if (!banner) return;
+
+        const confirmDelete = () => {
+            return new Promise((resolve) => {
+                const notification = document.createElement('div');
+                notification.className = 'notification notification-show';
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="notification-icon fa-solid fa-exclamation-triangle" aria-hidden="true"></i>
+                        <span class="notification-message">Bạn có chắc muốn xóa banner "${banner.TenQC}"?</span>
+                        <div class="confirm-dialog-actions">
+                            <button class="confirm-button confirm-yes">Xóa</button>
+                            <button class="confirm-button confirm-no">Hủy</button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(notification);
+                requestAnimationFrame(() => notification.classList.add('show'));
+
+                notification.querySelector('.confirm-yes').addEventListener('click', () => {
+                    notification.remove();
+                    resolve(true);
+                });
+
+                notification.querySelector('.confirm-no').addEventListener('click', () => {
+                    notification.remove();
+                    resolve(false);
+                });
+            });
+        };
+
+        const confirmed = await confirmDelete();
+        if (!confirmed) return;
+
+        try {
+            await this.api.deleteBanner(maQC);
+            // Thông báo đã được hiển thị trong API, chỉ cần load lại bảng
+            await this.loadBanners();
+        } catch (error) {
+            console.error('Lỗi:', error);
+            // Thông báo lỗi đã được hiển thị trong API
+        }
+    }
+
+    /* ================= IMAGE ================= */
     previewImage(input) {
         const file = input.files[0];
         if (!file) return;
@@ -191,7 +412,9 @@ class BannerManagement {
         document.getElementById('imagePreview').classList.add('hidden');
     }
 
+    /* ================= PREVIEW BANNER IMAGE ================= */
     previewBannerImage(imagePath) {
+        // Tạo modal xem ảnh
         const modal = document.createElement('div');
         modal.className = 'image-preview-modal';
         modal.onclick = () => modal.remove();
