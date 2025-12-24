@@ -23,6 +23,7 @@ import { initVideoModal } from "./modules/video-modal.js";
 import { initMovieSlider } from "./modules/movie-slider.js";
 import { initOfferModal, initOfferSlider } from "./modules/offer-slider.js";
 import { initAuth } from './modules/auth.js';
+import BannerManagement from './modules/banner-management.js';
 
 function getCurrentPage() {
   const path = window.location.pathname;
@@ -44,8 +45,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const currentPage = getCurrentPage();
 
-    const isAdmin = document.body.dataset.page === 'admin';
-    if (!isAdmin) {
+    // Kiểm tra xem có phải trang admin không
+    const isAdminPage = document.getElementById('shared-sidebar') && document.getElementById('shared-header');
+    
+    if (isAdminPage) {
+      // Load admin header và sidebar
+      await includeHTML('shared-header', 'admin-header.html');
+      await includeHTML('shared-sidebar', 'admin-sidebar.html');
+    } else {
+      // Load header và footer thông thường
       await includeHTML('header', 'header.html');
       await includeHTML('footer', 'footer.html');
     }
@@ -62,6 +70,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (document.getElementById('userTable') || document.getElementById('userModal')) {
       initUserManagement();
       console.log('✅ User Management đã được khởi tạo');
+    }
+
+    // Khởi tạo Banner Management
+    const bannerTable = document.getElementById('bannerTable');
+    const bannerModal = document.getElementById('bannerModal');
+    
+    console.log('🎯 Banner table found:', !!bannerTable);
+    console.log('🎯 Banner modal found:', !!bannerModal);
+    
+    if (bannerTable || bannerModal) {
+        console.log('🎯 Banner page detected, initializing...');
+        
+        try {
+            window.bannerManagement = new BannerManagement();
+            console.log('✅ Banner Management initialized successfully');
+        } catch (error) {
+            console.error('❌ Error initializing Banner Management:', error);
+        }
+    } else {
+        console.log('ℹ️ Not a banner page');
     }
 
     if (currentPage === "index.html" || currentPage === "") {
