@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Cinema - Quản lí banner</title>
+    <link rel="icon" type="image/png" sizes="1000x1000" href="images/logo-hc.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script type="module" src="js/script.js"></script>
+</head>
+
+<body class="bg-white-50">
+<div class="flex h-screen">
+    
+    <!-- Sidebar -->
+    <div id="shared-sidebar" class="w-65"></div>
+
+    <div class="flex-1 overflow-auto">
+        <!-- Header -->
+        <div id="shared-header"></div>
+
+        <main class="p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b pb-4">Quản lí banner</h1>
+
+            <div class="banner-table-container">
+                <div class="flex items-center mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Danh sách banner</h2>
+                    <div class="search-container">
+                        <div class="search-border-gradient">
+                            <input
+                                id="searchInput"
+                                type="text"
+                                placeholder="Tìm theo tên banner (có thể không dấu)..."
+                                class="search-input"
+                            >
+                        </div>
+                        <i class="fa fa-search search-icon"></i>
+                    </div>
+                    <button class="add-user-button">
+                        <i class="fa fa-plus emoji"></i>Thêm banner
+                    </button>
+                </div>
+
+                <div class="table-scroll-area">
+                    <table class="user-table">
+                        <thead class="table-header-gradient">
+                            <tr>
+                                <th class="table-header-cell w-[100px]">Mã Quảng cáo</th>
+                                <th class="table-header-cell w-[200px]">Tên Quảng Cáo</th>
+                                <th class="table-header-cell w-[120px] text-center">Banner</th>
+                                <th class="table-header-cell w-[120px] text-center">Link</th>
+                                <th class="table-header-cell w-[160px] text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bannerTable" class="divide-y divide-gray-100 bg-white"></tbody>
+
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<!-- MODAL -->
+
+<div id="bannerModal"
+    class="user-modal hidden">
+
+    <div class="user-modal-content" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center mb-2">
+            <h3 id="modalTitle" class="text-base font-semibold"></h3>
+            <button class="text-gray-500 hover:text-gray-700 text-lg">&times;</button>
+        </div>
+
+        <div class="user-form-grid">
+
+        <div class="form-field full-width">
+            <label class="form-label">Mã quảng cáo</label>
+            <input id="MaBanner" class="form-input bg-gray-100" readonly placeholder="Tự động tạo">
+        </div>
+
+        <div class="form-field full-width">
+            <label class="form-label">Tên quảng cáo *</label>
+            <input id="TenBanner" class="form-input" placeholder="Nhập tên quảng cáo">
+        </div>
+
+        <div class="form-field full-width">
+            <label class="form-label">Link</label>
+            <input id="LienKet" class="form-input" placeholder="https://...">
+        </div>
+
+        <div class="form-field full-width">
+            <label class="form-label">Ảnh banner</label>
+            <input
+                type="file"
+                id="HinhAnhFile"
+                accept="image/*"
+                class="form-input">
+            <input type="hidden" id="HinhAnh">
+        </div>
+
+        <div id="imagePreview" class="hidden full-width mt-2">
+            <img id="previewImg" class="w-32 h-20 rounded border object-cover mx-auto">
+            <button type="button"
+                    class="text-red-500 text-xs ml-2 block mt-1">
+                Xóa ảnh
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

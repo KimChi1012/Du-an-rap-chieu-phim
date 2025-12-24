@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Cinema - Đăng nhập / Đăng ký</title>
+    <link rel="icon" type="image/png" sizes="1000x1000" href="images/logo-hc.png">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for better icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth">
+
+<div class="auth-container">
+
+    <div class="auth-card" id="authCard">
+
+        <!-- IMAGE PANEL -->
+        <div class="auth-panel">
+            <div class="panel-content">
+                <h2 id="imageTitle">Chào mừng!</h2>
+                <p id="imageDesc">Đăng nhập để tiếp tục</p>             
+                <button class="panel-btn" id="switchBtn">Đăng ký</button>
+            </div>
+        </div>
+
+        <!-- FORMS -->
+        <div class="auth-forms">
+
+            <!-- LOGIN -->
+            <form class="form form-login" id="loginForm">
+                <h2>Đăng nhập</h2>
+
+                <input type="text" name="username" placeholder="Tên đăng nhập" required>
+
+                <div class="password-wrapper">
+                    <input type="password" name="password" placeholder="Mật khẩu" required>
+                    <span class="eye"></span>
+                </div>
+
+                <button type="submit">Đăng nhập</button>
+
+                <div class="back-to-home">
+                    <a href="index.html" class="back-link">← Quay lại trang chủ</a>
+                </div>
+            </form>
+
+            <!-- REGISTER -->
+            <form class="form form-register" id="registerForm">
+                <h2>Đăng ký</h2>
+
+                <input type="text" name="fullname" placeholder="Họ và tên" required>
+                <input type="text" name="username" placeholder="Tên đăng nhập" required>
+                <input type="email" name="email" placeholder="Email" required>
+
+                <div class="password-wrapper">
+                    <input type="password" name="repass" placeholder="Mật khẩu" required>
+                    <span class="eye"></span>
+                </div>
+
+                <button type="submit">Tạo tài khoản</button>
+
+                <div class="back-to-home">
+                    <a href="index.html" class="back-link">← Quay lại trang chủ</a>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/script.js" type="module"></script>
+</body>
+</html>

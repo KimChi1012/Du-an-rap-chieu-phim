@@ -27,6 +27,143 @@
       </p>
     </div>
   </section>
+
+  <section id="now-showing" class="now-showing">
+    <h2>PHIM ĐANG CHIẾU</h2>
+    <div class="movie-slider-container">
+      <button class="prev-movie">❮</button>
+      <div class="movie-slider"></div>
+      <button class="next-movie">❯</button>
+    </div>
+    <div class="movie-dots"></div>
+    <button class="show-more-btn" id="show-more-now"><span class="text-gradient">Xem thêm</span></button>
+  </section>
+
+  <section id="coming-soon" class="coming-soon">
+    <h2>PHIM SẮP CHIẾU</h2>
+    <div class="movie-slider-container">
+      <button class="prev-movie">❮</button>
+      <div class="movie-slider"></div>
+      <button class="next-movie">❯</button>
+    </div>
+    <div class="movie-dots"></div>
+    <button class="show-more-btn" id="show-more-coming"><span class="text-gradient">Xem thêm</span></button>
+  </section>
+
+  <div id="video-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <iframe id="youtubeVideo" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <section id="special-offers" class="special-offers">
+    <h2>ƯU ĐÃI ĐẶC BIỆT</h2>
+    <div class="offer-slider-container">
+      <button class="prev-offer">❮</button>
+      <div class="offer-slider"></div>
+      <button class="next-offer">❯</button>
+    </div>
+    <div class="offer-dots"></div>
+  </section>
+
+  <div id="offer-modal" class="offer-modal">
+    <div class="offer-modal-content">
+      <span class="close-offer">&times;</span>
+      <div class="offer-details">
+        <div class="offer-left">
+          <img id="offerImg" src="" alt="" class="offer-img">
+          <div class="social-icons">
+            <a href="#" class="social-link" onclick="event.preventDefault();">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-link" onclick="event.preventDefault();">
+              <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="#" class="social-link" onclick="event.preventDefault();">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link" onclick="event.preventDefault();">
+              <i class="fab fa-pinterest-p"></i>
+            </a>
+          </div>
+        </div>
+        <div class="offer-right">
+          <h3 id="offerTitle"></h3>
+          <p id="offerDate" class="date"></p>
+          <p id="offerDesc"></p>
+          <img id="offerThumbnail" src="" alt="" class="thumbnail">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="introduce" class="introduce">
+    <h2>GIỚI THIỆU</h2>
+
+    <div class="introduce-grid">
+      <div class="intro-content">
+        <img src="images/logo-hc.png" alt="High Cinema Logo" class="intro-logo">
+        <div class="intro-info">
+          <h2>HIGH CINEMA</h2>
+          <p>
+            Là rạp chiếu phim cao cấp với không gian sang trọng, âm thanh sống động và chất lượng dịch vụ hàng đầu tại Huế.
+          </p>
+
+          <div class="intro-tags">
+            <span>Màn hình IMAX</span>
+            <span>Âm thanh Dolby Atmos</span>
+            <span>Dịch vụ cao cấp</span>
+            <span>Ghế ngồi êm ái</span>
+          </div>
+
+          <div class="intro-video">
+            <video src="video/highcinema.webm" loop autoplay muted controls playsinline></video>
+          </div>
+
+          <div class="info-contacts">
+            <b><i class="fa-solid fa-phone-volume"></i> Liên Hệ Ngay!</b>
+            <br><i class="fa-solid fa-location-dot"></i> Tòa High Cinema, Số xxx - Đường Võ Nguyên Giáp, Phường An Cựu, TP. Huế
+            <br><i class="fa-solid fa-phone"></i> 1900-xx-xx
+            <br><i class="fa-solid fa-envelope"></i> highcinema@gmail.com
+          </div>
+        </div>
+      </div>
+
+      <div class="more-info">
+        <p>
+          <br><b>HIGH CINEMA</b> tự hào là rạp chiếu phim cao cấp hàng đầu tại Huế, mang đến không gian giải trí sang trọng, hiện đại với công nghệ âm thanh hình ảnh sống động và chất lượng dịch vụ vượt trội. 
+          Được đặt tại vị trí đắc địa <b><i class="fa-solid fa-location-dot"></i> <i>Tòa xxx, Số xxx - Đường Võ Nguyên Giáp, TP. Huế</i></b>, dễ dàng kết nối với các tiện ích mua sắm, ăn uống xung quanh.
+          
+          <br><br><b><i class="fa-solid fa-microchip"></i> Công Nghệ Đỉnh Cao – Nâng Tầm Mọi Bộ Phim</b>
+          <br>Tại HIGH CINEMA, bạn sẽ được đắm chìm trong thế giới điện ảnh thực thụ nhờ hệ thống công nghệ tiên tiến nhất:        
+          <br>• <b><i class="fa-solid fa-tv"></i> Màn hình IMAX® Laser:</b> Hình ảnh sắc nét 4K HDR, độ tương phản cao, mang đến trải nghiệm hình ảnh chân thực như đang ở trung tâm câu chuyện.
+          <br>• <b><i class="fa-solid fa-volume-high"></i> Âm thanh Dolby Atmos®:</b> Hệ thống âm thanh vòm đa chiều, lan tỏa từ mọi hướng, kết hợp ghế VIP rung động theo nhịp phim (Vibrating Seats).
+          <br>• <b><i class="fa-solid fa-couch"></i> Ghế ngồi êm ái:</b> Ghế da cao cấp chỉnh điện, ghế đôi Sweetbox riêng tư – tận hưởng tối đa suốt suất chiếu.
+
+          <br><br><b><i class="fa-solid fa-hotel"></i> Không Gian Sang Trọng & Tiện Nghi</b>
+          <br>Bước vào HIGH CINEMA, bạn sẽ bị cuốn hút bởi thiết kế nội thất đẳng cấp: 
+          hành lang LED ánh sáng mờ ảo, quầy snack bar 5 sao, bắp rang bơ gourmet và nước uống premium.  
+          Mỗi phòng chiếu đều được tối ưu hóa để tạo cảm giác riêng tư, như một "rạp phim tại gia" nhưng với quy mô lớn lao.
+
+          <br><br><i class="fa-solid fa-gift"></i> Với nhiều <b>ưu đãi đặc biệt</b> – quét <i class="fa-solid fa-qrcode"></i> QR code để đặt vé online!
+
+          <br><br><b><i class="fa-solid fa-clapperboard"></i> HIGH CINEMA</b> – 
+          <i>Nơi mọi bộ phim trở thành kỷ niệm khó quên. Hãy đến và <b>trải nghiệm tương lai của điện ảnh</b> ngay hôm nay!</i> 🎬✨
+          <br><br>
+        </p>
+      </div>
+    </div>
+
+    <div class="map-container">
+      <iframe 
+        src="https://www.google.com/maps/d/embed?mid=1zDzv6DHyFuXrtD4CRvOYLiykToF5TkQ&ehbc=2E312F&z=18" 
+        allowfullscreen=""
+        loading="lazy">
+      </iframe>
+      <div class="map-overlay"></div>
+    </div>
+  </section>
   
   <footer id="footer"></footer>
   <script src="js/script.js" type="module" defer></script>
