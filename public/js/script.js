@@ -39,21 +39,29 @@ async function initPageSpecific() {
     initAuth();
     console.log('✅ Auth module initialized');
   }
+
+  if (currentPage === "now-showing.html"){
+    const { loadAllMovies } = await import("./modules/all-movies.js");
+    
+    if (currentPage.includes("now-showing.html")) {
+      await loadAllMovies(
+        "../api/movie/get_now_showing.php",
+        "#all-now-showing"
+      );
+    } 
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const currentPage = getCurrentPage();
 
-    // Kiểm tra xem có phải trang admin không
     const isAdminPage = document.getElementById('shared-sidebar') && document.getElementById('shared-header');
     
     if (isAdminPage) {
-      // Load admin header và sidebar
       await includeHTML('shared-header', 'admin-header.html');
       await includeHTML('shared-sidebar', 'admin-sidebar.html');
     } else {
-      // Load header và footer thông thường
       await includeHTML('header', 'header.html');
       await includeHTML('footer', 'footer.html');
     }
@@ -72,7 +80,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log('✅ User Management đã được khởi tạo');
     }
 
-    // Khởi tạo Banner Management
     const bannerTable = document.getElementById('bannerTable');
     const bannerModal = document.getElementById('bannerModal');
     
@@ -121,10 +128,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (showMoreNowBtn) {
           showMoreNowBtn.onclick = function () {
-            showNotification(
-              "Trang danh sách Phim đang chiếu đang được phát triển. Vui lòng quay lại sau!",
-              "info"
-            );
+            window.location.href = "now-showing.html";
           };
         }
         if (showMoreComingBtn) {
