@@ -50,6 +50,17 @@ async function initPageSpecific() {
       );
     } 
   }
+
+  if (currentPage === "coming-soon.html"){
+    const { loadAllMovies } = await import("./modules/all-movies.js");
+    
+    if (currentPage.includes("coming-soon.html")) {
+      await loadAllMovies(
+        "../api/movie/get_coming_soon.php",
+        "#all-coming-soon"
+      );
+    }
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -133,10 +144,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         if (showMoreComingBtn) {
           showMoreComingBtn.onclick = function () {
-            showNotification(
-              "Trang danh sách Phim sắp chiếu đang được phát triển. Vui lòng quay lại sau!",
-              "info"
-            );
+            window.location.href = "coming-soon.html";
           };
         }
       }, 1000);
