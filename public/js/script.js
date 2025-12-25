@@ -23,6 +23,7 @@ import { initVideoModal } from "./modules/video-modal.js";
 import { initMovieSlider } from "./modules/movie-slider.js";
 import { initOfferModal, initOfferSlider } from "./modules/offer-slider.js";
 import { initAuth } from './modules/auth.js';
+import BannerManagement from './modules/banner-management.js';
 
 function getCurrentPage() {
   const path = window.location.pathname;
@@ -38,14 +39,29 @@ async function initPageSpecific() {
     initAuth();
     console.log('✅ Auth module initialized');
   }
+
+  if (currentPage === "now-showing.html"){
+    const { loadAllMovies } = await import("./modules/all-movies.js");
+    
+    if (currentPage.includes("now-showing.html")) {
+      await loadAllMovies(
+        "../api/movie/get_now_showing.php",
+        "#all-now-showing"
+      );
+    } 
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const currentPage = getCurrentPage();
 
-    const isAdmin = document.body.dataset.page === 'admin';
-    if (!isAdmin) {
+    const isAdminPage = document.getElementById('shared-sidebar') && document.getElementById('shared-header');
+    
+    if (isAdminPage) {
+      await includeHTML('shared-header', 'admin-header.html');
+      await includeHTML('shared-sidebar', 'admin-sidebar.html');
+    } else {
       await includeHTML('header', 'header.html');
       await includeHTML('footer', 'footer.html');
     }
@@ -62,6 +78,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (document.getElementById('userTable') || document.getElementById('userModal')) {
       initUserManagement();
       console.log('✅ User Management đã được khởi tạo');
+    }
+
+    const bannerTable = document.getElementById('bannerTable');
+    const bannerModal = document.getElementById('bannerModal');
+    
+    console.log('🎯 Banner table found:', !!bannerTable);
+    console.log('🎯 Banner modal found:', !!bannerModal);
+    
+    if (bannerTable || bannerModal) {
+        console.log('🎯 Banner page detected, initializing...');
+        
+        try {
+            window.bannerManagement = new BannerManagement();
+            console.log('✅ Banner Management initialized successfully');
+        } catch (error) {
+            console.error('❌ Error initializing Banner Management:', error);
+        }
+    } else {
+        console.log('ℹ️ Not a banner page');
     }
 
     if (currentPage === "index.html" || currentPage === "") {
@@ -93,10 +128,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (showMoreNowBtn) {
           showMoreNowBtn.onclick = function () {
-            showNotification(
-              "Trang danh sách Phim đang chiếu đang được phát triển. Vui lòng quay lại sau!",
-              "info"
-            );
+            window.location.href = "now-showing.html";
           };
         }
         if (showMoreComingBtn) {
