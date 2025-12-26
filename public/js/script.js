@@ -38,6 +38,26 @@ function getCurrentPage() {
   return filename || 'index.html';
 }
 
+// Function để xóa tất cả dữ liệu booking
+function clearAllBookingData() {
+  localStorage.removeItem('selectedShowtime');
+  localStorage.removeItem('bookingData');
+  localStorage.removeItem('reservationStartTime');
+  localStorage.removeItem('selectedServices');
+  sessionStorage.removeItem('bookingInProgress');
+  sessionStorage.removeItem('returningFromSeat');
+  sessionStorage.removeItem('returningFromService');
+  sessionStorage.removeItem('returningFromConfirmation');
+  sessionStorage.removeItem('seatPageLoaded');
+  sessionStorage.removeItem('servicePageLoaded');
+  sessionStorage.removeItem('confirmationPageLoaded');
+  sessionStorage.removeItem('paymentInProgress');
+  console.log('🧹 All booking data cleared when returning to index');
+}
+
+// Thêm vào window object để có thể truy cập từ mọi nơi
+window.clearAllBookingData = clearAllBookingData;
+
 async function initPageSpecific() {
   const currentPage = getCurrentPage();
   console.log('📄 Current page:', currentPage);
@@ -66,6 +86,12 @@ async function initPageSpecific() {
   if (currentPage === "service-selection.html") {
     console.log('🛍️ Initializing service selection page...');
     window.serviceSelectionSystem = new ServiceSelectionSystem();
+  }
+
+  if (currentPage === "booking-confirmation.html") {
+    console.log('✅ Initializing booking confirmation page...');
+    const { default: BookingConfirmationSystem } = await import("./modules/booking-confirmation.js");
+    window.bookingConfirmationSystem = new BookingConfirmationSystem();
   }
 
   if (currentPage === "now-showing.html"){
@@ -124,6 +150,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             backBtn.href = 'booking.html';
         } else if (page.includes('service-selection')) {
             // Back button will be handled by ServiceSelectionSystem
+        } else if (page.includes('booking-confirmation')) {
+            // Back button will be handled by BookingConfirmationSystem
         } else if (page.includes('booking')) {
             backBtn.href = 'index.html';
         } else {
@@ -201,6 +229,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     if (currentPage === "index.html" || currentPage === "") {
+      // Xóa tất cả dữ liệu booking khi vào trang chủ
+      clearAllBookingData();
+      
       await initBannerSlider();
 
       await Promise.all([
@@ -251,6 +282,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (offerModal?.style.display === "block") {
           window.closeOfferModal();
         }
+      }
+    });
+
+    // Thêm event listener để xóa dữ liệu khi click vào link về trang chủ
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('a');
+      if (target && (target.href.includes('index.html') || target.href.endsWith('/'))) {
+        console.log('🏠 Navigating to home page, clearing booking data...');
+        clearAllBookingData();
+      }
+    });
+
+    // Xóa dữ liệu khi người dùng navigate bằng browser back/forward buttons
+    window.addEventListener('popstate', () => {
+      const currentPage = getCurrentPage();
+      if (currentPage === 'index.html' || currentPage === '') {
+        console.log('🏠 Browser navigation to home page, clearing booking data...');
+        clearAllBookingData();
       }
     });
   } catch (error) {

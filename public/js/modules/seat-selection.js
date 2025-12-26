@@ -1,7 +1,4 @@
-import { initUserSidebar } from './user-sidebar.js';
-import { initDropdown } from './dropdown.js';
 import { loadUserInfo } from './user-info.js';
-import { initVideoModal } from './video-modal.js';
 import { initNotification, showNotification } from './notification.js';
 
 class SeatSelectionSystem {
@@ -27,8 +24,6 @@ class SeatSelectionSystem {
             
             this.getShowtimeFromURL();
             
-            this.resetReservationTimer();
-
             await this.loadSeatData();
 
             this.loadPreviouslySelectedSeats();
@@ -99,10 +94,7 @@ class SeatSelectionSystem {
 
             await new Promise(resolve => setTimeout(resolve, 100));
 
-            initUserSidebar();
-            initDropdown();
             await loadUserInfo();
-            initVideoModal();
             initNotification();
         } catch (error) {
             console.error('Error loading header/footer or booking components:', error);
@@ -485,23 +477,30 @@ class SeatSelectionSystem {
         
         localStorage.setItem('bookingData', JSON.stringify(bookingData));
         
+        // Bắt đầu thời gian giữ chỗ
         localStorage.setItem('reservationStartTime', Date.now().toString());
-
+        
         sessionStorage.setItem('bookingInProgress', 'true');
         
         console.log('🎫 Đã lưu thông tin đặt vé và bắt đầu giữ chỗ');
         
-        // Chuyển đến trang chọn dịch vụ
-        window.location.href = 'service-selection.html';
+        window.location.href = `service-selection.html?showtime=${this.showtimeData.MaSuat}`;
     }
 
     setupPageExitHandler() {
+        // Đánh dấu khi trang được load
+        sessionStorage.setItem('seatPageLoaded', 'true');
+        
         window.addEventListener('beforeunload', () => {
             const bookingInProgress = sessionStorage.getItem('bookingInProgress');
+            const returningFromSeat = sessionStorage.getItem('returningFromSeat');
             
-            if (!bookingInProgress) {
+            // Chỉ xóa dữ liệu nếu không đang trong flow booking
+            if (!bookingInProgress && !returningFromSeat) {
                 console.log('🧹 User exiting seat selection without continuing, clearing data...');
                 this.clearAllBookingData();
+            } else {
+                console.log('💾 Keeping seat selection data (booking in progress)');
             }
         });
 
@@ -547,11 +546,6 @@ class SeatSelectionSystem {
             style: 'currency',
             currency: 'VND'
         }).format(price);
-    }
-    
-    resetReservationTimer() {
-        localStorage.removeItem('reservationStartTime');
-        console.log('🔄 Reset reservation timer');
     }
     
     loadPreviouslySelectedSeats() {

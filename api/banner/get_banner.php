@@ -2,7 +2,11 @@
 header('Content-Type: application/json; charset=utf-8');
 include "../db.php";
 
-$sql = "SELECT * FROM QuangCao ORDER BY MaQC ASC";
+$sql = "SELECT qc.*, p.MaPhim, p.TrangThai 
+        FROM QuangCao qc 
+        LEFT JOIN Phim p ON qc.TenQC = p.TenPhim 
+        ORDER BY qc.MaQC ASC";
+
 $result = mysqli_query($conn, $sql);
 
 $banners = [];
