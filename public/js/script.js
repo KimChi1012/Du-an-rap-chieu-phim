@@ -25,6 +25,9 @@ import { initOfferModal, initOfferSlider } from "./modules/offer-slider.js";
 import { initAuth } from './modules/auth.js';
 import BannerManagement from './modules/banner-management.js';
 
+const urlParams = new URLSearchParams(window.location.search);
+const movieId = urlParams.get('movie_id') || 1;
+
 function getCurrentPage() {
   const path = window.location.pathname;
   const filename = path.split('/').pop();
@@ -38,6 +41,11 @@ async function initPageSpecific() {
   if (currentPage === 'login-register.html') {
     initAuth();
     console.log('✅ Auth module initialized');
+  }
+
+  if (currentPage === "movie-detail.html") {
+    const { default: MovieDetail } = await import("./modules/movie-detail.js");
+    new MovieDetail();
   }
 
   if (currentPage === "now-showing.html"){
@@ -66,6 +74,11 @@ async function initPageSpecific() {
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const currentPage = getCurrentPage();
+
+    if (currentPage === "movie-detail.html") {
+      await initPageSpecific();
+      return;
+    }
 
     const isAdminPage = document.getElementById('shared-sidebar') && document.getElementById('shared-header');
     

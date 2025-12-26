@@ -1,3 +1,4 @@
+import { createMovieUrl } from './url-utils.js';
 import { showNotification } from './notification.js';
 
 export async function initMovieSlider(sectionId, apiUrl, emptyText) {
@@ -82,13 +83,11 @@ export async function initMovieSlider(sectionId, apiUrl, emptyText) {
       title.addEventListener("click", (e) => {
         e.preventDefault();
         if (!movieSlider.classList.contains("dragging")) {
-          if (typeof showNotification === 'function') {
-            showNotification(
-              "Trang Thông tin chi tiết phim đang được phát triển. Vui lòng quay lại sau!",
-              "info"
-            );
-          } else {
-            alert("Trang Thông tin chi tiết phim đang được phát triển. Vui lòng quay lại sau!");
+          const encodedTitle = title.getAttribute("data-movie-title");
+          const movieTitle = decodeURIComponent(encodedTitle);
+          const movieId = title.getAttribute("data-movie-id");
+          if (movieTitle) {
+            window.location.href = createMovieUrl(movieTitle, movieId);
           }
         }
       });

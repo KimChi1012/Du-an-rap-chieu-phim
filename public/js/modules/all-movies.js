@@ -1,3 +1,4 @@
+import { createMovieUrl } from './url-utils.js';
 let allMoviesData = [];
 let currentPageNum = 1;
 const moviesPerPage = 10;
@@ -58,27 +59,25 @@ function renderMovies(movies, moviesGrid) {
   movieTitles.forEach(title => {
     title.addEventListener("click", (e) => {
       e.preventDefault();
-
       const encodedTitle = title.getAttribute("data-movie-title");
       const movieTitle = decodeURIComponent(encodedTitle);
       const movieId = title.getAttribute("data-movie-id");
       
-      if (!movieId) {
-        showNotification(
-          "Trang Thông tin chi tiết phim đang được phát triển. Vui lòng quay lại sau!",
-          "info"
-        );
-        return;
-      }
-
-      if (movieTitle && typeof createMovieUrl === "function") {
+      console.log('All-movies click debug:', {
+        encodedTitle,
+        movieTitle,
+        movieId,
+        createMovieUrl: typeof createMovieUrl
+      });
+      
+      if (movieTitle) {
         const url = createMovieUrl(movieTitle, movieId);
+        console.log('Generated URL:', url);
         window.location.href = url;
       } else {
-        showNotification(
-          "Trang Thông tin chi tiết phim đang được phát triển. Vui lòng quay lại sau!",
-          "info"
-        );
+        // Fallback to ID if no title
+        console.log('No title, using ID URL');
+        window.location.href = `movie-detail.html?id=${movieId}`;
       }
     });
   });
