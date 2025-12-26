@@ -487,10 +487,24 @@ class MovieDetail {
     }
 
     bookTicket() {
-        showNotification(
-            'Tính năng đặt vé đang được phát triển. Vui lòng quay lại sau!',
-            'info'
-        );
+        const movie = this.movieData.movie;
+        const movieStatus = movie.TrangThai;
+        const movieTitle = movie.TenPhim;
+        const movieId = movie.MaPhim;
+
+        if (movieStatus === 'Phim đang chiếu') {
+            window.location.href = `booking.html?id=${movieId}`;
+        } else if (movieStatus === 'Phim sắp chiếu') {
+            showNotification(
+                'Phim ' + movieTitle + ' chưa phát hành. Vui lòng quay lại sau!',
+                'info'
+            );
+        } else {
+            showNotification(
+                'Phim ' + movieTitle + ' đã qua thời gian phát hành. Vui lòng chọn phim khác!',
+                'info'
+            );
+        }
     }
 
     selectTimeSlot(slot) {

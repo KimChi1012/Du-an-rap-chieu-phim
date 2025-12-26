@@ -1,0 +1,627 @@
+.steps {
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  padding-top: 100px;
+  position: relative;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0 20px;
+  color: #aaa;
+  font-size: 14px;
+  padding-bottom: 15px;
+}
+
+.step-text {
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+.step.active .step-text {
+  font-weight: bold;
+  background: var(--gradient-text-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.step.completed .step-text {
+  font-weight: bold;
+  background: var(--gradient-text-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.step.completed .circle {
+  background: var(--gradient-main);
+  color: #fff;
+  border: none;
+  font-weight: bold;
+}
+
+.step:hover .step-text {
+  color: var(--primary-color);
+  transition: color 0.3s ease;
+}
+
+.step:hover .circle {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+.circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #aaa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.step.active .circle {
+  background: var(--gradient-main);
+  color: #fff;
+  border: none;
+  font-weight: bold;
+}
+
+.booking-page .container {
+  display: flex;
+  max-width: 1200px;
+  margin: 30px auto;
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.booking-page .left {
+  flex: 2.5;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.booking-page .right {
+  flex: 0 0 340px;
+  max-width: 340px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.modal-box h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  background: var(--gradient-text-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.modal-box p {
+  font-size: 1rem;
+  color: #ccc;
+  margin: 15px 0 0 0;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.modal-actions #modalConfirm {
+  background: var(--gradient-main);
+  color: white;
+  border: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.modal-actions #modalConfirm:hover {
+  background: linear-gradient(90deg, #7c2d12, #d97706, #1e3a8a);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.cinema h4 {
+  margin: 10px 0;
+}
+
+.time {
+  padding: 10px 15px;
+  background: #0056b3;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.booking-page .summary {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(138, 59, 8, 0.1);
+  border: 1px solid rgba(229, 157, 44, 0.2);
+}
+
+.booking-page .summary-header {
+  background: var(--gradient-main);
+  padding: 15px 20px;
+  color: white;
+}
+
+.booking-page .summary-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.booking-page .movie {
+  display: flex;
+  padding: 20px;
+  gap: 15px;
+  border-bottom: 1px solid #e9ecef;
+  align-items: flex-start;
+}
+
+.booking-page .movie img {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.booking-page .movie div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 120px;
+  padding-top: 8px;
+}
+
+.booking-page .movie h3 {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  color: #2e4365;
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+.booking-page .movie p {
+  position: relative;
+  left: -20px;
+  top: -10px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.booking-page .summary p {
+  padding: 0 20px;
+  margin: 8px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.booking-page .summary hr {
+  margin: 15px 20px;
+  border: none;
+  height: 1px;
+  background: #e9ecef;
+}
+
+.booking-page .total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #fff8f0 0%, #f8f9fa 100%);
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-top: 2px solid #e59d2c;
+}
+
+.booking-page .price {
+  background: var(--gradient-text-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.booking-page .actions {
+  display: flex;
+  gap: 10px;
+  padding: 0px 20px 20px 20px;
+}
+
+.booking-page .actions a {
+  flex: 1;
+  text-align: center;
+  padding: 12px 20px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.booking-page .actions button {
+  flex: 2;
+  background: var(--gradient-main);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 15px;
+}
+
+.booking-page .actions button:hover {
+  background: linear-gradient(90deg, #7a3307, #d18a25, #253a5a);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(138, 59, 8, 0.3);
+}
+
+.booking-page .actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.booking-page .date-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.booking-page .date-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.booking-page .date-tab {
+  background: transparent;
+  border: 1.5px solid #ddd;
+  color: var(--text-color);
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  white-space: nowrap;
+  min-width: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  flex-shrink: 0;
+}
+
+.booking-page .date-tab:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: rgba(139, 69, 19, 0.05);
+}
+
+.booking-page .date-tab.selected {
+  background: var(--gradient-main);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+}
+
+.booking-page .date-day {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+  opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.booking-page .date-number {
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.booking-page .section-card {
+  background: transparent;
+  border-radius: 0;
+  padding: 0 0 25px 0;
+  box-shadow: none;
+  margin-bottom: 20px;
+  border: none;
+}
+
+.booking-page .section-card h3 {
+  margin: 0 0 20px 0;
+  font-size: 1.3rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  padding: 15px 0;
+  border-bottom: 2px solid rgba(229, 157, 44, 0.2);
+}
+
+.booking-page .section-card h3 i {
+  color: #e59d2c;
+  font-size: 1em;
+}
+
+.booking-page .date-picker-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.booking-page .date-picker {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.booking-page .date-picker-btn {
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.booking-page .date-picker-btn:hover {
+  background: #e9ecef;
+}
+
+.booking-page .showtime-date {
+  margin-bottom: 2.5rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.booking-page .showtime-date h4 {
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.booking-page .showtime-date h4::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  background: var(--gradient-main);
+  border-radius: 2px;
+}
+
+.booking-page .time-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.booking-page .time-slot {
+  background: transparent;
+  border: 1.5px solid #ddd;
+  color: var(--text-color);
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  min-width: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.booking-page .time-slot:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: rgba(139, 69, 19, 0.05);
+}
+
+.booking-page .time-slot.selected {
+  background: var(--gradient-main);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+}
+
+.booking-page .time-slot::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: transparent;
+  transition: background 0.25s ease;
+}
+
+.booking-page .time-slot[data-period="morning"]::after {
+  background: linear-gradient(90deg, #ffd700, #ffed4e);
+}
+
+.booking-page .time-slot[data-period="afternoon"]::after {
+  background: linear-gradient(90deg, #ff6b35, #f7931e);
+}
+
+.booking-page .time-slot[data-period="evening"]::after {
+  background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.booking-page .time-slot[data-period="night"]::after {
+  background: linear-gradient(90deg, #2c3e50, #34495e);
+}
+
+.booking-page .no-showtimes {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #6c757d;
+  background: transparent;
+  border: none;
+  margin: 1rem 0;
+}
+
+.booking-page .no-showtimes p {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #495057;
+}
+
+.booking-page .no-showtimes small {
+  font-size: 0.875rem;
+  color: #6c757d;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.booking-page .seats-selected {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  margin: 10px 0;
+  font-size: 0.9rem;
+}
+
+.booking-page #nextBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.booking-page #nextBtn:not(:disabled):hover {
+  background: linear-gradient(90deg, #7a3307, #d18a25, #253a5a);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(138, 59, 8, 0.3);
+}
+
+.booking-page .loading {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+.booking-page .success-highlight {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border-color: #28a745;
+}
+
+.booking-page .error-highlight {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  border-color: #dc3545;
+}
+
+.booking-page .premium-card {
+  background: linear-gradient(135deg, #fff8f0 0%, #ffffff 100%);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.booking-page .premium-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: var(--gradient-main);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  z-index: -1;
+}
+
+.steps::before {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 762px;
+  height: 3px;
+  width: 870px;
+  background: #ccc;
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.steps::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 400px;
+  height: 3px;
+  background: linear-gradient(90deg, #8a3b08, #e59d2c, #2e4365);
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+
+.steps.step-1::after {
+  width: 145px;
+}
