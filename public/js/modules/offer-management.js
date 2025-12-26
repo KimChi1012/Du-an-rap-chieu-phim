@@ -538,6 +538,91 @@ class OfferManagement {
         this.renderTable();
     }
 
+    openAdd() {
+        this.isEditMode = false;
+        this.currentOffer = null;
+        this.showModal('Thêm ưu đãi mới');
+        this.clearForm();
+    }
+
+    editOffer(maUD) {
+        const offer = this.offers.find(e => e.MaUD == maUD);
+        if (!offer) return;
+
+        this.isEditMode = true;
+        this.currentOffer = offer;
+        this.showModal('Sửa thông tin ưu đãi');
+        this.fillForm(offer);
+    }
+
+    async deleteOffer(maUD) {
+        const offer = this.offers.find(e => e.MaUD === maUD);
+        if (!offer) return;
+
+        const confirmDelete = () => {
+            return new Promise((resolve) => {
+                const notification = document.createElement('div');
+                notification.className = 'notification notification-show';
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="notification-icon fa-solid fa-exclamation-triangle" aria-hidden="true"></i>
+                        <span class="notification-message">Bạn có chắc muốn xóa ưu đãi "${offer.TenUD}"?</span>
+                        <div class="confirm-dialog-actions">
+                            <button class="confirm-button confirm-yes">Xóa</button>
+                            <button class="confirm-button confirm-no">Hủy</button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(notification);
+                requestAnimationFrame(() => notification.classList.add('show'));
+
+                notification.querySelector('.confirm-yes').addEventListener('click', () => {
+                    notification.remove();
+                    resolve(true);
+                });
+
+                notification.querySelector('.confirm-no').addEventListener('click', () => {
+                    notification.remove();
+                    resolve(false);
+                });
+            });
+        };
+
+        const confirmed = await confirmDelete();
+        if (!confirmed) return;
+
+        try {
+            await OfferAPI.deleteOffer(maUD);
+            await this.loadOffers();
+        } catch (error) {
+            console.error('Lỗi:', error);
+        }
+    }
+
+    showModal(title) {
+        const modal = document.getElementById('offerModal');
+        const modalTitle = document.getElementById('modalTitle');
+        
+        if (modal && modalTitle) {
+            modalTitle.textContent = title;
+            modal.classList.remove('hidden');
+        }
+    }
+
+    closeModal() {
+        const modal = document.getElementById('offerModal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    }
+
+    handleModalClick(event) {
+
+
+        return;
+    }
+
     clearForm() {
         document.getElementById('MaUD').value = '';
         document.getElementById('TenUD').value = '';
@@ -560,6 +645,29 @@ class OfferManagement {
         const moTaElement = document.getElementById('MoTa');
         if (moTaElement) {
             moTaElement.innerHTML = offer.MoTa || '';
+        }
+    }
+
+    async saveOffer() {
+        const formData = this.getFormData();
+        
+        if (!this.validateForm(formData)) {
+            return;
+        }
+
+        try {
+            if (this.isEditMode) {
+                await OfferAPI.updateOffer(formData);
+            } else {
+                await OfferAPI.addOffer(formData);
+            }
+            
+
+            this.closeModal();
+            await this.loadOffers();
+        } catch (error) {
+            console.error('Lỗi khi lưu ưu đãi:', error);
+
         }
     }
 
@@ -623,6 +731,70 @@ class OfferManagement {
         if (searchInput) {
             searchInput.addEventListener('input', () => this.searchOffers());
         }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                this.closeModal();
+            }
+        });
+    }
+    
+    viewDetail(maUD) {
+        const offer = this.offers.find(e => e.MaUD === maUD);
+        if (!offer) return;
+
+        const detailHtml = `
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="space-y-6">
+                    <div class="p-4">
+                        <h4 class="font-semibold text-gray-800 mb-4 text-lg border-b pb-2">Thông tin cơ bản</h4>
+                        <div class="space-y-3">
+                            <div class="detail-row">
+                                <span class="detail-label">Mã ưu đãi:</span> 
+                                <span class="detail-value font-semibold gradient-text-main">${offer.MaUD}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Tên ưu đãi:</span> 
+                                <span class="detail-value font-semibold text-gray-800">${offer.TenUD}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Ngày bắt đầu:</span> 
+                                <span class="detail-value text-gray-800">${new Date(offer.NgayBatDau).toLocaleDateString('vi-VN')}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Ngày kết thúc:</span> 
+                                <span class="detail-value text-gray-800">${new Date(offer.NgayKetThuc).toLocaleDateString('vi-VN')}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <h4 class="font-semibold text-gray-800 mb-4 text-lg border-b pb-2">Ảnh ưu đãi</h4>
+                        <div class="text-center">
+                            ${
+                                offer.Anh
+                                    ? `<img src="${offer.Anh}" class="max-w-full max-h-64 object-cover rounded-lg border shadow-sm mx-auto">`
+                                    : '<div class="w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 border-2 border-dashed border-gray-300">Không có ảnh</div>'
+                            }
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-4">
+                    <h4 class="font-semibold text-gray-800 mb-4 text-lg border-b pb-2">Mô tả chi tiết</h4>
+                    <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed text-justify">
+                        ${offer.MoTa || '<p class="text-gray-500 italic">Không có mô tả</p>'}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('detailContent').innerHTML = detailHtml;
+        document.getElementById('detailModal').classList.remove('hidden');
+    }
+
+    closeDetailModal() {
+        document.getElementById('detailModal').classList.add('hidden');
     }
 
     handleImageSelect(event) {

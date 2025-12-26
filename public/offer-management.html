@@ -97,5 +97,111 @@
         </main>
     </div>
 </div>
+<!-- MODAL -->
+<div id="offerModal" class="offer-modal hidden" onclick="window.offerManagement.handleModalClick(event)">
+    <div class="offer-modal-content" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center mb-1">
+            <h3 id="modalTitle" class="text-base font-semibold"></h3>
+            <button onclick="window.offerManagement.closeModal()" class="text-gray-500 hover:text-gray-700 text-lg">&times;</button>
+        </div>
+
+        <div class="offer-form-grid">
+            <div class="form-field full-width">
+                <label class="form-label">Mã ưu đãi <span class="required">*</span></label>
+                <input id="MaUD" class="form-input" placeholder="Nhập mã ưu đãi">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Tên ưu đãi <span class="required">*</span></label>
+                <input id="TenUD" class="form-input" placeholder="Nhập tên ưu đãi">
+            </div>
+
+            <div class="form-field full-width">
+                <label class="form-label">Mô tả <span class="required">*</span></label>
+                <div class="rich-text-editor">
+                    <div class="editor-toolbar">
+                        <button type="button" class="toolbar-btn" data-command="bold" title="Bold (Ctrl+B)">
+                            <i class="fas fa-bold"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="italic" title="Italic (Ctrl+I)">
+                            <i class="fas fa-italic"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="underline" title="Underline (Ctrl+U)">
+                            <i class="fas fa-underline"></i>
+                        </button>
+                        <div class="toolbar-separator"></div>
+                        <button type="button" class="toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
+                            <i class="fas fa-list-ul"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="insertOrderedList" title="Numbered List">
+                            <i class="fas fa-list-ol"></i>
+                        </button>
+                        <div class="toolbar-separator"></div>
+                        <button type="button" class="toolbar-btn" data-command="justifyLeft" title="Align Left">
+                            <i class="fas fa-align-left"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="justifyCenter" title="Align Center">
+                            <i class="fas fa-align-center"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="justifyRight" title="Align Right">
+                            <i class="fas fa-align-right"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="justifyFull" title="Justify (Căn đều)">
+                            <i class="fas fa-align-justify"></i>
+                        </button>
+                    </div>
+                    <div id="MoTa" class="editor-content" contenteditable="true" placeholder="Nhập mô tả..."></div>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Ngày bắt đầu <span class="required">*</span></label>
+                <input id="NgayBatDau" type="date" class="form-input">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Ngày kết thúc <span class="required">*</span></label>
+                <input id="NgayKetThuc" type="date" class="form-input">
+            </div>
+            <div class="form-field">
+                <label class="form-label">Ảnh <span class="required">*</span></label>
+                <div class="file-input-container">
+                    <input id="Anh" type="file" accept="image/*" class="form-input file-input" onchange="window.offerManagement.handleImageSelect(event)">
+                    <div id="imagePreview" class="image-preview hidden">
+                        <img id="previewImg" src="" alt="Preview" class="preview-image">
+                        <button type="button" onclick="window.offerManagement.removeImage()" class="remove-image-btn">&times;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-buttons">
+            <button onclick="window.offerManagement.closeModal()" class="modal-button cancel">Hủy</button>
+            <button onclick="window.offerManagement.saveOffer()" class="modal-button save">Lưu</button>
+        </div>
+    </div>
+</div>
+<!-- MODAL XEM CHI TIẾT ƯU ĐÃI -->
+<div id="detailModal" class="offer-modal hidden" onclick="window.offerManagement.closeDetailModal()">
+    <div class="offer-modal-content max-w-4xl max-h-[90vh] overflow-y-auto"
+         onclick="event.stopPropagation()">
+
+        <div class="flex justify-between items-center mb-4 border-b pb-3">
+            <h3 class="text-xl font-semibold text-gray-800">Chi tiết ưu đãi</h3>
+            <button onclick="window.offerManagement.closeDetailModal()"
+                    class="text-gray-500 hover:text-gray-700 text-lg">&times;</button>
+        </div>
+
+        <div id="detailContent" class="text-base"></div>
+
+        <div class="modal-buttons">
+            <button onclick="window.offerManagement.closeDetailModal()"
+                    class="modal-button cancel">
+                Đóng
+            </button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
