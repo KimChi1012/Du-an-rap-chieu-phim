@@ -52,7 +52,6 @@ const unavailableLinks = {
   'history.html': 'Tính năng lịch sử đặt vé đang được phát triển. Vui lòng quay lại sau!',
   'booking-history.html': 'Tính năng lịch sử đặt vé đang được phát triển. Vui lòng quay lại sau!',
   'booking-guide.html': 'Tính năng hướng dẫn sử dụng đang được phát triển. Vui lòng quay lại sau!',
-  'privacy-policy.html': 'Tính năng chính sách bảo mật đang được phát triển. Vui lòng quay lại sau!',
   'terms-of-use.html': 'Tính năng điều khoản sử dụng đang được phát triển. Vui lòng quay lại sau!',
   'copyright-policy.html': 'Tính năng bản quyền web đang được phát triển. Vui lòng quay lại sau!'
 };
@@ -75,7 +74,6 @@ function initLinkInterception() {
     const text = link.textContent.trim();
     const blockedTexts = [
       'Tìm kiếm',
-      'Chính sách bảo mật',
       'Điều khoản sử dụng',
       'Bản quyền web'
     ];
