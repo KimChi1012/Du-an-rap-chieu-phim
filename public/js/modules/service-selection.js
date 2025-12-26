@@ -147,14 +147,48 @@ class ServiceSelectionSystem {
         try {
             console.log('🛍️ Loading services data...');
             
-            const response = await fetch('../api/booking/get_services.php');
+            // Thử nhiều đường dẫn khác nhau
+            const possiblePaths = [
+                '../api/booking/get_services.php',
+                'api/booking/get_services.php',
+                '/api/booking/get_services.php'
+            ];
             
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            let response = null;
+            let lastError = null;
+            
+            for (const path of possiblePaths) {
+                try {
+                    console.log(`Trying path: ${path}`);
+                    response = await fetch(path);
+                    if (response.ok) {
+                        console.log(`✅ Success with path: ${path}`);
+                        break;
+                    } else {
+                        console.log(`❌ Failed with path: ${path}, status: ${response.status}`);
+                    }
+                } catch (error) {
+                    console.log(`❌ Error with path: ${path}`, error);
+                    lastError = error;
+                }
             }
             
-            const data = await response.json();
-            console.log('📡 Services API Response:', data);
+            if (!response || !response.ok) {
+                throw new Error(`HTTP ${response?.status || 'Network Error'}: ${response?.statusText || lastError?.message || 'Failed to fetch'}`);
+            }
+            
+            const text = await response.text();
+            console.log('📡 Raw API Response:', text);
+            
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (parseError) {
+                console.error('❌ JSON Parse Error:', parseError);
+                throw new Error('Invalid JSON response from server: ' + text.substring(0, 100));
+            }
+            
+            console.log('📡 Parsed Services API Response:', data);
             
             if (!data.success) {
                 throw new Error(data.message || 'Failed to load services data');

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>High Cinema - Thanh Toán</title>
+  <link rel="icon" type="image/png" sizes="1000x1000" href="images/logo-hc.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Stint+Ultra+Expanded" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playwrite+AU+TAS:wght@100..400&family=WindSong:wght@400;500&family=Stint+Ultra+Expanded:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="booking-page">
+  <header id="header"></header>
+
+  <div id="booking-steps"></div>
+
+  <div class="container">
+    <div class="left">
+      <div class="section-card">
+        <div class="theater-info">
+          <h3><i class="fas fa-credit-card"></i> Chọn phương thức thanh toán</h3>
+        </div>
+
+        <div class="payment-methods">
+          <div class="payment-option" data-method="momo">
+            <div class="payment-icon">
+              <img src="images/momo-logo.png" alt="MoMo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+              <i class="fas fa-wallet" style="display:none; color:#d82d8b; font-size:24px;"></i>
+            </div>
+            <div class="payment-info">
+              <h4>Ví MoMo</h4>
+              <p>Thanh toán nhanh chóng và bảo mật</p>
+            </div>
+            <div class="payment-radio">
+              <input type="radio" name="payment-method" value="momo" id="momo">
+              <label for="momo"></label>
+            </div>
+          </div>
+
+          <div class="payment-option" data-method="zalopay">
+            <div class="payment-icon">
+              <img src="images/zalopay-logo.png" alt="ZaloPay" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+              <i class="fas fa-mobile-alt" style="display:none; color:#0068ff; font-size:24px;"></i>
+            </div>
+            <div class="payment-info">
+              <h4>ZaloPay</h4>
+              <p>Thanh toán tiện lợi qua ví điện tử</p>
+            </div>
+            <div class="payment-radio">
+              <input type="radio" name="payment-method" value="zalopay" id="zalopay">
+              <label for="zalopay"></label>
+            </div>
+          </div>
+
+          <div class="payment-option" data-method="bank">
+            <div class="payment-icon">
+              <i class="fas fa-university" style="color:#1976d2; font-size:24px;"></i>
+            </div>
+            <div class="payment-info">
+              <h4>Chuyển khoản ngân hàng</h4>
+              <p>Thanh toán qua tài khoản ngân hàng</p>
+            </div>
+            <div class="payment-radio">
+              <input type="radio" name="payment-method" value="bank" id="bank">
+              <label for="bank"></label>
+            </div>
+          </div>
+
+          <div class="payment-option" data-method="shopeepay">
+            <div class="payment-icon">
+              <img src="images/shopeepay-logo.png" alt="ShopeePay" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+              <i class="fas fa-shopping-bag" style="display:none; color:#ee4d2d; font-size:24px;"></i>
+            </div>
+            <div class="payment-info">
+              <h4>ShopeePay</h4>
+              <p>Thanh toán an toàn với ShopeePay</p>
+            </div>
+            <div class="payment-radio">
+              <input type="radio" name="payment-method" value="shopeepay" id="shopeepay">
+              <label for="shopeepay"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-actions">
+          <button class="btn-pay" id="payBtn" disabled>
+            <i class="fas fa-credit-card"></i> Thanh toán
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="booking-summary"></div>
+  </div>
+
+  <div id="paymentModal" class="modal">
+    <div class="modal-content payment-modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Thanh toán</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="payment-form">
+          <div class="form-group">
+            <label for="accountNumber">Số tài khoản / Số điện thoại</label>
+            <input type="text" id="accountNumber" placeholder="Nhập số tài khoản hoặc số điện thoại" required>
+            <small class="form-help">Bạn có thể nhập số tài khoản ngân hàng hoặc số điện thoại</small>
+          </div>
+          <div class="form-group">
+            <label for="password">Mật khẩu tài khoản</label>
+            <input type="password" id="password" placeholder="Nhập mật khẩu tài khoản của bạn" required>
+            <small class="form-help">Mật khẩu tài khoản High Cinema của bạn</small>
+          </div>
+          <div class="payment-amount">
+            <p>Số tiền cần thanh toán</p>
+            <span id="paymentAmount">0 đ</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel">Hủy bỏ</button>
+        <button class="btn-confirm" id="confirmPayBtn">Xác nhận thanh toán</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="loadingModal" class="modal">
+    <div class="modal-content loading-modal">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Đang xử lý thanh toán...</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="successModal" class="modal">
+    <div class="modal-content success-modal">
+      <button class="close">&times;</button>
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h3>Thanh toán thành công!</h3>
+      <p>Cảm ơn bạn đã sử dụng dịch vụ của High Cinema</p>
+      <p class="success-message">Giao dịch của bạn đã được xử lý thành công. Bạn có muốn xem hóa đơn ngay không?</p>
+      
+      <div class="success-actions">
+        <button class="btn-secondary" id="backToHomeBtn">
+          <i class="fas fa-home"></i> Về trang chủ
+        </button>
+        <button class="btn-success" id="viewInvoiceBtn">
+          <i class="fas fa-receipt"></i> Xem hóa đơn ngay
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <footer id="footer"></footer>
+
+  <script src="js/script.js" type="module" defer></script>
+</body>
+</html>
