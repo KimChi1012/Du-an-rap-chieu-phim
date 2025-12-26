@@ -1,7 +1,4 @@
-import { initUserSidebar } from './user-sidebar.js';
-import { initDropdown } from './dropdown.js';
 import { loadUserInfo } from './user-info.js';
-import { initVideoModal } from './video-modal.js';
 import { initNotification, showNotification } from './notification.js';
 
 class ServiceSelectionSystem {
@@ -28,6 +25,11 @@ class ServiceSelectionSystem {
             this.setupEventListeners();
 
             this.setupPageExitHandler();
+            
+            // Đảm bảo nút tiếp tục luôn được enable ngay từ đầu
+            setTimeout(() => {
+                this.updateNextButton();
+            }, 100);
             
             console.log('✅ Service Selection System initialized successfully');
         } catch (error) {
@@ -88,10 +90,7 @@ class ServiceSelectionSystem {
 
             await new Promise(resolve => setTimeout(resolve, 100));
 
-            initUserSidebar();
-            initDropdown();
             await loadUserInfo();
-            initVideoModal();
             initNotification();
         } catch (error) {
             console.error('Error loading header/footer or booking components:', error);
@@ -103,6 +102,16 @@ class ServiceSelectionSystem {
         
         if (!bookingDataStr) {
             console.error('❌ No booking data found');
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const showtimeId = urlParams.get('showtime');
+            
+            if (showtimeId) {
+                console.log('🔍 Found showtime in URL, redirecting to seat selection...');
+                window.location.href = `seat-selection.html?showtime=${showtimeId}`;
+                return;
+            }
+            
             if (confirm('Không tìm thấy thông tin đặt vé.\n\nQuay lại trang chọn ghế?')) {
                 window.location.href = 'seat-selection.html';
             }
@@ -112,6 +121,8 @@ class ServiceSelectionSystem {
         try {
             this.bookingData = JSON.parse(bookingDataStr);
             console.log('📦 Loaded booking data:', this.bookingData);
+
+            this.updateURLWithShowtime();
             
             this.updateSummary();
         } catch (error) {
@@ -119,6 +130,16 @@ class ServiceSelectionSystem {
             if (confirm('Dữ liệu đặt vé không hợp lệ.\n\nQuay lại trang chọn ghế?')) {
                 window.location.href = 'seat-selection.html';
             }
+        }
+    }
+
+    updateURLWithShowtime() {
+        if (this.bookingData && this.bookingData.showtime) {
+            const currentUrl = new URL(window.location);
+            currentUrl.searchParams.set('showtime', this.bookingData.showtime.MaSuat);
+
+            window.history.replaceState({}, '', currentUrl);
+            console.log('🔗 Updated URL with showtime parameter');
         }
     }
 
@@ -197,6 +218,9 @@ class ServiceSelectionSystem {
         
         this.addServiceEventListeners();
         
+        // Đảm bảo nút tiếp tục được enable sau khi render services
+        this.updateNextButton();
+        
         console.log('✅ Services rendered');
     }
 
@@ -251,6 +275,8 @@ class ServiceSelectionSystem {
 
         const minusBtn = serviceItem.querySelector('.quantity-btn.minus');
         minusBtn.disabled = existingService.quantity <= 0;
+
+        localStorage.setItem('selectedServices', JSON.stringify(this.selectedServices));
 
         this.updateSummary();
         this.updateNextButton();
@@ -336,12 +362,16 @@ class ServiceSelectionSystem {
         const totalPrice = seatTotal + serviceTotal;
 
         document.getElementById('totalPrice').textContent = this.formatPrice(totalPrice);
+        
+        // Đảm bảo nút tiếp tục luôn được enable
+        this.updateNextButton();
     }
 
     updateNextButton() {
         const nextBtn = document.getElementById('nextBtn');
         
         if (nextBtn) {
+            // Luôn cho phép tiếp tục, không cần chọn dịch vụ
             nextBtn.disabled = false;
             nextBtn.style.opacity = '1';
         }
@@ -385,25 +415,45 @@ class ServiceSelectionSystem {
         
         console.log('🎫 Updated booking data with services:', updatedBookingData);
         
-        showNotification(
-            'Tính năng xác nhận vé trước khi thanh toán đang phát triển. Vui lòng quay lại sau!',
-            'info'
-        );
+        // Chuyển đến trang xác nhận với thông tin showtime trong URL
+        window.location.href = `booking-confirmation.html?showtime=${this.bookingData.showtime.MaSuat}`;
     }
 
     setupPageExitHandler() {
+        // Đánh dấu khi trang được load
+        sessionStorage.setItem('servicePageLoaded', 'true');
+        
+        // Xử lý khi user rời khỏi trang
         window.addEventListener('beforeunload', () => {
             const bookingInProgress = sessionStorage.getItem('bookingInProgress');
+            const returningFromService = sessionStorage.getItem('returningFromService');
             
-            if (!bookingInProgress) {
-                console.log('🧹 User exiting service selection without continuing, clearing data...');
-                this.clearAllBookingData();
+            // Luôn lưu services đã chọn
+            if (this.selectedServices.length > 0) {
+                localStorage.setItem('selectedServices', JSON.stringify(this.selectedServices));
+                console.log('💾 Saved selected services before page unload');
+            }
+            
+            // Chỉ xóa booking data nếu không đang trong flow booking và không phải đang chuyển đến confirmation
+            const isGoingToConfirmation = window.location.href.includes('booking-confirmation.html') || 
+                                         document.referrer.includes('booking-confirmation.html');
+            
+            if (!bookingInProgress && !returningFromService && !isGoingToConfirmation) {
+                console.log('🧹 User exiting service selection, clearing booking data...');
+                localStorage.removeItem('bookingData');
+                localStorage.removeItem('reservationStartTime');
+            } else {
+                console.log('💾 Keeping booking data (in booking flow or going to confirmation)');
             }
         });
 
-        window.addEventListener('focus', () => {
-            sessionStorage.removeItem('bookingInProgress');
-        });
+        // Auto-save định kỳ
+        this.autoSaveInterval = setInterval(() => {
+            if (this.selectedServices.length > 0) {
+                localStorage.setItem('selectedServices', JSON.stringify(this.selectedServices));
+                console.log('💾 Auto-saved selected services');
+            }
+        }, 5000);
     }
 
     clearAllBookingData() {
@@ -411,6 +461,11 @@ class ServiceSelectionSystem {
         localStorage.removeItem('bookingData');
         localStorage.removeItem('reservationStartTime');
         localStorage.removeItem('selectedServices');
+        
+        if (this.autoSaveInterval) {
+            clearInterval(this.autoSaveInterval);
+        }
+        
         console.log('🧹 All booking data cleared from service selection');
     }
 
@@ -446,12 +501,6 @@ class ServiceSelectionSystem {
     }
     
     loadPreviouslySelectedServices() {
-        const bookingInProgress = sessionStorage.getItem('bookingInProgress');
-        if (!bookingInProgress) {
-            console.log('🚫 Not in booking progress, skipping service restoration');
-            return;
-        }
-
         const selectedServicesStr = localStorage.getItem('selectedServices');
         
         if (selectedServicesStr) {
@@ -472,7 +521,12 @@ class ServiceSelectionSystem {
                                 const minusBtn = serviceItem.querySelector('.quantity-btn.minus');
                                 minusBtn.disabled = service.quantity <= 0;
                                 
-                                this.selectedServices.push(service);
+                                const existingIndex = this.selectedServices.findIndex(s => s.id == service.id);
+                                if (existingIndex >= 0) {
+                                    this.selectedServices[existingIndex] = service;
+                                } else {
+                                    this.selectedServices.push(service);
+                                }
                             }
                         });
 

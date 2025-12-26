@@ -34,6 +34,12 @@
   left: 0;
   top: 0;
   transform: rotateY(calc(360deg / var(--quantity) * (var(--position) - 1))) translateZ(400px);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.slide:hover {
+  transform: rotateY(calc(360deg / var(--quantity) * (var(--position) - 1))) translateZ(420px);
 }
 
 .slide img {

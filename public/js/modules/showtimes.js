@@ -132,6 +132,9 @@ class GetShowtimes {
                         const timeFormatted = st.GioBatDau ? st.GioBatDau.slice(0, 5) : 'N/A';
                         const roomName = st.TenPhong || 'N/A';
                         
+                        // Kiểm tra xem suất chiếu đã qua chưa
+                        const isPastShowtime = this.isPastShowtime(this.selectedDate, st.GioBatDau);
+                        
                         const hour = parseInt(timeFormatted.split(':')[0]);
                         let period = 'morning';
                         if (hour >= 6 && hour < 12) period = 'morning';
@@ -140,13 +143,15 @@ class GetShowtimes {
                         else period = 'night';
 
                         return `
-                            <button class="time-slot" 
+                            <button class="time-slot ${isPastShowtime ? 'disabled' : ''}" 
                                     data-showtime-id="${st.MaSuat}"
                                     data-date="${this.selectedDate}" 
                                     data-time="${st.GioBatDau}" 
                                     data-room="${roomName}" 
-                                    data-period="${period}">
+                                    data-period="${period}"
+                                    ${isPastShowtime ? 'disabled' : ''}>
                                 ${timeFormatted}
+                                ${isPastShowtime ? '<span class="past-label">Đã qua</span>' : ''}
                             </button>
                         `;
                     }).join('')}
@@ -154,7 +159,7 @@ class GetShowtimes {
             </div>
         `;
 
-        this.showtimesContainer.querySelectorAll('.time-slot').forEach(slot => {
+        this.showtimesContainer.querySelectorAll('.time-slot:not(.disabled)').forEach(slot => {
             slot.addEventListener('click', (e) => {
                 document.querySelectorAll('.time-slot').forEach(s => 
                     s.classList.remove('selected'));
@@ -228,6 +233,26 @@ class GetShowtimes {
         }
 
         await this.loadShowtimes(dateStr);
+    }
+
+    isPastShowtime(dateStr, timeStr) {
+        const now = new Date();
+        const today = now.toISOString().split('T')[0];
+        
+        // Nếu không phải hôm nay thì không cần kiểm tra
+        if (dateStr !== today) {
+            return false;
+        }
+        
+        // Nếu là hôm nay, kiểm tra giờ
+        const [hours, minutes] = timeStr.split(':').map(Number);
+        const showtimeDate = new Date();
+        showtimeDate.setHours(hours, minutes, 0, 0);
+        
+        // Thêm buffer 30 phút trước giờ chiếu
+        const bufferTime = 30 * 60 * 1000; // 30 phút
+        
+        return now.getTime() > (showtimeDate.getTime() - bufferTime);
     }
 }
 
