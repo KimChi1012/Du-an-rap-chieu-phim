@@ -27,7 +27,7 @@ import BannerManagement from './modules/banner-management.js';
 import { BookingSystem } from './modules/booking.js';
 import { initPrivacyPolicy } from './modules/privacy-policy.js';
 import {OfferManagement} from './modules/offer-management.js';
-import ServiceSelectionSystem from './modules/service-selection.js';
+import { initTermsOfUse } from './modules/terms-of-use.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie_id') || 1;
@@ -119,6 +119,11 @@ async function initPageSpecific() {
   if (currentPage === "privacy-policy.html") {
     console.log('🔒 Initializing Privacy Policy page...');
     initPrivacyPolicy();
+  }
+
+  if (currentPage === "terms-of-use.html") {
+    console.log('📋 Initializing Terms of Use page...');
+    initTermsOfUse();
   }
 }
 
