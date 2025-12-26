@@ -630,3 +630,8 @@
   left: 467px;
   width: 280px; 
 }
+
+.steps.step-3::after {
+  left: 545px;
+  width: 445px; 
+}

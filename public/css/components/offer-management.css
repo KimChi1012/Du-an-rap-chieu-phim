@@ -1,12 +1,12 @@
-nav div i,
-nav div span {
+.offer-management nav div i,
+.offer-management nav div span {
     color: #4a4a4a;
 }
 
-nav div:hover i,
-nav div:hover span,
-nav div.active i,
-nav div.active span {
+.offer-management nav div:hover i,
+.offer-management nav div:hover span,
+.offer-management nav div.active i,
+.offer-management nav div.active span {
     background: linear-gradient(
         to bottom,
         hsl(24, 89%, 29%) 0%,
@@ -21,12 +21,12 @@ nav div.active span {
     color: transparent;
 }
 
-nav div {
+.offer-management nav div {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
-nav div:hover {
+.offer-management nav div:hover {
     background-color: rgba(246, 185, 59, 0.2);
     border-left: 4px solid #e55039;
     background-color: rgba(212, 160, 23, 0.08);

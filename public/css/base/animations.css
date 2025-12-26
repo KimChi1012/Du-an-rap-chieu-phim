@@ -125,3 +125,24 @@
         transform: scale(1.02);
     }
 }
+
+@keyframes qtyPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); color: #e59d2c; }
+  100% { transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+@keyframes pulse-warning {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.02); }
+}
+
+@keyframes pulse-critical {
+  0% { transform: scale(1); box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4); }
+  100% { transform: scale(1.05); box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6); }
+}
