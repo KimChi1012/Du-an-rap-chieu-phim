@@ -625,3 +625,8 @@
 .steps.step-1::after {
   width: 145px;
 }
+
+.steps.step-2::after {
+  left: 467px;
+  width: 280px; 
+}

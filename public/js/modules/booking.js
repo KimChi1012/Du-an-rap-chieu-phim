@@ -236,10 +236,16 @@ class BookingSystem {
 
     handleShowtimeSelection(showtimeData) {
         this.selectedShowtime = {
+            id: showtimeData.id,
             date: showtimeData.date,
             time: showtimeData.time.slice(0, 5),
             room: showtimeData.room
         };
+        
+        // Store the showtime ID for seat selection
+        if (this.getShowtimes) {
+            this.getShowtimes.selectedShowtimeId = showtimeData.id;
+        }
         
         localStorage.setItem('selectedShowtime', JSON.stringify(this.selectedShowtime));
         
@@ -364,10 +370,14 @@ class BookingSystem {
                 }
 
                 sessionStorage.setItem('bookingInProgress', 'true');
-                showNotification(
-                    'Tính năng chọn ghế đang phát triển. Vui lòng quay lại sau!',
-                    'info'
-                );
+                
+                // Use the selected showtime ID
+                if (this.selectedShowtime && this.selectedShowtime.id) {
+                    window.location.href = `seat-selection.html?showtime=${this.selectedShowtime.id}`;
+                } else {
+                    alert('Vui lòng chọn suất chiếu trước khi tiếp tục');
+                    return;
+                }
             }
         });
     }
