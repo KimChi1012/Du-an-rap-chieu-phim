@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Cinema - Quản lí ưu đãi</title>
+    <link rel="icon" type="image/png" sizes="1000x1000" href="images/logo-hc.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components/offer-management.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script type="module" src="js/script.js"></script>
+</head>
+
+<body class="bg-white-50">
+<div class="flex h-screen">
+    
+    <!-- Sidebar -->
+    <div id="shared-sidebar" class="w-65"></div>
+
+    <div class="flex-1 overflow-auto">
+        <!-- Header -->
+        <div id="shared-header"></div>
+
+            <main class="p-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b pb-4">Quản lí ưu đãi</h1>
+
+            <!-- ====== BẢNG ƯU ĐÃI ====== -->
+            <div class="offer-table-container">
+                <div class="flex items-center mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Danh sách ưu đãi</h2>
+                    <div class="search-container">
+                        <div class="search-border-gradient">
+                            <input
+                                id="searchInput"
+                                type="text"
+                                placeholder="Tìm theo Mã ưu đãi hoặc Tên ưu đãi..."
+                                class="search-input"
+                                oninput="window.offerManagement.searchOffers()"
+                            >
+                        </div>
+                        <i class="fa fa-search search-icon"></i>
+                    </div>
+                    <!-- LỌC THEO NGÀY -->
+                    <div class="flex items-center gap-5 ml-20">
+                        <label class="text-sm text-gray-600 font-medium">Từ</label>
+                        <div class="search-border-gradient">
+                            <input 
+                                type="date" 
+                                id="filterStartDate"
+                                class="search-input text-sm w-40"
+                                onchange="window.offerManagement.filterByDate()"
+                            >
+                        </div>
+
+                        <label class="text-sm text-gray-600 font-medium">Đến</label>
+                        <div class="search-border-gradient">
+                            <input 
+                                type="date" 
+                                id="filterEndDate"
+                                class="search-input text-sm w-40"
+                                onchange="window.offerManagement.filterByDate()"
+                            >
+                        </div>
+
+                        <button 
+                            onclick="window.offerManagement.resetFilter()"
+                            class="add-user-button mr-5"
+                        >
+                            <i class="fas fa-refresh mr-1"></i>Reset
+                        </button>
+                    </div>
+
+                    <button onclick="window.offerManagement.openAdd()" class="add-user-button">
+                        <i class="fa fa-plus emoji"></i>Thêm ưu đãi
+                    </button>
+                </div>
+
+                <div class="table-scroll-area">
+                    <table class="offer-table" style="display: table; width: 100%; border-collapse: collapse;">
+                        <thead class="table-header-gradient">
+                            <tr>
+                                <th class="table-header-cell w-[90px]">Mã Ưu Đãi</th>
+                                <th class="table-header-cell w-[200px]">Tên Ưu Đãi</th>
+                                <th class="table-header-cell w-[250px]">Mô Tả</th>
+                                <th class="table-header-cell w-[140px]">Ngày Bắt Đầu</th>
+                                <th class="table-header-cell w-[140px]">Ngày Kết Thúc</th>
+                                <th class="table-header-cell w-[130px]">Ảnh</th>
+                                <th class="table-header-cell w-[150px]">Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="offerTable" class="divide-y divide-gray-100 bg-white" style="display: table-row-group;"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>
