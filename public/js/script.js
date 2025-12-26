@@ -24,6 +24,7 @@ import { initMovieSlider } from "./modules/movie-slider.js";
 import { initOfferModal, initOfferSlider } from "./modules/offer-slider.js";
 import { initAuth } from './modules/auth.js';
 import BannerManagement from './modules/banner-management.js';
+import { BookingSystem } from './modules/booking.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie_id') || 1;
@@ -46,6 +47,11 @@ async function initPageSpecific() {
   if (currentPage === "movie-detail.html") {
     const { default: MovieDetail } = await import("./modules/movie-detail.js");
     new MovieDetail();
+  }
+
+  if (currentPage === "booking.html") {
+    console.log('🎬 Initializing booking page...');
+    window.bookingSystem = new BookingSystem();
   }
 
   if (currentPage === "now-showing.html"){

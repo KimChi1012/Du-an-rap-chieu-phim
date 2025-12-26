@@ -98,7 +98,7 @@ if ($movieId) {
             break;
         }
     }
-
+    
     if (!$movie && $movieTitle) {
         $likeQuery = "SELECT * FROM Phim WHERE TenPhim LIKE '%" . mysqli_real_escape_string($conn, $movieTitle) . "%' LIMIT 1";
         $likeResult = mysqli_query($conn, $likeQuery);
@@ -106,6 +106,7 @@ if ($movieId) {
             $movie = mysqli_fetch_assoc($likeResult);
             $foundFallback = true;
 
+            // Add debug info about fallback match
             $debugInfo['fallback_like'] = true;
             $debugInfo['fallback_matched'] = $movie['TenPhim'];
         }
@@ -117,7 +118,7 @@ if ($movieId) {
             "debug" => [
                 "incoming_title" => $movieTitle,
                 "incoming_slug" => $incomingSlug,
-                "available_movies" => array_slice($foundMovies, 0, 6)
+                "available_movies" => array_slice($foundMovies, 0, 6) // Show sample for debugging
             ]
         ], JSON_UNESCAPED_UNICODE);
         exit;
