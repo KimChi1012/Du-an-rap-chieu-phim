@@ -96,6 +96,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       await includeHTML('footer', 'footer.html');
     }
 
+    const backBtn = document.getElementById('backBtn');
+
+    if (backBtn) {
+        const page = getCurrentPage();
+
+        if (page.includes('seat')) {
+            backBtn.href = 'booking.html';
+        } else if (page.includes('booking')) {
+            backBtn.href = 'index.html';
+        } else {
+            backBtn.href = 'index.html';
+        }
+    }
+
     await new Promise(resolve => setTimeout(resolve, 200));
     
     initUserSidebar();
