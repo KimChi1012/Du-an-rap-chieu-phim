@@ -18,7 +18,7 @@ import { initUserSidebar } from './modules/user-sidebar.js';
 import { loadUserInfo } from './modules/user-info.js';
 import { initNotification } from './modules/notification.js';
 import { initBannerSlider } from "./modules/banner-slider.js";
-import { initUserManagement } from './modules/qlnguoidung.js';
+import { initUserManagement } from './modules/user-management.js';
 import { initVideoModal } from "./modules/video-modal.js";
 import { initMovieSlider } from "./modules/movie-slider.js";
 import { initOfferModal, initOfferSlider } from "./modules/offer-slider.js";
@@ -26,6 +26,7 @@ import { initAuth } from './modules/auth.js';
 import BannerManagement from './modules/banner-management.js';
 import { BookingSystem } from './modules/booking.js';
 import { initPrivacyPolicy } from './modules/privacy-policy.js';
+import {OfferManagement} from './modules/offer-management.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie_id') || 1;
@@ -126,8 +127,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     await initPageSpecific();
 
     if (document.getElementById('userTable') || document.getElementById('userModal')) {
+      console.log('🎯 User management elements found!');
+      console.log('🎯 userTable:', document.getElementById('userTable'));
+      console.log('🎯 userModal:', document.getElementById('userModal'));
       initUserManagement();
       console.log('✅ User Management đã được khởi tạo');
+    } else {
+      console.log('❌ Không tìm thấy user management elements');
     }
 
     const bannerTable = document.getElementById('bannerTable');
@@ -148,6 +154,37 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
         console.log('ℹ️ Not a banner page');
     }
+
+    // ===== OFFER MANAGEMENT INITIALIZATION =====
+    const offerTable = document.getElementById('offerTable');
+    const offerModal = document.getElementById('offerModal');
+    
+    console.log('🎯 Offer table found:', !!offerTable);
+    console.log('🎯 Offer modal found:', !!offerModal);
+    
+    if (offerTable || offerModal) {
+        console.log('🎯 Offer page detected, initializing...');
+        
+        try {
+            window.offerManagement = new OfferManagement();
+            console.log('✅ Offer Management initialized successfully');
+        } catch (error) {
+            console.error('❌ Error initializing Offer Management:', error);
+        }
+    } else {
+        console.log('ℹ️ Not an offer page');
+    }
+
+    // ===== OFFER MANAGEMENT FUNCTIONS =====
+    // Thêm các hàm global để HTML có thể gọi
+    window.initOfferManagement = function() {
+        if (document.getElementById('offerTable') && !window.offerManagement) {
+            console.log('🎯 Late initializing Offer Management...');
+            window.offerManagement = new OfferManagement();
+            return true;
+        }
+        return false;
+    };
 
     if (currentPage === "index.html" || currentPage === "") {
       await initBannerSlider();

@@ -1,3 +1,11 @@
+.banner-table-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(255, 255, 255, 0.1);
+    border: 2px solid #cbd5e1;
+    padding: 24px;
+}
+
 .banner-thumbnail {
     width: 64px !important;
     height: 40px !important;

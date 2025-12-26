@@ -27,13 +27,23 @@ export class UserAPI {
 
     static async getUsers() {
         try {
-            const response = await fetch('../api/user/get_users.php');
+            console.log('🔗 UserAPI.getUsers() called');
+            const apiUrl = '../api/user/get_users.php';
+            console.log('🌐 Fetching from:', apiUrl);
+            
+            const response = await fetch(apiUrl);
+            console.log('📡 Response status:', response.status);
+            console.log('📡 Response ok:', response.ok);
+            
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
-            return await response.json();
+            
+            const result = await response.json();
+            console.log('📊 API Response:', result);
+            return result;
         } catch (error) {
-            console.error('Error fetching users:', error);
+            console.error('❌ Error fetching users:', error);
             throw error;
         }
     }

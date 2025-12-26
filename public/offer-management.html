@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Cinema - Quản lí ưu đãi</title>
+    <link rel="icon" type="image/png" sizes="1000x1000" href="images/logo-hc.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components/offer-management.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script type="module" src="js/script.js"></script>
+</head>
+
+<body class="bg-white-50">
+<div class="flex h-screen">
+    
+    <!-- Sidebar -->
+    <div id="shared-sidebar" class="w-65"></div>
+
+    <div class="flex-1 overflow-auto">
+        <!-- Header -->
+        <div id="shared-header"></div>
+
+            <main class="p-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b pb-4">Quản lí ưu đãi</h1>
+
+            <!-- ====== BẢNG ƯU ĐÃI ====== -->
+            <div class="offer-table-container">
+                <div class="flex items-center mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Danh sách ưu đãi</h2>
+                    <div class="search-container">
+                        <div class="search-border-gradient">
+                            <input
+                                id="searchInput"
+                                type="text"
+                                placeholder="Tìm theo Mã ưu đãi hoặc Tên ưu đãi..."
+                                class="search-input"
+                                oninput="window.offerManagement.searchOffers()"
+                            >
+                        </div>
+                        <i class="fa fa-search search-icon"></i>
+                    </div>
+                    <!-- LỌC THEO NGÀY -->
+                    <div class="flex items-center gap-5 ml-20">
+                        <label class="text-sm text-gray-600 font-medium">Từ</label>
+                        <div class="search-border-gradient">
+                            <input 
+                                type="date" 
+                                id="filterStartDate"
+                                class="search-input text-sm w-40"
+                                onchange="window.offerManagement.filterByDate()"
+                            >
+                        </div>
+
+                        <label class="text-sm text-gray-600 font-medium">Đến</label>
+                        <div class="search-border-gradient">
+                            <input 
+                                type="date" 
+                                id="filterEndDate"
+                                class="search-input text-sm w-40"
+                                onchange="window.offerManagement.filterByDate()"
+                            >
+                        </div>
+
+                        <button 
+                            onclick="window.offerManagement.resetFilter()"
+                            class="add-user-button mr-5"
+                        >
+                            <i class="fas fa-refresh mr-1"></i>Reset
+                        </button>
+                    </div>
+
+                    <button onclick="window.offerManagement.openAdd()" class="add-user-button">
+                        <i class="fa fa-plus emoji"></i>Thêm ưu đãi
+                    </button>
+                </div>
+
+                <div class="table-scroll-area">
+                    <table class="offer-table" style="display: table; width: 100%; border-collapse: collapse;">
+                        <thead class="table-header-gradient">
+                            <tr>
+                                <th class="table-header-cell w-[90px]">Mã Ưu Đãi</th>
+                                <th class="table-header-cell w-[200px]">Tên Ưu Đãi</th>
+                                <th class="table-header-cell w-[250px]">Mô Tả</th>
+                                <th class="table-header-cell w-[140px]">Ngày Bắt Đầu</th>
+                                <th class="table-header-cell w-[140px]">Ngày Kết Thúc</th>
+                                <th class="table-header-cell w-[130px]">Ảnh</th>
+                                <th class="table-header-cell w-[150px]">Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="offerTable" class="divide-y divide-gray-100 bg-white" style="display: table-row-group;"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<!-- MODAL -->
+<div id="offerModal" class="offer-modal hidden" onclick="window.offerManagement.handleModalClick(event)">
+    <div class="offer-modal-content" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center mb-1">
+            <h3 id="modalTitle" class="text-base font-semibold"></h3>
+            <button onclick="window.offerManagement.closeModal()" class="text-gray-500 hover:text-gray-700 text-lg">&times;</button>
+        </div>
+
+        <div class="offer-form-grid">
+            <div class="form-field full-width">
+                <label class="form-label">Mã ưu đãi <span class="required">*</span></label>
+                <input id="MaUD" class="form-input" placeholder="Nhập mã ưu đãi">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Tên ưu đãi <span class="required">*</span></label>
+                <input id="TenUD" class="form-input" placeholder="Nhập tên ưu đãi">
+            </div>
+
+            <div class="form-field full-width">
+                <label class="form-label">Mô tả <span class="required">*</span></label>
+                <div class="rich-text-editor">
+                    <div class="editor-toolbar">
+                        <button type="button" class="toolbar-btn" data-command="bold" title="Bold (Ctrl+B)">
+                            <i class="fas fa-bold"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="italic" title="Italic (Ctrl+I)">
+                            <i class="fas fa-italic"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="underline" title="Underline (Ctrl+U)">
+                            <i class="fas fa-underline"></i>
+                        </button>
+                        <div class="toolbar-separator"></div>
+                        <button type="button" class="toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
+                            <i class="fas fa-list-ul"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="insertOrderedList" title="Numbered List">
+                            <i class="fas fa-list-ol"></i>
+                        </button>
+                        <div class="toolbar-separator"></div>
+                        <button type="button" class="toolbar-btn" data-command="justifyLeft" title="Align Left">
+                            <i class="fas fa-align-left"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="justifyCenter" title="Align Center">
+                            <i class="fas fa-align-center"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="justifyRight" title="Align Right">
+                            <i class="fas fa-align-right"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="justifyFull" title="Justify (Căn đều)">
+                            <i class="fas fa-align-justify"></i>
+                        </button>
+                    </div>
+                    <div id="MoTa" class="editor-content" contenteditable="true" placeholder="Nhập mô tả..."></div>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Ngày bắt đầu <span class="required">*</span></label>
+                <input id="NgayBatDau" type="date" class="form-input">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Ngày kết thúc <span class="required">*</span></label>
+                <input id="NgayKetThuc" type="date" class="form-input">
+            </div>
+            <div class="form-field">
+                <label class="form-label">Ảnh <span class="required">*</span></label>
+                <div class="file-input-container">
+                    <input id="Anh" type="file" accept="image/*" class="form-input file-input" onchange="window.offerManagement.handleImageSelect(event)">
+                    <div id="imagePreview" class="image-preview hidden">
+                        <img id="previewImg" src="" alt="Preview" class="preview-image">
+                        <button type="button" onclick="window.offerManagement.removeImage()" class="remove-image-btn">&times;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-buttons">
+            <button onclick="window.offerManagement.closeModal()" class="modal-button cancel">Hủy</button>
+            <button onclick="window.offerManagement.saveOffer()" class="modal-button save">Lưu</button>
+        </div>
+    </div>
+</div>
+<!-- MODAL XEM CHI TIẾT ƯU ĐÃI -->
+<div id="detailModal" class="offer-modal hidden" onclick="window.offerManagement.closeDetailModal()">
+    <div class="offer-modal-content max-w-4xl max-h-[90vh] overflow-y-auto"
+         onclick="event.stopPropagation()">
+
+        <div class="flex justify-between items-center mb-4 border-b pb-3">
+            <h3 class="text-xl font-semibold text-gray-800">Chi tiết ưu đãi</h3>
+            <button onclick="window.offerManagement.closeDetailModal()"
+                    class="text-gray-500 hover:text-gray-700 text-lg">&times;</button>
+        </div>
+
+        <div id="detailContent" class="text-base"></div>
+
+        <div class="modal-buttons">
+            <button onclick="window.offerManagement.closeDetailModal()"
+                    class="modal-button cancel">
+                Đóng
+            </button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

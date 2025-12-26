@@ -269,26 +269,26 @@ export async function saveUser() {
         Avatar: document.getElementById('Avatar')?.value.trim() || ''
     };
 
-    // Validation cơ bản
+
     if (!data.MaND || !data.HoTen || !data.Email || !data.TenDN || !data.ThanhPho || !data.QuyenHan) {
         showNotification("Vui lòng nhập đầy đủ thông tin bắt buộc (có dấu *)", 'error');
         return;
     }
 
-    // Validation email
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.Email)) {
         showNotification("Email không hợp lệ", 'error');
         return;
     }
 
-    // Validation số điện thoại
+
     if (data.SoDT && !/^\d{9,11}$/.test(data.SoDT)) {
         showNotification("Số điện thoại phải có từ 9-11 chữ số", 'error');
         return;
     }
 
-    // Validation ngày sinh
+
     if (data.NgaySinh) {
         const birthDate = new Date(data.NgaySinh);
         const today = new Date();
@@ -299,7 +299,7 @@ export async function saveUser() {
         }
     }
 
-    // Validation tên đăng nhập
+
     if (data.TenDN.length < 3) {
         showNotification("Tên đăng nhập phải có ít nhất 3 ký tự", 'error');
         return;
@@ -361,7 +361,7 @@ export async function saveUser() {
         console.error('Lỗi:', error);
         showNotification('Lỗi kết nối server', 'error');
     } finally {
-        // Re-enable button
+
         if (saveButton) {
             saveButton.disabled = false;
             saveButton.textContent = 'Lưu';
@@ -478,19 +478,20 @@ function showExistingAvatar(avatarData) {
 }
 
 export function limitPhone(input) {
-    // Chỉ cho phép nhập số
+
     input.value = input.value.replace(/\D/g, '');
 
-    // Giới hạn tối đa 11 chữ số
+
     if (input.value.length > 11) {
         input.value = input.value.slice(0, 11);
     }
 }
 
 export function handleModalClick(event) {
-    if (event.target.id === 'userModal') {
-        closeModal();
-    }
+
+
+
+
 }
 
 window.userManagement = {
