@@ -18,4 +18,24 @@ export class MovieAPI {
             throw error;
         }
     }
+
+    static async getMovieDetail(movieId) {
+        try {
+            const response = await fetch(`../api/movie/get_movie_detail.php?id=${movieId}`);
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching movie detail:', error);
+            throw error;
+        }
+    }
+
+    static async getMoviesByPerson(personId) {
+        try {
+            const response = await fetch(`../api/movie/get_movies_by_person.php?person_id=${personId}`);
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching movies by person:', error);
+            throw error;
+        }
+    }
 }
