@@ -491,10 +491,8 @@ class SeatSelectionSystem {
         
         console.log('🎫 Đã lưu thông tin đặt vé và bắt đầu giữ chỗ');
         
-        showNotification(
-            'Tính năng chọn dịch vụ đang phát triển. Vui lòng quay lại sau!',
-            'info',
-        );
+        // Chuyển đến trang chọn dịch vụ
+        window.location.href = 'service-selection.html';
     }
 
     setupPageExitHandler() {
@@ -601,6 +599,8 @@ class SeatSelectionSystem {
         }
     }
 }
+
+export default SeatSelectionSystem;
 
 document.addEventListener("DOMContentLoaded", async () => {
     try {

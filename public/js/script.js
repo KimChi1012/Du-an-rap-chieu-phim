@@ -27,6 +27,7 @@ import BannerManagement from './modules/banner-management.js';
 import { BookingSystem } from './modules/booking.js';
 import { initPrivacyPolicy } from './modules/privacy-policy.js';
 import {OfferManagement} from './modules/offer-management.js';
+import ServiceSelectionSystem from './modules/service-selection.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie_id') || 1;
@@ -54,6 +55,17 @@ async function initPageSpecific() {
   if (currentPage === "booking.html") {
     console.log('🎬 Initializing booking page...');
     window.bookingSystem = new BookingSystem();
+  }
+
+  if (currentPage === "seat-selection.html") {
+    console.log('🪑 Initializing seat selection page...');
+    const { default: SeatSelectionSystem } = await import("./modules/seat-selection.js");
+    window.seatSelectionSystem = new SeatSelectionSystem();
+  }
+
+  if (currentPage === "service-selection.html") {
+    console.log('🛍️ Initializing service selection page...');
+    window.serviceSelectionSystem = new ServiceSelectionSystem();
   }
 
   if (currentPage === "now-showing.html"){
@@ -108,8 +120,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (backBtn) {
         const page = getCurrentPage();
 
-        if (page.includes('seat')) {
+        if (page.includes('seat-selection')) {
             backBtn.href = 'booking.html';
+        } else if (page.includes('service-selection')) {
+            // Back button will be handled by ServiceSelectionSystem
         } else if (page.includes('booking')) {
             backBtn.href = 'index.html';
         } else {

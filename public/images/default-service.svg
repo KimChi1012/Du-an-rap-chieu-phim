@@ -1,0 +1,6 @@
+<svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="300" height="200" fill="#F5F5F5"/>
+<circle cx="150" cy="80" r="25" fill="#E59D2C"/>
+<rect x="120" y="110" width="60" height="40" rx="8" fill="#E59D2C"/>
+<text x="150" y="170" text-anchor="middle" fill="#666666" font-family="Arial" font-size="14">Dịch vụ</text>
+</svg>
