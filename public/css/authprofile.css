@@ -1,0 +1,250 @@
+/* =====================================================
+   AUTH PROFILE – BASE LAYOUT
+===================================================== */
+.authprofile-page {
+    display: flex;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* =====================================================
+   LEFT PANEL
+===================================================== */
+.authprofile-page .left-panel {
+    width: 260px;
+    background: #fff;
+    padding: 24px 20px;
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    text-align: center;
+}
+
+.authprofile-page .profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    cursor: pointer;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.authprofile-page .profile-avatar:hover {
+    transform: scale(1.05);
+    border-color: var(--gradient-main, #ff7f50);
+}
+
+.authprofile-page .support-info {
+    margin-top: 22px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.authprofile-page .support-info h3 {
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #222;
+}
+
+.authprofile-page .support-info p {
+    margin: 6px 0;
+    color: #555;
+}
+
+/* =====================================================
+   RIGHT PANEL
+===================================================== */
+.authprofile-page .right-panel {
+    flex: 1;
+    background: #fff;
+    padding: 28px 26px;
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* =====================================================
+   TABS
+===================================================== */
+.authprofile-page .profile-tabs {
+    display: flex;
+    gap: 24px;
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 24px;
+}
+
+.authprofile-page .tab-btn {
+    background: none;
+    border: none;
+    padding: 10px 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: #777;
+    cursor: pointer;
+    position: relative;
+}
+
+.authprofile-page .tab-btn.active {
+    color: var(--gradient-main, #ff7f50);
+    font-weight: 600;
+}
+
+.authprofile-page .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height: 3px;
+    background: var(--gradient-main, #ff7f50);
+    border-radius: 2px;
+}
+
+/* =====================================================
+   TAB CONTENT
+===================================================== */
+.authprofile-page .tab-content {
+    display: none;
+}
+
+.authprofile-page .tab-content.active {
+    display: block;
+}
+
+/* =====================================================
+   FORM
+===================================================== */
+.authprofile-page .form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.authprofile-page .form-group label {
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+}
+
+.authprofile-page .form-group input,
+.authprofile-page .form-group textarea {
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.authprofile-page .form-group textarea {
+    resize: vertical;
+}
+
+.authprofile-page .form-group input:focus,
+.authprofile-page .form-group textarea:focus {
+    border-color: var(--gradient-main, #ff7f50);
+    box-shadow: 0 0 0 3px rgba(255, 127, 80, 0.15);
+}
+
+.authprofile-page .form-group input:disabled {
+    background: #f3f3f3;
+    cursor: not-allowed;
+}
+
+/* =====================================================
+   CHANGE PASSWORD
+===================================================== */
+.authprofile-page .change-password-btn {
+    width: fit-content;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    border: 1px solid var(--gradient-main, #ff7f50);
+    background: transparent;
+    color: var(--gradient-main, #ff7f50);
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.authprofile-page .change-password-btn:hover {
+    background: var(--gradient-main, #ff7f50);
+    color: #fff;
+}
+
+.authprofile-page .password-section {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #fafafa;
+    border: 1px dashed #ddd;
+}
+
+.authprofile-page .cancel-change-password-btn {
+    width: fit-content;
+    padding: 6px 14px;
+    font-size: 13px;
+    border-radius: 6px;
+    border: none;
+    background: #ddd;
+    cursor: pointer;
+}
+
+.authprofile-page .cancel-change-password-btn:hover {
+    background: #cfcfcf;
+}
+
+/* =====================================================
+   FORM ACTIONS
+===================================================== */
+.authprofile-page .form-actions {
+    margin-top: 28px;
+    display: flex;
+    gap: 12px;
+}
+
+.authprofile-page .form-actions button {
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.25s ease, background-color 0.25s ease;
+}
+
+.authprofile-page .save-btn {
+    background: var(--gradient-main, #ff7f50);
+    color: #fff;
+}
+
+.authprofile-page .save-btn:hover {
+    opacity: 0.9;
+}
+
+.authprofile-page .cancel-btn {
+    background: #d0d0d0;
+    color: #333;
+}
+
+.authprofile-page .cancel-btn:hover {
+    background: #bdbdbd;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+@media (max-width: 900px) {
+    .authprofile-page {
+        flex-direction: column;
+        margin: 24px 12px;
+    }
+
+    .authprofile-page .left-panel,
+    .authprofile-page .right-panel {
+        width: 100%;
+    }
+}

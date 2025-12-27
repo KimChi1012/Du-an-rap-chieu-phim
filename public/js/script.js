@@ -23,6 +23,7 @@ import { initVideoModal } from "./modules/video-modal.js";
 import { initMovieSlider } from "./modules/movie-slider.js";
 import { initOfferModal, initOfferSlider } from "./modules/offer-slider.js";
 import { initAuth } from './modules/auth.js';
+import { initAuthProfile } from './modules/auth-profile.js';
 import BannerManagement from './modules/banner-management.js';
 import { BookingSystem } from './modules/booking.js';
 import { initPrivacyPolicy } from './modules/privacy-policy.js';
@@ -73,6 +74,11 @@ async function initPageSpecific() {
   if (currentPage === 'login-register.html') {
     initAuth();
     console.log('✅ Auth module initialized');
+  }
+
+  if (currentPage === 'auth-profile.html') {
+    initAuthProfile();
+    console.log('✅ AuthProfile module initialized');
   }
 
   if (currentPage === "movie-detail.html") {
