@@ -122,22 +122,53 @@ try {
         throw new Exception("Lịch chiếu bị trùng với suất chiếu khác trong cùng phòng");
     }
 
-    // Thêm suất chiếu mới
-    $sql = "INSERT INTO SuatChieu (MaSuat, MaPhim, MaPhong, NgayChieu, GioBatDau, GioKetThuc) VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "ssssss", $MaSuat, $MaPhim, $MaPhong, $NgayChieu, $GioBatDau, $GioKetThuc);
-        
-    if (!mysqli_stmt_execute($stmt)) {
-        throw new Exception("Lỗi thêm suất chiếu: " . mysqli_error($conn));
-    }
+    // ✅ BẮT ĐẦU TRANSACTION
+    mysqli_begin_transaction($conn);
 
-    echo json_encode([
-        'success' => true,
-        'message' => 'Thêm suất chiếu thành công',
-        'MaSuat' => $MaSuat,
-        'GioKetThuc' => $GioKetThuc,
-        'ThoiLuong' => $duration
-    ], JSON_UNESCAPED_UNICODE);
+    try {
+        // Thêm suất chiếu mới
+        $sql = "INSERT INTO SuatChieu (MaSuat, MaPhim, MaPhong, NgayChieu, GioBatDau, GioKetThuc) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "ssssss", $MaSuat, $MaPhim, $MaPhong, $NgayChieu, $GioBatDau, $GioKetThuc);
+            
+        if (!mysqli_stmt_execute($stmt)) {
+            throw new Exception("Lỗi thêm suất chiếu: " . mysqli_error($conn));
+        }
+
+        // ✅ TỰ ĐỘNG TẠO GHẾ SUẤT CHIẾU CHO TẤT CẢ GHẾ TRONG PHÒNG
+        $seatQuery = "SELECT MaGhe FROM Ghe WHERE MaPhong = ? ORDER BY MaGhe";
+        $seatStmt = mysqli_prepare($conn, $seatQuery);
+        mysqli_stmt_bind_param($seatStmt, "s", $MaPhong);
+        mysqli_stmt_execute($seatStmt);
+        $seatResult = mysqli_stmt_get_result($seatStmt);
+        
+        $createdSeatShowtimes = 0;
+        while ($seat = mysqli_fetch_assoc($seatResult)) {
+            $insertSeatShowtimeSql = "INSERT INTO GheSuatChieu (MaSuat, MaGhe, TrangThai, NgayTao) VALUES (?, ?, 'Trống', NOW())";
+            $insertSeatStmt = mysqli_prepare($conn, $insertSeatShowtimeSql);
+            mysqli_stmt_bind_param($insertSeatStmt, "ss", $MaSuat, $seat['MaGhe']);
+            
+            if (mysqli_stmt_execute($insertSeatStmt)) {
+                $createdSeatShowtimes++;
+            }
+        }
+
+        // ✅ COMMIT TRANSACTION
+        mysqli_commit($conn);
+
+        echo json_encode([
+            'success' => true,
+            'message' => "Thêm suất chiếu thành công và tạo $createdSeatShowtimes ghế suất chiếu",
+            'MaSuat' => $MaSuat,
+            'GioKetThuc' => $GioKetThuc,
+            'ThoiLuong' => $duration,
+            'SoGheSuatChieu' => $createdSeatShowtimes
+        ], JSON_UNESCAPED_UNICODE);
+
+    } catch (Exception $e) {
+        mysqli_rollback($conn);
+        throw $e;
+    }
 
 } catch (Exception $e) {
     http_response_code(400);
