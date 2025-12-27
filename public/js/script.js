@@ -29,6 +29,8 @@ import { BookingSystem } from './modules/booking.js';
 import { initPrivacyPolicy } from './modules/privacy-policy.js';
 import {OfferManagement} from './modules/offer-management.js';
 import { initTermsOfUse } from './modules/terms-of-use.js';
+import { initCopyrightPolicy } from './modules/copyright-policy.js';
+import './modules/policy-poster-strips.js';
 import ShowtimeManagement from './modules/showtime-management.js';
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -151,6 +153,11 @@ async function initPageSpecific() {
   if (currentPage === "terms-of-use.html") {
     console.log('📋 Initializing Terms of Use page...');
     initTermsOfUse();
+  }
+
+  if (currentPage === "copyright-policy.html") {
+    console.log('©️ Initializing Copyright Policy page...');
+    initCopyrightPolicy();
   }
 }
 

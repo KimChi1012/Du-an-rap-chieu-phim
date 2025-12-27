@@ -22,7 +22,7 @@ export function openVideoModal(trailerUrl) {
 
   const videoId = match[1];
   youtubeIframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&controls=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&color=white`;
-  videoModal.style.display = 'block';
+  videoModal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
 
