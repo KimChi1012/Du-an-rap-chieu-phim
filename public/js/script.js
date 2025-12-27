@@ -28,6 +28,7 @@ import { BookingSystem } from './modules/booking.js';
 import { initPrivacyPolicy } from './modules/privacy-policy.js';
 import {OfferManagement} from './modules/offer-management.js';
 import { initTermsOfUse } from './modules/terms-of-use.js';
+import ShowtimeManagement from './modules/showtime-management.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie_id') || 1;
@@ -55,6 +56,15 @@ function clearAllBookingData() {
 }
 
 window.clearAllBookingData = clearAllBookingData;
+
+function initShowtimeManagement() {
+  if (document.getElementById('showtimeTable') && !window.showtimeManagement) {
+    console.log('🎯 Initializing Showtime Management...');
+    window.showtimeManagement = new ShowtimeManagement();
+    return true;
+  }
+  return false;
+}
 
 async function initPageSpecific() {
   const currentPage = getCurrentPage();
@@ -174,6 +184,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     await new Promise(resolve => setTimeout(resolve, 200));
+
+    if (document.getElementById('showtimeTable') || document.getElementById('showtimeModal')) {
+        initShowtimeManagement();
+        console.log('✅ Showtime Management đã được khởi tạo');
+    }
     
     initUserSidebar();
     initDropdown();

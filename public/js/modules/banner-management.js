@@ -72,11 +72,6 @@ class BannerManagement {
         try {
             this.banners = await this.api.getBanners();
             this.renderTable(this.banners);
-            
-
-            if (this.banners.length > 0) {
-                this.testSearch();
-            }
         } catch (error) {
             this.tableBody.innerHTML = `
                 <tr>
