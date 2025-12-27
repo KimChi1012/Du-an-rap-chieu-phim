@@ -1,8 +1,4 @@
 <?php
-// Tắt hiển thị lỗi để tránh HTML error pages
-error_reporting(0);
-ini_set('display_errors', 0);
-
 $host = "localhost"; 
 $user = "root";
 $password = "";
