@@ -33,6 +33,7 @@ import { initCopyrightPolicy } from './modules/copyright-policy.js';
 import './modules/policy-poster-strips.js';
 import ShowtimeManagement from './modules/showtime-management.js';
 import RoomManagement from './modules/room-management.js';
+import ChairManagement from './modules/chair-management.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie_id') || 1;
@@ -291,6 +292,33 @@ document.addEventListener("DOMContentLoaded", async () => {
             allTables: document.querySelectorAll('table'),
             allModals: document.querySelectorAll('[id*="modal"]')
         });
+    }
+
+    const chairTable = document.getElementById('chairTable');
+    const chairModal = document.getElementById('chairModal');
+    
+    console.log('🎯 Chair table found:', !!chairTable);
+    console.log('🎯 Chair modal found:', !!chairModal);
+    console.log('🎯 Chair table element:', chairTable);
+    console.log('🎯 Chair modal element:', chairModal);
+    
+    if (chairTable || chairModal) {
+        console.log('🎯 Chair page detected, initializing...');
+        
+        try {
+            console.log('🔄 Creating ChairManagement instance...');
+            window.chairManagement = new ChairManagement();
+            console.log('✅ Chair Management initialized successfully');
+            console.log('🎯 ChairManagement instance:', window.chairManagement);
+
+            window.debugChairManagement = window.chairManagement;
+            
+        } catch (error) {
+            console.error('❌ Error initializing Chair Management:', error);
+            console.error('❌ Error stack:', error.stack);
+        }
+    } else {
+        console.log('ℹ️ Not a chair page');
     }
 
     window.initOfferManagement = function() {

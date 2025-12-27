@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Cinema - Quản Lý Ghế</title>
+    <link rel="icon" type="image/png" sizes="1000x1000" href="images/logo-hc.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script type="module" src="js/script.js"></script>
+    <script>
+        // Debug script để kiểm tra
+        console.log('HTML loaded');
+        
+        // Kiểm tra ngay lập tức
+        console.log('=== IMMEDIATE CHECK ===');
+        console.log('Table element:', document.getElementById('chairTable'));
+        
+        // Kiểm tra sau 1 giây
+        setTimeout(() => {
+            console.log('=== 1 SECOND CHECK ===');
+            console.log('Table element:', document.getElementById('chairTable'));
+            console.log('ChairManagement instance:', window.chairManagement);
+            
+            if (window.chairManagement) {
+                console.log('ChairManagement data:', window.chairManagement.chairs);
+                console.log('Number of chairs:', window.chairManagement.chairs.length);
+            } else {
+                console.log('❌ ChairManagement not initialized yet');
+                
+                // Try manual initialization
+                if (window.initChairManagement) {
+                    console.log('🔄 Trying manual initialization...');
+                    const success = window.initChairManagement();
+                    console.log('Manual init result:', success);
+                }
+            }
+        }, 1000);
+        
+        // Kiểm tra sau 3 giây
+        setTimeout(() => {
+            console.log('=== 3 SECOND CHECK ===');
+            console.log('Table element:', document.getElementById('chairTable'));
+            console.log('ChairManagement instance:', window.chairManagement);
+            
+            if (window.chairManagement) {
+                console.log('ChairManagement data:', window.chairManagement.chairs);
+                console.log('Number of chairs:', window.chairManagement.chairs.length);
+            }
+            
+            // Đảm bảo bảng hiển thị
+            const table = document.querySelector('.chair-table');
+            if (table) {
+                table.style.display = 'table';
+                table.style.width = '100%';
+                table.style.borderCollapse = 'collapse';
+                console.log('Table display ensured');
+            }
+            
+            // Kiểm tra tbody
+            const tbody = document.getElementById('chairTable');
+            if (tbody) {
+                console.log('Table body content:', tbody.innerHTML);
+                console.log('Table body children count:', tbody.children.length);
+            }
+        }, 3000);
+    </script>
+</head>
+
+<body class="bg-white-50 chair-management">
+<div class="flex h-screen">
+    
+    <!-- Sidebar -->
+    <div id="shared-sidebar" class="w-65"></div>
+
+    <div class="flex-1 overflow-auto">
+        <!-- Header -->
+        <div id="shared-header"></div>
+
+            <main class="p-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b pb-4">Quản lí Ghế</h1>
+
+            <!-- ====== BẢNG GHẾ ====== -->
+            <div class="chair-table-container">
+                <div class="flex items-center mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Danh sách ghế</h2>
+                    <div class="search-container">
+                        <div class="search-border-gradient">
+                            <input
+                                id="searchInput"
+                                type="text"
+                                placeholder="Tìm theo mã ghế, mã phòng..."
+                                class="search-input"
+                            >
+                        </div>
+                        <i class="fa fa-search search-icon"></i>
+                    </div>
+                   
+                </div>
+
+                <div class="table-scroll-area">
+                    <table class="chair-table" style="display: table; width: 100%; border-collapse: collapse;">
+                        <thead class="table-header-gradient">
+                            <tr>
+                                <th class="table-header-cell w-[50px]">Mã Ghế</th>
+                                <th class="table-header-cell w-[50px]">Mã Phòng</th>                                
+                                <th class="table-header-cell w-[50px]">Số Hàng</th>
+                                <th class="table-header-cell w-[50px]">Số Cột</th>
+                                <th class="table-header-cell w-[50px]">Loại Ghế</th>
+                                <th class="table-header-cell w-[50px]">Trạng Thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="chairTable" class="divide-y divide-gray-100 bg-white" style="display: table-row-group;"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>                      
+</body>
+</html>
