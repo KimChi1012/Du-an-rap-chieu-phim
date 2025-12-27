@@ -209,6 +209,177 @@ class RoomManagement {
         }
     }
 
+    async openAdd() {
+        this.isEditMode = false;
+        this.currentRoom = null;
+        this.showModal('Thêm phòng mới');
+        await this.clearForm();
+    }
+
+    editRoom(maPhong) {
+        const room = this.rooms.find(r => r.MaPhong == maPhong);
+        if (!room) return;
+
+        this.isEditMode = true;
+        this.currentRoom = room;
+        this.showModal('Sửa thông tin phòng');
+        this.fillForm(room);
+    }
+
+    async deleteRoom(maPhong) {
+        const room = this.rooms.find(r => r.MaPhong == maPhong);
+        if (!room) return;
+
+        const confirmDelete = () => {
+            return new Promise((resolve) => {
+                const notification = document.createElement('div');
+                notification.className = 'notification notification-show';
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="notification-icon fa-solid fa-exclamation-triangle" aria-hidden="true"></i>
+                        <span class="notification-message">Bạn có chắc muốn xóa phòng "${room.TenPhong}"?</span>
+                        <div class="confirm-dialog-actions">
+                            <button class="confirm-button confirm-yes">Xóa</button>
+                            <button class="confirm-button confirm-no">Hủy</button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(notification);
+                requestAnimationFrame(() => notification.classList.add('show'));
+
+                notification.querySelector('.confirm-yes').addEventListener('click', () => {
+                    notification.remove();
+                    resolve(true);
+                });
+
+                notification.querySelector('.confirm-no').addEventListener('click', () => {
+                    notification.remove();
+                    resolve(false);
+                });
+            });
+        };
+
+        const confirmed = await confirmDelete();
+        if (!confirmed) return;
+
+        try {
+            await API.deleteRoom(maPhong);
+            this.showNotification('Xóa phòng thành công', 'warning');
+            await this.loadRooms();
+        } catch (error) {
+            console.error('Lỗi khi xóa phòng:', error);
+            this.showNotification('Lỗi khi xóa phòng', 'warning');
+        }
+    }
+
+    showModal(title) {
+        const modal = document.getElementById('roomModal');
+        const modalTitle = document.getElementById('modalTitle');
+        
+        if (modal && modalTitle) {
+            modalTitle.textContent = title;
+            modal.classList.remove('hidden');
+        }
+    }
+
+    closeModal() {
+        const modal = document.getElementById('roomModal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    }
+
+    handleModalClick(event) {
+        if (event.target.id === 'roomModal') {
+            this.closeModal();
+        }
+    }
+
+    async clearForm() {
+        const fields = ['TenPhong', 'LoaiPhong', 'SoLuongGhe'];
+        fields.forEach(field => {
+            const element = document.getElementById(field);
+            if (element) {
+                element.value = '';
+            }
+        });
+        
+        // Hiển thị mã phòng dự kiến cho thêm mới
+        const maPhongElement = document.getElementById('MaPhong');
+        if (maPhongElement) {
+            if (this.isEditMode) {
+                maPhongElement.value = '';
+            } else {
+                // Tạo mã phòng dự kiến
+                const nextRoomCode = await this.generateNextRoomCode();
+                maPhongElement.value = nextRoomCode;
+                maPhongElement.placeholder = 'Mã phòng sẽ được tự động tạo';
+            }
+        }
+    }
+
+    async generateNextRoomCode() {
+        try {
+            // Lấy số lượng phòng hiện tại để dự đoán mã phòng tiếp theo
+            const roomCount = this.rooms.length;
+            let nextNumber = roomCount + 1;
+            let nextCode = 'P' + String(nextNumber).padStart(3, '0');
+            
+            // Kiểm tra xem mã này đã tồn tại chưa
+            while (this.rooms.some(room => room.MaPhong === nextCode)) {
+                nextNumber++;
+                nextCode = 'P' + String(nextNumber).padStart(3, '0');
+            }
+            
+            return nextCode;
+        } catch (error) {
+            console.error('Error generating room code:', error);
+            return 'P001'; // Fallback
+        }
+    }
+
+    fillForm(room) {
+        const fields = ['TenPhong', 'LoaiPhong', 'SoLuongGhe'];
+        fields.forEach(field => {
+            const element = document.getElementById(field);
+            if (element && room[field] !== undefined) {
+                element.value = room[field] || '';
+            }
+        });
+        
+        // Set MaPhong for edit mode
+        const maPhongElement = document.getElementById('MaPhong');
+        if (maPhongElement && room.MaPhong) {
+            maPhongElement.value = room.MaPhong;
+            maPhongElement.placeholder = 'Mã phòng không thể thay đổi';
+        }
+    }
+
+    async saveRoom() {
+        const formData = this.getFormData();
+        
+        if (!this.validateForm(formData)) {
+            return;
+        }
+
+        try {
+            if (this.isEditMode) {
+                await API.updateRoom(formData);
+                this.showNotification('Cập nhật phòng thành công', 'warning');
+            } else {
+                await API.addRoom(formData);
+                this.showNotification('Thêm phòng thành công', 'warning');
+            }
+            
+            this.closeModal();
+            await this.loadRooms();
+        } catch (error) {
+            console.error('Lỗi khi lưu phòng:', error);
+            this.showNotification('Lỗi khi lưu phòng', 'warning');
+        }
+    }
+
     getFormData() {
         const data = {
             TenPhong: document.getElementById('TenPhong').value.trim(),

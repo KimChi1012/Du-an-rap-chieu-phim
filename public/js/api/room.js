@@ -52,4 +52,113 @@ export class RoomAPI {
         console.log('📦 Using mock data:', mockData);
         return mockData;
     }
+
+    static async addRoom(roomData) {
+        const possiblePaths = [
+            '../api/room/add_room.php',
+            'api/room/add_room.php',
+            '/api/room/add_room.php'
+        ];
+        
+        for (const path of possiblePaths) {
+            try {
+                const formData = new FormData();
+                Object.keys(roomData).forEach(key => {
+                    formData.append(key, roomData[key]);
+                });
+
+                const response = await fetch(path, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    
+                    if (!result.success) {
+                        throw new Error(result.error || 'Lỗi không xác định');
+                    }
+                    
+                    return result;
+                }
+            } catch (error) {
+                if (possiblePaths.indexOf(path) === possiblePaths.length - 1) {
+                    throw error;
+                }
+                continue;
+            }
+        }
+    }
+
+    static async updateRoom(roomData) {
+        const possiblePaths = [
+            '../api/room/update_room.php',
+            'api/room/update_room.php',
+            '/api/room/update_room.php'
+        ];
+        
+        for (const path of possiblePaths) {
+            try {
+                const formData = new FormData();
+                Object.keys(roomData).forEach(key => {
+                    formData.append(key, roomData[key]);
+                });
+
+                const response = await fetch(path, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    
+                    if (!result.success) {
+                        throw new Error(result.error || 'Lỗi không xác định');
+                    }
+                    
+                    return result;
+                }
+            } catch (error) {
+                if (possiblePaths.indexOf(path) === possiblePaths.length - 1) {
+                    throw error;
+                }
+                continue;
+            }
+        }
+    }
+
+    static async deleteRoom(maPhong) {
+        const possiblePaths = [
+            '../api/room/delete_room.php',
+            'api/room/delete_room.php',
+            '/api/room/delete_room.php'
+        ];
+        
+        for (const path of possiblePaths) {
+            try {
+                const response = await fetch(path, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ MaPhong: maPhong })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    
+                    if (!result.success) {
+                        throw new Error(result.error || 'Lỗi không xác định');
+                    }
+                    
+                    return result;
+                }
+            } catch (error) {
+                if (possiblePaths.indexOf(path) === possiblePaths.length - 1) {
+                    throw error;
+                }
+                continue;
+            }
+        }
+    }
 }
