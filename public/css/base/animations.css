@@ -146,28 +146,3 @@
   0% { transform: scale(1); box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4); }
   100% { transform: scale(1.05); box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6); }
 }
-
-@keyframes modalSlideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-30px) scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes successPulse {
-  0% { 
-    transform: scale(0);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% { 
-    transform: scale(1);
-    opacity: 1;
-  }
-}

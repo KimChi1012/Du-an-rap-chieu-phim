@@ -1,5 +1,3 @@
-import { showNotification } from './notification.js';
-
 class PaymentManager {
     constructor() {
         this.selectedMethod = null;
@@ -336,14 +334,15 @@ class PaymentManager {
         if (viewInvoiceBtn) {
             viewInvoiceBtn.addEventListener('click', () => {
                 console.log('🧾 View invoice button clicked');
-                
-                showNotification(
-                    'Tính năng xem hoá đơn hiện đang được phát triển. Vui lòng quay lại sau.',
-                    'info'
-                );
+                const invoiceId = this.lastPaymentResult?.data?.invoiceId;
+                if (invoiceId) {
+                    window.location.href = `invoice.html?invoice=${invoiceId}`;
+                } else {
+                    console.warn('⚠️ No invoice ID found, redirecting to home');
+                    window.location.href = 'index.html';
+                }
             });
         }
-
 
         const backToHomeBtn = document.getElementById('backToHomeBtn');
         if (backToHomeBtn) {

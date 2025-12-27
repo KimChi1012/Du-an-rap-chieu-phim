@@ -77,4 +77,15 @@ export class PaymentAPI {
             throw new Error('Lỗi xử lý thanh toán: ' + error.message);
         }
     }
+
+    static async getInvoice(invoiceId) {
+        try {
+            const response = await fetch(`../api/payment/get_invoice.php?invoice=${invoiceId}`);
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('Invoice fetch error:', error);
+            throw new Error('Lỗi tải hóa đơn: ' + error.message);
+        }
+    }
 }

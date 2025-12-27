@@ -99,6 +99,12 @@ async function initPageSpecific() {
     window.paymentManager = new PaymentManager();
   }
 
+  if (currentPage === "invoice.html") {
+    console.log('📄 Initializing invoice page...');
+    const { default: InvoiceManager } = await import("./modules/invoice.js");
+    window.invoiceManager = new InvoiceManager();
+  }
+
   if (currentPage === "now-showing.html"){
     const { loadAllMovies } = await import("./modules/all-movies.js");
     

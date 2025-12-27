@@ -646,6 +646,11 @@
   width: 726px; 
 }
 
+.steps.step-6::after {
+  left: 758px;
+  width: 888px; 
+}
+
 .time-slot {
   padding: 10px 15px;
   margin: 5px;
