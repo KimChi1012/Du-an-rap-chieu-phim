@@ -464,13 +464,8 @@ class BookingConfirmationSystem {
         
         console.log('💳 Proceeding to payment with booking data:', this.bookingData);
         
-        showNotification(
-            'Tính năng thanh toán đang phát triển. Vui lòng quay lại sau!',
-            'info'
-        );
-
-        // TODO: Chuyển đến trang thanh toán
-        // window.location.href = 'payment.html?showtime=' + this.bookingData.showtime.MaSuat;
+        // Chuyển đến trang thanh toán
+        window.location.href = 'payment.html?showtime=' + this.bookingData.showtime.MaSuat;
     }
 
     setupPageExitHandler() {

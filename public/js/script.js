@@ -38,7 +38,6 @@ function getCurrentPage() {
   return filename || 'index.html';
 }
 
-// Function để xóa tất cả dữ liệu booking
 function clearAllBookingData() {
   localStorage.removeItem('selectedShowtime');
   localStorage.removeItem('bookingData');
@@ -55,7 +54,6 @@ function clearAllBookingData() {
   console.log('🧹 All booking data cleared when returning to index');
 }
 
-// Thêm vào window object để có thể truy cập từ mọi nơi
 window.clearAllBookingData = clearAllBookingData;
 
 async function initPageSpecific() {
@@ -85,6 +83,7 @@ async function initPageSpecific() {
 
   if (currentPage === "service-selection.html") {
     console.log('🛍️ Initializing service selection page...');
+    const { default: ServiceSelectionSystem } = await import("./modules/service-selection.js");
     window.serviceSelectionSystem = new ServiceSelectionSystem();
   }
 
@@ -92,6 +91,12 @@ async function initPageSpecific() {
     console.log('✅ Initializing booking confirmation page...');
     const { default: BookingConfirmationSystem } = await import("./modules/booking-confirmation.js");
     window.bookingConfirmationSystem = new BookingConfirmationSystem();
+  }
+
+  if (currentPage === "payment.html") {
+    console.log('💳 Initializing payment page...');
+    const { default: PaymentManager } = await import("./modules/payment.js");
+    window.paymentManager = new PaymentManager();
   }
 
   if (currentPage === "now-showing.html"){
@@ -154,9 +159,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (page.includes('seat-selection')) {
             backBtn.href = 'booking.html';
         } else if (page.includes('service-selection')) {
-            // Back button will be handled by ServiceSelectionSystem
         } else if (page.includes('booking-confirmation')) {
-            // Back button will be handled by BookingConfirmationSystem
         } else if (page.includes('booking')) {
             backBtn.href = 'index.html';
         } else {
@@ -202,7 +205,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log('ℹ️ Not a banner page');
     }
 
-    // ===== OFFER MANAGEMENT INITIALIZATION =====
     const offerTable = document.getElementById('offerTable');
     const offerModal = document.getElementById('offerModal');
     
@@ -222,8 +224,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log('ℹ️ Not an offer page');
     }
 
-    // ===== OFFER MANAGEMENT FUNCTIONS =====
-    // Thêm các hàm global để HTML có thể gọi
     window.initOfferManagement = function() {
         if (document.getElementById('offerTable') && !window.offerManagement) {
             console.log('🎯 Late initializing Offer Management...');
@@ -234,7 +234,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     if (currentPage === "index.html" || currentPage === "") {
-      // Xóa tất cả dữ liệu booking khi vào trang chủ
       clearAllBookingData();
       
       await initBannerSlider();
@@ -290,7 +289,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
-    // Thêm event listener để xóa dữ liệu khi click vào link về trang chủ
     document.addEventListener('click', (e) => {
       const target = e.target.closest('a');
       if (target && (target.href.includes('index.html') || target.href.endsWith('/'))) {
@@ -299,7 +297,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
-    // Xóa dữ liệu khi người dùng navigate bằng browser back/forward buttons
     window.addEventListener('popstate', () => {
       const currentPage = getCurrentPage();
       if (currentPage === 'index.html' || currentPage === '') {

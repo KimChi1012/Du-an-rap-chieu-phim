@@ -54,10 +54,15 @@ try {
                     g.SoHang,
                     g.SoCot,
                     g.LoaiGhe,
-                    g.TrangThai,
-                    v.GiaVe
+                    COALESCE(gsc.TrangThai, 'Trống') as TrangThai,
+                    CASE 
+                        WHEN g.LoaiGhe = 'Thường' THEN 75000
+                        WHEN g.LoaiGhe = 'VIP' THEN 120000
+                        WHEN g.LoaiGhe = 'Đôi' THEN 180000
+                        ELSE 75000
+                    END as GiaVe
                 FROM Ghe g
-                LEFT JOIN Ve v ON g.MaGhe = v.MaGhe AND g.MaPhong = v.MaPhong
+                LEFT JOIN GheSuatChieu gsc ON g.MaGhe = gsc.MaGhe AND gsc.MaSuat = ?
                 WHERE g.MaPhong = ?
                 ORDER BY g.SoHang, g.SoCot";
     
@@ -66,7 +71,7 @@ try {
         throw new Exception('Prepare seats query failed: ' . mysqli_error($conn));
     }
     
-    mysqli_stmt_bind_param($stmt, 's', $showtime['MaPhong']);
+    mysqli_stmt_bind_param($stmt, 'ss', $showtime_id, $showtime['MaPhong']);
     mysqli_stmt_execute($stmt);
     $seats_result = mysqli_stmt_get_result($stmt);
     
