@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Cinema - Quản Lý Phòng Chiếu</title>
+    <link rel="icon" type="image/png" sizes="1000x1000" href="images/logo-hc.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script type="module" src="js/script.js"></script>
+    <script>
+        // Debug script để kiểm tra
+        console.log('HTML loaded');
+        
+        // Kiểm tra ngay lập tức
+        console.log('=== IMMEDIATE CHECK ===');
+        console.log('Table element:', document.getElementById('roomTable'));
+        console.log('Modal element:', document.getElementById('roomModal'));
+        
+        // Kiểm tra sau 1 giây
+        setTimeout(() => {
+            console.log('=== 1 SECOND CHECK ===');
+            console.log('Table element:', document.getElementById('roomTable'));
+            console.log('RoomManagement instance:', window.roomManagement);
+            
+            if (window.roomManagement) {
+                console.log('RoomManagement data:', window.roomManagement.rooms);
+                console.log('Number of rooms:', window.roomManagement.rooms.length);
+            } else {
+                console.log('❌ RoomManagement not initialized yet');
+                
+                // Try manual initialization
+                if (window.initRoomManagement) {
+                    console.log('🔄 Trying manual initialization...');
+                    const success = window.initRoomManagement();
+                    console.log('Manual init result:', success);
+                }
+            }
+        }, 1000);
+        
+        // Kiểm tra sau 3 giây
+        setTimeout(() => {
+            console.log('=== 3 SECOND CHECK ===');
+            console.log('Table element:', document.getElementById('roomTable'));
+            console.log('RoomManagement instance:', window.roomManagement);
+            
+            if (window.roomManagement) {
+                console.log('RoomManagement data:', window.roomManagement.rooms);
+                console.log('Number of rooms:', window.roomManagement.rooms.length);
+            }
+            
+            // Đảm bảo bảng hiển thị
+            const table = document.querySelector('.room-table');
+            if (table) {
+                table.style.display = 'table';
+                table.style.width = '100%';
+                table.style.borderCollapse = 'collapse';
+                console.log('Table display ensured');
+            }
+            
+            // Kiểm tra tbody
+            const tbody = document.getElementById('roomTable');
+            if (tbody) {
+                console.log('Table body content:', tbody.innerHTML);
+                console.log('Table body children count:', tbody.children.length);
+            }
+        }, 3000);
+    </script>
+</head>
+
+<body class="bg-white-50 room-management">
+<div class="flex h-screen">
+    
+    <!-- Sidebar -->
+    <div id="shared-sidebar" class="w-65"></div>
+
+    <div class="flex-1 overflow-auto">
+        <!-- Header -->
+        <div id="shared-header"></div>
+
+            <main class="p-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b pb-4">Quản lí Phòng Chiếu</h1>
+
+            <!-- ====== BẢNG PHÒNG CHIẾU ====== -->
+            <div class="room-table-container">
+                <div class="flex items-center mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Danh sách phòng chiếu</h2>
+                    <div class="search-container">
+                        <div class="search-border-gradient">
+                            <input
+                                id="searchInput"
+                                type="text"
+                                placeholder="Tìm theo mã phòng, tên phòng, loại phòng... (có thể tìm không dấu)"
+                                class="search-input"
+                                oninput="window.roomManagement.searchRooms()"
+                            >
+                        </div>
+                        <i class="fa fa-search search-icon"></i>
+                    </div>
+                    <button onclick="window.roomManagement.openAdd()" class="add-room-button">
+                        <i class="fa fa-plus emoji"></i>Thêm phòng chiếu
+                    </button>
+                </div>
+
+                <div class="table-scroll-area">
+                    <table class="room-table" style="display: table; width: 100%; border-collapse: collapse;">
+                        <thead class="table-header-gradient">
+                            <tr>
+                                <th class="table-header-cell w-[90px]">Mã Phòng</th>
+                                <th class="table-header-cell w-[200px]">Tên Phòng</th>
+                                <th class="table-header-cell w-[250px]">Loại Phòng</th>
+                                <th class="table-header-cell w-[150px]">Số Lượng Ghế</th>
+                                <th class="table-header-cell w-[150px]">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roomTable" class="divide-y divide-gray-100 bg-white" style="display: table-row-group;"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<!-- MODAL -->
+<div id="roomModal" class="room-modal hidden" onclick="window.roomManagement.handleModalClick(event)">
+    <div class="room-modal-content" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center mb-2">
+            <h3 id="modalTitle" class="text-base font-semibold"></h3>
+            <button onclick="window.roomManagement.closeModal()" class="text-gray-500 hover:text-gray-700 text-lg">&times;</button>
+        </div>
+
+        <div class="room-form-grid">
+            <div class="form-field full-width">
+                <label class="form-label">Mã phòng</label>
+                <input id="MaPhong" class="form-input bg-gray-100 text-gray-600" readonly placeholder="Sẽ tự động tạo khi lưu" style="cursor: not-allowed;">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Tên phòng <span class="required">*</span></label>
+                <input id="TenPhong" class="form-input" placeholder="Nhập tên phòng">
+            </div>
+
+           <div class="form-field">
+                <label class="form-label">Loại phòng <span class="required">*</span></label>
+                <select id="LoaiPhong" class="form-select">
+                    <option value="">-- Chọn loại phòng --</option>
+                    <option value="2D">2D</option>
+                    <option value="3D">3D</option>
+                    <option value="4DX">4DX</option>
+                    <option value="IMAX">IMAX</option>
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Số lượng ghế <span class="required">*</span></label>
+                <input id="SoLuongGhe" type="number" class="form-input" placeholder="Nhập số lượng ghế">
+            </div>
+                       
+        </div>
+
+        <div class="modal-buttons">
+            <button onclick="window.roomManagement.closeModal()" class="modal-button cancel">Hủy</button>
+            <button onclick="window.roomManagement.saveRoom()" class="modal-button save">Lưu</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

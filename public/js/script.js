@@ -32,6 +32,7 @@ import { initTermsOfUse } from './modules/terms-of-use.js';
 import { initCopyrightPolicy } from './modules/copyright-policy.js';
 import './modules/policy-poster-strips.js';
 import ShowtimeManagement from './modules/showtime-management.js';
+import RoomManagement from './modules/room-management.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie_id') || 1;
@@ -256,6 +257,40 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     } else {
         console.log('ℹ️ Not an offer page');
+    }
+
+    const roomTable = document.getElementById('roomTable');
+    const roomModal = document.getElementById('roomModal');
+    
+    console.log('🎯 Room table found:', !!roomTable);
+    console.log('🎯 Room modal found:', !!roomModal);
+    console.log('🎯 Room table element:', roomTable);
+    console.log('🎯 Room modal element:', roomModal);
+    console.log('🎯 Current page:', getCurrentPage());
+    
+    if (roomTable || roomModal) {
+        console.log('🎯 Room page detected, initializing...');
+        
+        try {
+            console.log('🔄 Creating RoomManagement instance...');
+            window.roomManagement = new RoomManagement();
+            console.log('✅ Room Management initialized successfully');
+            console.log('🎯 RoomManagement instance:', window.roomManagement);
+            
+            window.debugRoomManagement = window.roomManagement;
+            
+        } catch (error) {
+            console.error('❌ Error initializing Room Management:', error);
+            console.error('❌ Error stack:', error.stack);
+        }
+    } else {
+        console.log('ℹ️ Not a room page');
+        console.log('ℹ️ Available elements:', {
+            roomTable: document.getElementById('roomTable'),
+            roomModal: document.getElementById('roomModal'),
+            allTables: document.querySelectorAll('table'),
+            allModals: document.querySelectorAll('[id*="modal"]')
+        });
     }
 
     window.initOfferManagement = function() {
