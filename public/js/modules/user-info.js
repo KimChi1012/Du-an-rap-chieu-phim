@@ -40,7 +40,7 @@ export async function loadUserInfo() {
 
         // Dropdown menu giống nhau cho tất cả user (admin và khách hàng)
         headerDropdownMenu.innerHTML = `
-                <a href="profile.html">Tài khoản</a>
+                <a href="auth-profile.html">Tài khoản</a>
                 <a href="#" id="header-logout-btn">Đăng xuất</a>
             `;
 
@@ -78,7 +78,7 @@ export async function loadUserInfo() {
 
       userContent.innerHTML = `
         <div class="user-menu">
-          <a href="profile.html" class="menu-item">
+          <a href="auth-profile.html" class="menu-item">
             <i class="bi bi-person"></i> <p class="text-gradient">Thông tin cá nhân</p>
           </a>
           <a href="history.html" class="menu-item">

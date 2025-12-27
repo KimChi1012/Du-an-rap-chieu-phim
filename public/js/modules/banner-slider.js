@@ -13,6 +13,7 @@ export async function initBannerSlider() {
       const slide = document.createElement('div');
       slide.className = 'slide';
       slide.style.setProperty('--position', index + 1);
+      slide.style.cursor = 'pointer';
 
       const img = document.createElement('img');
       img.src = qc.Banner;
@@ -27,11 +28,35 @@ export async function initBannerSlider() {
       textContent.textContent = 'Đặt vé ngay';
       bookButton.appendChild(textContent);
 
-      bookButton.addEventListener('click', (e) => {
+      const handleBooking = (e) => {
         e.preventDefault();
-        showNotification('Tính năng đặt vé đang được phát triển. Vui lòng quay lại sau!','info');
-        return
-      });
+        e.stopPropagation();
+        
+        if (qc.MaPhim) {
+          if (qc.TrangThai === 'Phim đang chiếu') {
+            window.location.href = `booking.html?id=${qc.MaPhim}`;
+          } else if (qc.TrangThai === 'Phim sắp chiếu') {
+            showNotification(
+              `Phim "${qc.TenQC}" chưa phát hành. Vui lòng quay lại sau!`,
+              'info'
+            );
+          } else {
+            showNotification(
+              `Phim "${qc.TenQC}" đã qua thời gian phát hành. Vui lòng chọn phim khác!`,
+              'info'
+            );
+          }
+        } else {
+          showNotification(
+            'Banner này chưa được liên kết với phim cụ thể. Vui lòng chọn phim từ danh sách!',
+            'info'
+          );
+        }
+      };
+
+      bookButton.addEventListener('click', handleBooking);
+      
+      slide.addEventListener('click', handleBooking);
       
       slide.appendChild(bookButton);
 

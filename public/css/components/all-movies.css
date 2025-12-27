@@ -1,0 +1,212 @@
+.all-movies {
+  padding: 120px 9% 50px;
+  background: #fff;
+  min-height: 100vh;
+}
+
+.back-button {
+  margin-bottom: 20px;
+}
+
+.back-button a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--gradient-main);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 15px;
+  font-size: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.back-button a:hover {
+  transform: translateX(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.all-movies h2 {
+  font-size: 32px;
+  margin-bottom: 40px;
+  text-align: center;
+  background: var(--gradient-main);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 40px 30px;
+  justify-items: center;
+}
+
+/* Căn giữa khi có ít hơn 5 phim */
+.movies-grid.center-items {
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(220px, max-content));
+}
+
+/* Fallback cho trình duyệt hỗ trợ :has() */
+@supports selector(:has(*)) {
+  .movies-grid:has(.movie-card:nth-child(-n+4)) {
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(220px, max-content));
+  }
+}
+
+/* Override movie-card styles for grid layout */
+.movies-grid .movie-card {
+  background: #fff;
+  overflow: hidden;
+  text-align: left;
+  width: 100%;
+  max-width: 220px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-top: 10px;
+  transition: transform 0.3s ease;
+  /* Ensure flex properties are not overridden */
+  flex: none;
+}
+
+.movies-grid .movie-card:hover {
+  transform: translateY(-8px);
+}
+
+/* Tags styling for grid layout */
+.movies-grid .tags {
+  margin: 8px;
+  min-height: 20px; /* Ensure consistent height even when empty */
+}
+
+.movies-grid .tags span {
+  padding: 2px 6px;
+  font-size: 12px;
+  border-radius: 5px;
+  margin-right: 4px;
+  color: #fff;
+}
+
+.movies-grid .tags .age {
+  background: linear-gradient(#8a3b08, #652d08);
+}
+
+.movies-grid .tags .subTitle {
+  background: linear-gradient(#e59d2c, #bc7709);
+}
+
+.movies-grid .tags .format {
+  background: linear-gradient(#2e4365, #142137);
+}
+
+/* Movie card text styling */
+.movies-grid .movie-card h3 {
+  font-size: 16px;
+  margin: 8px;
+  background: var(--gradient-main);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.movies-grid .movie-card p {
+  font-size: 14px;
+  margin: 8px;
+  color: #2e4365;
+}
+
+.movies-grid .movie-card p span {
+  background: linear-gradient(#e59d2c, #bc7709);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 50px;
+  padding: 30px 0;
+}
+
+.pagination button {
+  padding: 0;
+  border: 2px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+              var(--gradient-main) border-box;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pagination button span,
+.pagination button i {
+  background: var(--gradient-text-main);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.pagination button:hover:not(.active) {
+  background: var(--gradient-main);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(138, 59, 8, 0.3);
+}
+
+.pagination button:hover:not(.active) span,
+.pagination button:hover:not(.active) i {
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  color: #fff;
+}
+
+.pagination button.active {
+  background: var(--gradient-main);
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(138, 59, 8, 0.4);
+  transform: scale(1.1);
+}
+
+.pagination button.active span {
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  color: #fff;
+}
+
+.pagination button:disabled {
+  display: none;
+}
+
+.pagination button i {
+  font-size: 14px;
+}
+
+.pagination .page-info {
+  padding: 10px 16px;
+  color: #666;
+  font-size: 16px;
+  font-weight: 500;
+}

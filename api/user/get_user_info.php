@@ -15,7 +15,7 @@ try {
 
     if (isset($_SESSION['user_id'])) { 
         $user_id = mysqli_real_escape_string($conn, $_SESSION['user_id']); 
-        $sql = "SELECT TenDN, HoTen, Email, QuyenHan FROM NguoiDung WHERE MaND=?"; 
+        $sql = "SELECT MaND, TenDN, HoTen, Email, NgaySinh, SoDT, ThanhPho, QuyenHan FROM NguoiDung WHERE MaND=?"; 
         $stmt = $conn->prepare($sql);
         
         if ($stmt) {

@@ -19,48 +19,108 @@ try {
     $ngaysinh = $input['NgaySinh'] ?? '';
     $email = $input['Email'] ?? '';
     $quyenhan = $input['QuyenHan'] ?? '';
-    $avatar = $input['Avatar'] ?? '';
     $matkhau_hientai = $input['MatKhauHienTai'] ?? '';
     $matkhau_moi = $input['MatKhauMoi'] ?? '';
+    
+    // Xử lý NgaySinh - nếu rỗng thì set NULL
+    if (empty($ngaysinh) || $ngaysinh === '') {
+        $ngaysinh = null;
+    }
+    
+    // Kiểm tra xem có cập nhật avatar không
+    $hasAvatar = isset($input['Avatar']) && !empty($input['Avatar']);
+    $avatar = $hasAvatar ? $input['Avatar'] : null;
     
     if (empty($mand) || empty($tendn) || empty($hoten) || empty($email) || empty($quyenhan)) {
         echo json_encode(['success' => false, 'error' => 'Vui lòng điền đầy đủ thông tin bắt buộc'], JSON_UNESCAPED_UNICODE);
         exit;
     }
 
-    if (empty($matkhau_hientai)) {
-        echo json_encode(['success' => false, 'error' => 'Vui lòng nhập mật khẩu hiện tại để xác nhận'], JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    // Kiểm tra mật khẩu hiện tại
-    $checkSql = "SELECT MatKhau FROM NguoiDung WHERE MaND = ?";
-    $checkStmt = $conn->prepare($checkSql);
-    $checkStmt->bind_param("s", $mand);
-    $checkStmt->execute();
-    $result = $checkStmt->get_result();
-    $user = $result->fetch_assoc();
-    
-    if (!$user) {
-        echo json_encode(['success' => false, 'error' => 'Không tìm thấy người dùng với mã: ' . $mand], JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    if ($user['MatKhau'] !== $matkhau_hientai) {
-        echo json_encode(['success' => false, 'error' => 'Mật khẩu hiện tại không đúng'], JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-    
-    // Cập nhật với hoặc không có mật khẩu mới
+    // Chỉ yêu cầu mật khẩu hiện tại khi có mật khẩu mới
     if (!empty($matkhau_moi)) {
-        $sql = "UPDATE NguoiDung SET TenDN=?, HoTen=?, SoDT=?, ThanhPho=?, NgaySinh=?, Email=?, MatKhau=?, QuyenHan=?, Avatar=? WHERE MaND=?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssssssss", $tendn, $hoten, $sodt, $thanhpho, $ngaysinh, $email, $matkhau_moi, $quyenhan, $avatar, $mand);
-    } else {
-        $sql = "UPDATE NguoiDung SET TenDN=?, HoTen=?, SoDT=?, ThanhPho=?, NgaySinh=?, Email=?, QuyenHan=?, Avatar=? WHERE MaND=?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssssss", $tendn, $hoten, $sodt, $thanhpho, $ngaysinh, $email, $quyenhan, $avatar, $mand);
+        if (empty($matkhau_hientai)) {
+            echo json_encode(['success' => false, 'error' => 'Vui lòng nhập mật khẩu hiện tại để đổi mật khẩu'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        // Kiểm tra mật khẩu hiện tại
+        $checkSql = "SELECT MatKhau FROM NguoiDung WHERE MaND = ?";
+        $checkStmt = $conn->prepare($checkSql);
+        $checkStmt->bind_param("s", $mand);
+        $checkStmt->execute();
+        $result = $checkStmt->get_result();
+        $user = $result->fetch_assoc();
+        
+        if (!$user) {
+            echo json_encode(['success' => false, 'error' => 'Không tìm thấy người dùng với mã: ' . $mand], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        if ($user['MatKhau'] !== $matkhau_hientai) {
+            echo json_encode(['success' => false, 'error' => 'Mật khẩu hiện tại không đúng'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
     }
+    
+    // Xây dựng câu SQL động
+    $updateFields = [];
+    $params = [];
+    $types = "";
+    
+    // Các trường luôn cập nhật
+    $updateFields[] = "TenDN=?";
+    $params[] = $tendn;
+    $types .= "s";
+    
+    $updateFields[] = "HoTen=?";
+    $params[] = $hoten;
+    $types .= "s";
+    
+    $updateFields[] = "SoDT=?";
+    $params[] = $sodt;
+    $types .= "s";
+    
+    $updateFields[] = "ThanhPho=?";
+    $params[] = $thanhpho;
+    $types .= "s";
+    
+    if ($ngaysinh === null) {
+        $updateFields[] = "NgaySinh=NULL";
+    } else {
+        $updateFields[] = "NgaySinh=?";
+        $params[] = $ngaysinh;
+        $types .= "s";
+    }
+    
+    $updateFields[] = "Email=?";
+    $params[] = $email;
+    $types .= "s";
+    
+    $updateFields[] = "QuyenHan=?";
+    $params[] = $quyenhan;
+    $types .= "s";
+    
+    // Chỉ cập nhật mật khẩu nếu có mật khẩu mới
+    if (!empty($matkhau_moi)) {
+        $updateFields[] = "MatKhau=?";
+        $params[] = $matkhau_moi;
+        $types .= "s";
+    }
+    
+    // Chỉ cập nhật avatar nếu có avatar mới
+    if ($hasAvatar) {
+        $updateFields[] = "Avatar=?";
+        $params[] = $avatar;
+        $types .= "s";
+    }
+    
+    // Thêm MaND vào cuối
+    $params[] = $mand;
+    $types .= "s";
+    
+    $sql = "UPDATE NguoiDung SET " . implode(", ", $updateFields) . " WHERE MaND=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param($types, ...$params);
     
     if ($stmt->execute()) {
         $message = !empty($matkhau_moi) ? 'Cập nhật người dùng và mật khẩu thành công' : 'Cập nhật người dùng thành công';
@@ -70,7 +130,6 @@ try {
     }
     
 } catch (Exception $e) {
-    // Chỉ set HTTP 500 cho lỗi hệ thống thực sự (database connection, etc.)
     http_response_code(500);
     echo json_encode(['success' => false, 'error' => 'Lỗi hệ thống: ' . $e->getMessage()], JSON_UNESCAPED_UNICODE);
 }

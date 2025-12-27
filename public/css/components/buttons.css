@@ -367,3 +367,11 @@
   -webkit-text-fill-color: initial;
   color: #fff;
 }
+
+.movie-actions .book-now-button {
+  position: relative;
+  bottom: auto;
+  right: auto;
+  display: inline-block;
+  margin: 0;
+}
