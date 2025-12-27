@@ -61,10 +61,19 @@ export async function initMovieSlider(sectionId, apiUrl, emptyText) {
     posters.forEach(poster => {
       const trailerUrl = poster.getAttribute("data-trailer");
       poster.addEventListener("click", () => {
+        console.log('Poster clicked, dragging:', movieSlider.classList.contains("dragging"));
+        console.log('Trailer URL:', trailerUrl);
+        
         if (!movieSlider.classList.contains("dragging")) {
           if (trailerUrl && trailerUrl.trim() !== '' && trailerUrl !== 'null') {
-            window.openVideoModal(trailerUrl);
+            console.log('Opening video modal with URL:', trailerUrl);
+            if (typeof window.openVideoModal === 'function') {
+              window.openVideoModal(trailerUrl);
+            } else {
+              console.error('window.openVideoModal is not a function');
+            }
           } else {
+            console.log('No trailer available for this movie');
             if (typeof showNotification === 'function') {
               showNotification(
                 "Trailer cho phim này chưa có sẵn. Vui lòng quay lại sau!",
