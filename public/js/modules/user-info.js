@@ -38,28 +38,24 @@ export async function loadUserInfo() {
         const shortName = parts.slice(-2).join(" ");
         headerUserName.textContent = shortName;
 
-        const isAdmin = data.user.QuyenHan === "Quản trị viên";
+        // Dropdown menu giống nhau cho tất cả user (admin và khách hàng)
+        headerDropdownMenu.innerHTML = `
+                <a href="auth-profile.html">Tài khoản</a>
+                <a href="#" id="header-logout-btn">Đăng xuất</a>
+            `;
 
-        if (isAdmin) {
-          headerDropdownMenu.innerHTML = `
-                  <a href="profile.html">Tài khoản</a>
-                  <a href="#" id="header-logout-btn">Đăng xuất</a>
-              `;
-
-          document.getElementById("header-logout-btn").onclick = async () => {
+        const headerLogoutBtnNew = document.getElementById("header-logout-btn");
+        if (headerLogoutBtnNew) {
+          headerLogoutBtnNew.onclick = async () => {
             await fetch("../api/user/logout.php", { method: "POST" });
             location.reload();
           };
         }
 
-        document.getElementById("header-dropdown").onclick = () => {
-          headerDropdownMenu.classList.toggle("hidden");
-        };
-
-        if (!isAdmin) {
-          headerLogoutBtn.onclick = async () => {
-            await fetch("../api/user/logout.php", { method: "POST" });
-            location.reload();
+        const headerDropdown = document.getElementById("header-dropdown");
+        if (headerDropdown) {
+          headerDropdown.onclick = () => {
+            headerDropdownMenu.classList.toggle("hidden");
           };
         }
       }
@@ -76,13 +72,13 @@ export async function loadUserInfo() {
         <p class="user-email">${data.user.Email}</p>
       `;
 
-      avatarImg.src = "../api/user/get_avatar.php";
+      avatarImg.src = `../api/user/get_avatar.php`;
 
       const isAdmin = data.user.QuyenHan === "Quản trị viên";
 
       userContent.innerHTML = `
         <div class="user-menu">
-          <a href="profile.html" class="menu-item">
+          <a href="auth-profile.html" class="menu-item">
             <i class="bi bi-person"></i> <p class="text-gradient">Thông tin cá nhân</p>
           </a>
           <a href="history.html" class="menu-item">
@@ -126,10 +122,12 @@ export async function loadUserInfo() {
           e.preventDefault();
           e.stopPropagation();
 
-          showNotification(
-            "Trang quản trị dành cho admin đang được phát triển. Vui lòng quay lại sau!",
-            "info"
-          );
+          if (typeof showNotification === 'function') {
+            showNotification(
+              "Trang quản trị dành cho admin đang được phát triển. Vui lòng quay lại sau!",
+              "info"
+            );
+          }
 
           toggleSwitch.classList.add("disabled-temp");
           setTimeout(() => {
@@ -160,7 +158,9 @@ export async function loadUserInfo() {
         headerUser.classList.add("hidden");
 
         headerLoginBtn.addEventListener("click", () => {
-          showFeatureNotification("Tính năng đăng nhập");
+          if (typeof showFeatureNotification === 'function') {
+            showFeatureNotification("Tính năng đăng nhập");
+          }
         });
       }
 
@@ -181,7 +181,9 @@ export async function loadUserInfo() {
         const signinBtn = document.getElementById("signin-btn");
         if (signinBtn) {
           signinBtn.addEventListener("click", () => {
-            showFeatureNotification("Tính năng đăng nhập");
+            if (typeof showFeatureNotification === 'function') {
+              showFeatureNotification("Tính năng đăng nhập");
+            }
           });
         }
       }, 100);

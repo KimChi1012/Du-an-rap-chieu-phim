@@ -1,4 +1,5 @@
-.modal {
+.modal,
+.index-offer-modal {
   display: none;
   position: fixed;
   z-index: 2000;
@@ -10,7 +11,16 @@
   animation: fadeIn 0.3s ease;
 }
 
-.modal-content {
+.index-offer-modal {
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-content,
+.index-offer-modal-content {
   position: relative;
   background-color: #fff;
   margin: 20px auto;
@@ -39,7 +49,8 @@
   animation: slideIn 0.3s ease;
 }
 
-.close {
+.close,
+.close-offer {
   color: #333;
   position: absolute;
   top: 15px;
@@ -59,8 +70,19 @@
   right: 5px;
 }
 
-.close:hover {
+.close:hover,
+.close-offer:hover {
   background: var(--gradient-main);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.offer-details {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  gap: 40px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
 }

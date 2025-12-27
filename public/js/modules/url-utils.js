@@ -1,6 +1,6 @@
 export function createSlug(title) {
   if (!title) return '';
-
+  
   let slug = title.toLowerCase();
   
   const vietnamese = [
@@ -22,11 +22,11 @@ export function createSlug(title) {
     'y', 'y', 'y', 'y', 'y',
     'd'
   ];
-
+  
   for (let i = 0; i < vietnamese.length; i++) {
     slug = slug.replace(new RegExp(vietnamese[i], 'g'), english[i]);
   }
-
+  
   slug = slug.replace(/[^a-z0-9\s-]/g, '');
   slug = slug.replace(/[\s-]+/g, '-');
   slug = slug.replace(/^-+|-+$/g, '');

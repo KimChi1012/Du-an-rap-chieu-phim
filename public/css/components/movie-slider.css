@@ -25,7 +25,8 @@
   opacity: 1;
 }
 
-.now-showing {
+.now-showing,
+.coming-soon {
   padding: 24px 9%;
   background: #fff;
   text-align: center;
@@ -37,7 +38,12 @@
   margin-top: 20px;
 }
 
-.now-showing h2 {
+.coming-soon {
+  margin-top: 60px;
+}
+
+.now-showing h2,
+.coming-soon h2 {
   font-size: 32px;
   margin-bottom: 32px;
   background: var(--gradient-main);
@@ -71,12 +77,6 @@
 
 .movie-slider.center-items {
   justify-content: center;
-}
-
-@supports selector(:has(*)) {
-  .movie-slider:has(.movie-card:nth-child(-n+4)) {
-    justify-content: center;
-  }
 }
 
 .movie-slider.dragging {
