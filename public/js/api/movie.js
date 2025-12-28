@@ -1,4 +1,19 @@
 export class MovieAPI {
+    static async getMovies() {
+        try {
+            const response = await fetch('../api/movie/get_movies.php');
+            const result = await response.json();
+            if (result.success) {
+                return result.data;
+            } else {
+                throw new Error(result.error || 'Lỗi khi tải danh sách phim');
+            }
+        } catch (error) {
+            console.error('Error fetching movies:', error);
+            throw error;
+        }
+    }
+
     static async getNowShowing() {
         try {
             const response = await fetch('../api/movie/get_now_showing.php');

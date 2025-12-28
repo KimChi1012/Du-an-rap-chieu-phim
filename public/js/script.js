@@ -35,6 +35,7 @@ import ShowtimeManagement from './modules/showtime-management.js';
 import RoomManagement from './modules/room-management.js';
 import ChairManagement from './modules/chair-management.js';
 import SearchSystem from './modules/search.js';
+import MovieManagement from './modules/movie-management.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie_id') || 1;
@@ -325,6 +326,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     } else {
         console.log('ℹ️ Not a chair page');
+    }
+
+    const movieTable = document.getElementById('movieTable');
+    const movieModal = document.getElementById('movieModal');
+    
+    console.log('🎯 Movie table found:', !!movieTable);
+    console.log('🎯 Movie modal found:', !!movieModal);
+    console.log('🎯 Current page:', getCurrentPage());
+    
+    // Chỉ khởi tạo MovieManagement khi đang ở trang movie-management.html
+    if ((movieTable || movieModal) && getCurrentPage() === 'movie-management.html') {
+        console.log('🎯 Movie management page detected, initializing...');
+        
+        try {
+            console.log('🔄 Creating MovieManagement instance...');
+            window.movieManagement = new MovieManagement();
+            console.log('✅ Movie Management initialized successfully');
+            console.log('🎯 MovieManagement instance:', window.movieManagement);
+            
+        } catch (error) {
+            console.error('❌ Error initializing Movie Management:', error);
+            console.error('❌ Error stack:', error.stack);
+        }
+    } else {
+        console.log('ℹ️ Not a movie management page or elements not found');
     }
 
     window.initOfferManagement = function() {

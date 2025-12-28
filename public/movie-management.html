@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Cinema - Quản lí phim</title>
+    <link rel="icon" type="image/png" sizes="1000x1000" href="images/logo-hc.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script type="module" src="js/script.js"></script>
+</head>
+
+<body class="bg-white-50 movie-management">
+<div class="flex h-screen">
+    
+    <!-- Sidebar -->
+    <div id="shared-sidebar" class="w-65"></div>
+
+    <div class="flex-1 overflow-auto">
+        <!-- Header -->
+        <div id="shared-header"></div>
+
+            <main class="p-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b pb-4">Quản lí phim</h1>
+                <!-- ====== BẢNG PHIM ====== -->
+                <div class="user-table-container">
+                    <div class="flex items-center mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800">Danh sách phim</h2>
+                        <div class="search-container">
+                            <div class="search-border-gradient">
+                                <input
+                                    id="searchInput"
+                                    type="text"
+                                    placeholder="Tìm theo tên phim, đạo diễn, diễn viên... (có thể gõ không dấu)"
+                                    class="search-input"
+                                    oninput="window.movieManagement?.searchMovies()"
+                                >
+                            </div>
+                                <i class="fa fa-search search-icon"></i>
+                            </div>
+                            <button onclick="window.movieManagement?.openAdd()" class="add-user-button">
+                                <i class="fa fa-plus emoji"></i>Thêm Phim Mới
+                            </button>
+                            <button onclick="window.movieManagement?.updateDatabaseStatus()" class="add-user-button" style="margin-left: 10px;">
+                                <i class="fa fa-database emoji"></i>Cập Nhật CSDL
+                            </button>
+                        </div>
+                    <div class="table-scroll-area">
+                        <table class="user-table">
+                            <thead class="table-header-gradient">
+                                <tr>
+                                    <th class="table-header-cell w-[100px]">Mã Phim</th>
+                                    <th class="table-header-cell w-[180px]">Tên Phim</th>
+                                    <th class="table-header-cell w-[180px]">Mô Tả</th>
+                                    <th class="table-header-cell w-[130px]">Giới Hạn Tuổi</th>
+                                    <th class="table-header-cell w-[150px]">Định Dạng</th>
+                                    <th class="table-header-cell w-[150px]">Đạo Diễn</th>
+                                    <th class="table-header-cell w-[150px]">Diễn Viên</th>
+                                    <th class="table-header-cell w-[150px]">Thể Loại</th>
+                                    <th class="table-header-cell w-[150px] text-center">Ngày Khởi Chiếu</th>
+                                    <th class="table-header-cell w-[150px]">Ngôn Ngữ</th>
+                                    <th class="table-header-cell w-[100px] text-center">Poster</th>
+                                    <th class="table-header-cell w-[100px] text-center">Banner</th>
+                                    <th class="table-header-cell w-[150px]">Trailer</th>
+                                    <th class="table-header-cell w-[170px]">Trạng Thái</th>
+                                    <th class="table-header-cell w-[100px] text-center">Thời Lượng</th>
+                                    <th class="table-header-cell w-[100px] text-center">Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="movieTable" class="divide-y divide-gray-100 bg-white"></tbody>
+                        </table>
+                    </div>  
+                </div>
+            </main>
+        </div>
+    </div>
+
+<!-- Modal thêm / sửa phim -->
+<div id="movieModal" class="user-modal hidden">
+    <div class="user-modal-content" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center mb-2">
+            <h3 id="modalTitle" class="text-base font-semibold"></h3>
+            <button onclick="window.movieManagement?.closeModal()" class="text-gray-500 hover:text-gray-700 text-lg">&times;</button>
+        </div>
+
+        <form class="movie-form-grid-wide" onsubmit="event.preventDefault(); window.movieManagement?.saveMovie();">
+            <div class="form-field">
+                <label class="form-label">Mã phim *</label>
+                <input id="MaPhim" type="text" class="form-input bg-gray-100" placeholder="VD: PH001" readonly>
+                <p class="text-xs text-gray-500 mt-1">Mã phim được tạo tự động</p>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Tên phim *</label>
+                <input id="TenPhim" type="text" class="form-input" placeholder="VD: Avengers: Endgame" required>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Giới hạn tuổi</label>
+                <select id="GioiHanTuoi" class="form-input">
+                    <option value="">Chọn giới hạn tuổi</option>
+                    <option value="P">P - Phù hợp mọi lứa tuổi</option>
+                    <option value="K">K - Dưới 13 tuổi có người lớn đi cùng</option>
+                    <option value="T13">T13 - Từ 13 tuổi trở lên</option>
+                    <option value="T16">T16 - Từ 16 tuổi trở lên</option>
+                    <option value="T18">T18 - Từ 18 tuổi trở lên</option>
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Định dạng</label>
+                <select id="DinhDang" class="form-input">
+                    <option value="">Chọn định dạng</option>
+                    <option value="2D">2D</option>
+                    <option value="3D">3D</option>
+                    <option value="IMAX">IMAX</option>
+                    <option value="4DX">4DX</option>
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Đạo diễn</label>
+                <input id="DaoDien" type="text" class="form-input" placeholder="VD: Anthony Russo">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Diễn viên</label>
+                <input id="DienVien" type="text" class="form-input" placeholder="VD: Robert Downey Jr., Chris Evans">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Thể loại *</label>
+                <input id="TheLoai" type="text" class="form-input" placeholder="VD: Hành động, Khoa học viễn tưởng" required>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Ngày khởi chiếu *</label>
+                <input id="NgayKhoiChieu" type="date" class="form-input" required>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Ngôn ngữ</label>
+                <input id="NgonNgu" type="text" class="form-input" placeholder="VD: Tiếng Anh - Phụ đề Việt">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Trạng thái *</label>
+                <select id="TrangThai" class="form-input" required>
+                    <option value="">Chọn trạng thái</option>
+                    <option value="Phim đang chiếu">Phim đang chiếu</option>
+                    <option value="Phim sắp chiếu">Phim sắp chiếu</option>
+                    <option value="Phim đã chiếu">Phim đã chiếu</option>
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Thời lượng (phút) *</label>
+                <input id="ThoiLuong" type="number" min="1" class="form-input" placeholder="VD: 120" required>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Poster *</label>
+                <input id="Poster" type="file" class="form-input" accept="image/*">
+                <p class="text-xs text-gray-500 mt-1">Chọn file ảnh poster</p>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Banner *</label>
+                <input id="Banner" type="file" class="form-input" accept="image/*">
+                <p class="text-xs text-gray-500 mt-1">Chọn file ảnh banner</p>
+            </div>
+
+            <div class="form-field full-width">
+                <label class="form-label">Mô tả *</label>
+                <textarea id="MoTa" rows="2" class="form-input" placeholder="Mô tả về phim..." required></textarea>
+            </div>
+
+            <div class="form-field full-width">
+                <label class="form-label">Trailer (URL) *</label>
+                <input id="Trailer" type="url" class="form-input" placeholder="https://youtube.com/watch?v=..." required>
+            </div>
+        </form>
+
+        <div class="modal-buttons-bottom">
+            <button type="button" onclick="window.movieManagement?.saveMovie()" class="modal-button save">
+                Lưu
+            </button>
+            <button type="button" onclick="window.movieManagement?.closeModal()" class="modal-button cancel">
+                Hủy
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xem ảnh -->
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50 flex items-center justify-center">
+    <img id="modalImage" src="" alt="Preview" class="max-w-[85vw] max-h-[85vh] object-contain rounded-lg">
+</div>
+
+<!-- Modal video trailer -->
+<div id="video-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="window.closeVideoModal()">&times;</span>
+        <iframe id="youtubeVideo" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+
+</body>
+</html>
