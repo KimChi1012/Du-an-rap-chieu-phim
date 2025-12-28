@@ -4,6 +4,22 @@ import { showNotification } from './notification.js';
 let users = [];
 let mode = "add";
 
+// Helper function để format thời gian Việt Nam
+function formatVietnameseDateTime(dateString) {
+    if (!dateString) return "";
+    
+    const date = new Date(dateString);
+    return date.toLocaleString("vi-VN", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+}
+
 export function initUserManagement() {
     console.log('🚀 Khởi tạo User Management...');
     loadUsers();
@@ -91,16 +107,7 @@ function displayUsers(users) {
                     }
                 </div>
             </td>
-            <td class="px-6 py-4 text-sm text-center">${
-                user.NgayTao 
-                    ? (() => {
-                        const d = new Date(user.NgayTao);
-                        d.setHours(d.getHours() + 15);
-                        return d.toLocaleString("vi-VN");
-                    })()
-                    : ""
-            }
-            </td>
+            <td class="px-6 py-4 text-sm text-center">${formatVietnameseDateTime(user.NgayTao)}</td>
 
             <td class="px-6 py-4 text-sm text-center">
                 <div class="flex justify-center items-center gap-2 whitespace-nowrap">

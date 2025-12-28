@@ -47,10 +47,6 @@ export function closeNotification() {
   notification.addEventListener('transitionend', () => notification.remove(), { once: true });
 }
 
-const unavailableLinks = {
-  'booking-guide.html': 'Tính năng hướng dẫn sử dụng đang được phát triển. Vui lòng quay lại sau!'
-};
-
 function initLinkInterception() {
   document.addEventListener('click', (e) => {
     const link = e.target.closest('a');
