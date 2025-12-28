@@ -2,13 +2,14 @@
 .index-offer-modal {
   display: none;
   position: fixed;
-  z-index: 2000;
+  z-index: 10000;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   animation: fadeIn 0.3s ease;
+  overflow-y: auto;
 }
 
 .index-offer-modal {
@@ -58,10 +59,11 @@
   font-size: 35px;
   font-weight: bold;
   cursor: pointer;
-  z-index: 2001;
+  z-index: 10001;
   background: none;
   border: none;
   transition: color 0.3s ease;
+  pointer-events: auto;
 }
 
 .close {
@@ -85,4 +87,52 @@
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
+}
+/* Invoic
+e Modal Specific Styles */
+#invoiceModal {
+  z-index: 10000 !important;
+  pointer-events: auto;
+}
+
+#invoiceModal .modal-content {
+  pointer-events: auto;
+  position: relative;
+  z-index: 10001;
+}
+
+#invoiceModal .invoice-modal-content {
+  background-color: #000;
+  margin: 2% auto;
+  padding: 25px;
+  border: 10px solid transparent;
+  background: linear-gradient(#000, #000) padding-box,
+              var(--gradient-main) border-box;
+  max-width: 1000px;
+  min-height: 50vh;
+  animation: slideIn 0.3s ease;
+  position: relative;
+  z-index: 10001;
+  pointer-events: auto;
+}
+
+#closeInvoiceModal {
+  color: #fff !important;
+  position: absolute !important;
+  top: 2px !important;
+  right: 5px !important;
+  font-size: 35px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  z-index: 10002 !important;
+  background: none !important;
+  border: none !important;
+  transition: color 0.3s ease !important;
+  pointer-events: auto !important;
+}
+
+#closeInvoiceModal:hover {
+  background: var(--gradient-main) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
 }

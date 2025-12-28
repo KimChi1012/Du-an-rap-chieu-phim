@@ -81,7 +81,7 @@ export async function loadUserInfo() {
           <a href="auth-profile.html" class="menu-item">
             <i class="bi bi-person"></i> <p class="text-gradient">Thông tin cá nhân</p>
           </a>
-          <a href="history.html" class="menu-item">
+          <a href="auth-profile.html#history" class="menu-item">
             <i class="bi bi-clock-history"></i> <p class="text-gradient">Lịch sử đặt vé</p>
           </a>
           <a href="booking-guide.html" class="menu-item">

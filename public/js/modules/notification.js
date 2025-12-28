@@ -48,8 +48,6 @@ export function closeNotification() {
 }
 
 const unavailableLinks = {
-  'history.html': 'Tính năng lịch sử đặt vé đang được phát triển. Vui lòng quay lại sau!',
-  'booking-history.html': 'Tính năng lịch sử đặt vé đang được phát triển. Vui lòng quay lại sau!',
   'booking-guide.html': 'Tính năng hướng dẫn sử dụng đang được phát triển. Vui lòng quay lại sau!'
 };
 

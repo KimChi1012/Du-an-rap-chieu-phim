@@ -14,7 +14,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playwrite+AU+TAS:wght@100..400&family=WindSong:wght@400;500&family=Stint+Ultra+Expanded:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/components/auth-profile.css">
 </head>
 <body>
 
@@ -49,6 +48,9 @@
       </button>
       <button type="button" class="tab-btn" data-tab="account">
         Thông tin đăng nhập
+      </button>
+      <button type="button" class="tab-btn" data-tab="history">
+        Lịch sử đặt vé
       </button>
     </nav>
 
@@ -202,6 +204,23 @@
 
         </div>
 
+      </section>
+
+      <!-- ===== TAB: HISTORY ===== -->
+      <section class="tab-content" id="tab-history">
+        <div class="history-section">
+          <!-- Slideshow wrapper -->
+          <div class="history-slideshow-wrapper">
+            <!-- Arrow buttons -->
+            <button class="history-arrow left">&#10094;</button>
+            <div class="history-ticket-list" id="ticketList">
+              <p>⏳ Đang tải lịch sử đặt vé...</p>
+            </div>
+            <button class="history-arrow right">&#10095;</button>
+          </div>
+          <!-- Dots navigation -->
+          <div class="history-dots" id="historyDots"></div>
+        </div>
       </section>
 
       <!-- ===== FORM ACTIONS ===== -->

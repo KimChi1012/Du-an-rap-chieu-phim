@@ -324,9 +324,80 @@ function initTabs() {
       contents.forEach(c => c.classList.remove('active'));
 
       tab.classList.add('active');
-      document
-        .getElementById(`tab-${tab.dataset.tab}`)
-        ?.classList.add('active');
+      const targetTab = document.getElementById(`tab-${tab.dataset.tab}`);
+      targetTab?.classList.add('active');
+
+      // Update URL hash (only for non-personal tabs)
+      if (tab.dataset.tab === 'personal') {
+        // Remove hash for personal tab to keep URL clean
+        history.replaceState(null, null, window.location.pathname);
+      } else {
+        window.location.hash = tab.dataset.tab;
+      }
+
+      // Khởi tạo history manager khi chuyển sang tab history
+      if (tab.dataset.tab === 'history' && !window.authProfileHistoryManager) {
+        initHistoryInAuthProfile();
+      }
     });
   });
+
+  // Handle initial hash or hash changes
+  handleHashChange();
+  window.addEventListener('hashchange', handleHashChange);
+}
+
+function handleHashChange() {
+  const hash = window.location.hash.substring(1); // Remove #
+  const validTabs = ['personal', 'account', 'history'];
+  
+  // Default to personal if no hash or invalid hash
+  const targetTab = validTabs.includes(hash) ? hash : 'personal';
+  
+  // Find and click the corresponding tab
+  const tabButton = document.querySelector(`[data-tab="${targetTab}"]`);
+  if (tabButton && !tabButton.classList.contains('active')) {
+    // Remove active from all tabs and contents
+    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    
+    // Activate target tab
+    tabButton.classList.add('active');
+    const targetContent = document.getElementById(`tab-${targetTab}`);
+    if (targetContent) {
+      targetContent.classList.add('active');
+    }
+    
+    // Initialize history if needed
+    if (targetTab === 'history' && !window.authProfileHistoryManager) {
+      initHistoryInAuthProfile();
+    }
+    
+    // Update hash only if it's not personal (to keep URL clean for default tab)
+    if (targetTab !== 'personal' && window.location.hash !== `#${targetTab}`) {
+      window.location.hash = targetTab;
+    } else if (targetTab === 'personal' && window.location.hash) {
+      // Remove hash for personal tab
+      history.replaceState(null, null, window.location.pathname);
+    }
+  }
+}
+
+/* =====================================================
+   HISTORY FUNCTIONALITY IN AUTH PROFILE
+===================================================== */
+async function initHistoryInAuthProfile() {
+  try {
+    console.log('🎫 Initializing History in Auth Profile...');
+    
+    // Import HistoryManager
+    const { default: HistoryManager } = await import('./history.js');
+    
+    // Tạo instance riêng cho auth-profile
+    window.authProfileHistoryManager = new HistoryManager();
+    
+    console.log('✅ History in Auth Profile initialized successfully');
+  } catch (error) {
+    console.error('❌ Error initializing History in Auth Profile:', error);
+  }
 }
