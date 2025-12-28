@@ -38,6 +38,7 @@ import ChairManagement from './modules/chair-management.js';
 import SearchSystem from './modules/search.js';
 import MovieManagement from './modules/movie-management.js';
 import ServiceManagement from './modules/service-management.js';
+import RevenueManagement from './modules/revenue-management.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie_id') || 1;
@@ -388,6 +389,32 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     } else {
         console.log('ℹ️ Not a service management page or elements not found');
+    }
+
+    // Revenue Management initialization
+    const revenueTable = document.getElementById('topInvoicesTable');
+    const revenueModal = document.getElementById('invoiceModal');
+    
+    console.log('🎯 Revenue table found:', !!revenueTable);
+    console.log('🎯 Revenue modal found:', !!revenueModal);
+    console.log('🎯 Current page:', getCurrentPage());
+    
+    // Chỉ khởi tạo RevenueManagement khi đang ở trang revenue-management.html
+    if ((revenueTable || revenueModal) && getCurrentPage() === 'revenue-management.html') {
+        console.log('🎯 Revenue management page detected, initializing...');
+        
+        try {
+            console.log('🔄 Creating RevenueManagement instance...');
+            window.revenueManagement = new RevenueManagement();
+            console.log('✅ Revenue Management initialized successfully');
+            console.log('🎯 RevenueManagement instance:', window.revenueManagement);
+            
+        } catch (error) {
+            console.error('❌ Error initializing Revenue Management:', error);
+            console.error('❌ Error stack:', error.stack);
+        }
+    } else {
+        console.log('ℹ️ Not a revenue management page or elements not found');
     }
 
     window.initOfferManagement = function() {

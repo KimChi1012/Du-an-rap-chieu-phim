@@ -1,0 +1,578 @@
+/* Revenue Management Styles */
+.revenue-management {
+    background-color: #f8fafc;
+}
+
+.revenue-management nav div i,
+.revenue-management nav div span {
+    color: #4a4a4a;
+}
+
+.revenue-management nav div:hover i,
+.revenue-management nav div:hover span,
+.revenue-management nav div.active i,
+.revenue-management nav div.active span {
+    background: linear-gradient(
+        to bottom,
+        hsl(24, 89%, 29%) 0%,
+        #8a3b08 40%,
+        #e59d2c 50%,
+        #384d64 80%,
+        #2e4365 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+.revenue-management nav div {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.revenue-management nav div:hover {
+    background-color: rgba(246, 185, 59, 0.2);
+    border-left: 4px solid #e55039;
+    background-color: rgba(212, 160, 23, 0.08);
+}
+
+/* Filter Controls Grid */
+.revenue-management .filter-controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(138, 59, 8, 0.1);
+}
+
+.revenue-management .filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.revenue-management .filter-group label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #374151;
+    background: linear-gradient(135deg, #8a3b08 0%, #e59d2c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.revenue-management #filterButtonGroup {
+    display: flex;
+    align-items: end;
+}
+
+/* Chart Container */
+.revenue-management .chart-container {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin-top: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.revenue-management .chart-wrapper {
+    position: relative;
+    height: 400px;
+    width: 100%;
+    background: linear-gradient(135deg, rgba(138, 59, 8, 0.02) 0%, rgba(229, 157, 44, 0.02) 50%, rgba(46, 67, 101, 0.02) 100%);
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.revenue-management .chart-container h3 {
+    background: linear-gradient(135deg, #8a3b08 0%, #e59d2c 50%, #2e4365 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+/* Revenue Stats Cards */
+.revenue-stats-card {
+    background: linear-gradient(135deg, #8a3b08 0%, #e59d2c 50%, #2e4365 100%);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.revenue-stats-card:hover {
+    transform: translateY(-2px);
+}
+
+.revenue-stats-card .revenue-stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.revenue-stats-card .revenue-stat-label {
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+/* Loading Animation */
+.revenue-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: #6b7280;
+}
+
+.revenue-loading::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e5e7eb;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: revenue-spin 1s linear infinite;
+    margin-right: 0.5rem;
+}
+
+/* Revenue Table Specific Styles */
+.revenue-table-container {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.revenue-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.revenue-table th,
+.revenue-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.revenue-table th {
+    background: linear-gradient(135deg, #8a3b08 0%, #e59d2c 50%, #2e4365 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.revenue-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* Amount Styling */
+.revenue-amount-positive {
+    color: #059669;
+    font-weight: 600;
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.revenue-amount-negative {
+    color: #dc2626;
+    font-weight: 600;
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Filter Result Styles */
+#filteredResult {
+    min-height: 200px;
+}
+
+#filteredResult.revenue-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.revenue-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.revenue-invoice-modal {
+    background: white;
+    border-radius: 1rem;
+    max-width: 90vw;
+    max-height: 90vh;
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+.revenue-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: linear-gradient(135deg, #8a3b08 0%, #e59d2c 50%, #2e4365 100%);
+    color: white;
+}
+
+.revenue-modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.revenue-modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.revenue-modal-close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.revenue-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.revenue-modal-footer {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    justify-content: flex-end;
+}
+
+.revenue-modal-footer button {
+    padding: 12px 24px;
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #8a3b08 0%, #e59d2c 50%, #2e4365 100%) 1;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: #333;
+    font-size: 14px;
+}
+
+.revenue-modal-footer button span,
+.revenue-modal-footer button i {
+    background: linear-gradient(135deg, #8a3b08 0%, #e59d2c 50%, #2e4365 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.revenue-modal-footer button:hover {
+    background: linear-gradient(135deg, #8a3b08 0%, #e59d2c 50%, #2e4365 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.revenue-modal-footer button:hover span,
+.revenue-modal-footer button:hover i {
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: white;
+    background-clip: unset;
+    color: white;
+}
+
+/* Invoice Content in Modal */
+.revenue-modal-body .revenue-invoice-content {
+    padding: 2rem;
+}
+
+.revenue-modal-body .revenue-ticket-wrapper {
+    display: flex;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.revenue-modal-body .revenue-ticket-left {
+    flex: 2;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white;
+    padding: 2rem;
+    position: relative;
+}
+
+.revenue-modal-body .revenue-ticket-right {
+    flex: 1;
+    background: #f8f9fa;
+    padding: 2rem;
+    border-left: 2px dashed #ddd;
+}
+
+.revenue-modal-body .revenue-cinema-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.revenue-modal-body .revenue-cinema-header h1 {
+    font-family: 'Stint Ultra Expanded', serif;
+    font-size: 2rem;
+    margin: 0;
+    color: white;
+}
+
+.revenue-modal-body .revenue-ticket-title {
+    font-size: 0.875rem;
+    opacity: 0.8;
+    margin: 0.5rem 0 0 0;
+}
+
+.revenue-modal-body .revenue-movie-section {
+    margin-bottom: 2rem;
+}
+
+.revenue-modal-body .revenue-movie-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+    color: white;
+}
+
+.revenue-modal-body .revenue-movie-format {
+    font-size: 0.875rem;
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+}
+
+.revenue-modal-body .revenue-showtime-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.revenue-modal-body .revenue-info-group h4 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin: 0 0 0.25rem 0;
+}
+
+.revenue-modal-body .revenue-info-group .revenue-value {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.revenue-modal-body .revenue-seats-section {
+    margin-top: 2rem;
+}
+
+.revenue-modal-body .revenue-seats-title {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin: 0 0 1rem 0;
+}
+
+.revenue-modal-body .revenue-seats-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.revenue-modal-body .revenue-seat-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.revenue-modal-body .revenue-invoice-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.revenue-modal-body .revenue-invoice-header h3 {
+    font-size: 1.125rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+    color: #1f2937;
+}
+
+.revenue-modal-body .revenue-invoice-number {
+    font-size: 1rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #8a3b08 0%, #e59d2c 50%, #2e4365 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.revenue-modal-body .revenue-ticket-details {
+    margin-bottom: 2rem;
+}
+
+.revenue-modal-body .revenue-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.revenue-modal-body .revenue-detail-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.revenue-modal-body .revenue-detail-value {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.revenue-modal-body .revenue-services-section {
+    margin-top: 1rem;
+}
+
+.revenue-modal-body .revenue-services-divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 1rem 0;
+}
+
+.revenue-modal-body .revenue-total-section {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 2px solid #e5e7eb;
+}
+
+.revenue-modal-body .revenue-total-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0 0 0.5rem 0;
+}
+
+.revenue-modal-body .revenue-total-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #059669;
+    margin: 0 0 0.5rem 0;
+    background: linear-gradient(135deg, #8a3b08 0%, #e59d2c 50%, #2e4365 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.revenue-modal-body .revenue-payment-status {
+    display: inline-block;
+    background: #dcfce7;
+    color: #166534;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.revenue-action-button-wrapper {
+    display: flex;
+    justify-content: center;
+    background: var(--gradient-main);
+    border-radius: 6px;
+    padding: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.revenue-action-button {
+    background: white;
+    border: none;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.revenue-action-button span,
+.revenue-action-button .emoji {
+    background: var(--gradient-text-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.revenue-action-button .emoji {
+    font-size: 14px;
+    margin-right: 4px;
+}
+
+.revenue-action-button:hover {
+    background: var(--gradient-main);
+    transform: translateY(-1px);
+}
+
+.revenue-action-button:hover span,
+.revenue-action-button:hover .emoji {
+    color: white !important;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: white !important;
+    background-clip: unset !important;
+}
+
+.revenue-gradient-text-main {
+    background: linear-gradient(135deg, #8a3b08 0%, #e59d2c 50%, #2e4365 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+}
+
+/* Animation keyframes */
+@keyframes revenue-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
