@@ -292,3 +292,120 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+/* Admin Menu Styles */
+.admin-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  top: -10px;
+  margin-top: 10px;
+}
+
+.admin-menu h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.admin-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  margin: 0 -20px;
+  color: #777;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  border-radius: 8px;
+  position: relative;
+}
+
+.admin-link i {
+  font-size: 16px;
+  color: #777;
+  width: 20px;
+  text-align: center;
+}
+
+.admin-link:hover {
+  background: linear-gradient(
+    to right,
+    rgba(255, 107, 53, 0.08),
+    rgba(255, 107, 53, 0.05)
+  );
+  transform: translateX(2px);
+}
+
+.admin-link:hover::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, #ff6b35, #e55a2b);
+}
+
+.admin-link:hover .text-gradient,
+.admin-link:hover i {
+  background: linear-gradient(135deg, #ff6b35, #e55a2b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.admin-link .text-gradient {
+  position: relative;
+  top: 25px;
+  left: 10px;
+}
+
+/* Admin Toggle Container */
+.admin-toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  margin: 0 -20px;
+  border-radius: 8px;
+  transition: background 0.25s ease;
+}
+
+.admin-toggle-container:hover {
+  background: linear-gradient(
+    to right,
+    rgba(255, 107, 53, 0.05),
+    rgba(255, 107, 53, 0.02)
+  );
+}
+
+.admin-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #777;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.admin-toggle-label i {
+  font-size: 16px;
+  color: #777;
+}
+
+.admin-toggle-container:hover .admin-toggle-label .text-gradient,
+.admin-toggle-container:hover .admin-toggle-label i {
+  background: var(--gradient-text-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
