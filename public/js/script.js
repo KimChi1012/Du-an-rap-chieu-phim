@@ -36,6 +36,7 @@ import RoomManagement from './modules/room-management.js';
 import ChairManagement from './modules/chair-management.js';
 import SearchSystem from './modules/search.js';
 import MovieManagement from './modules/movie-management.js';
+import ServiceManagement from './modules/service-management.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie_id') || 1;
@@ -351,6 +352,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     } else {
         console.log('ℹ️ Not a movie management page or elements not found');
+    }
+
+    const serviceTable = document.getElementById('serviceTable');
+    const serviceModal = document.getElementById('serviceModal');
+    
+    console.log('🎯 Service table found:', !!serviceTable);
+    console.log('🎯 Service modal found:', !!serviceModal);
+    console.log('🎯 Current page:', getCurrentPage());
+    
+    // Chỉ khởi tạo ServiceManagement khi đang ở trang service-management.html
+    if ((serviceTable || serviceModal) && getCurrentPage() === 'service-management.html') {
+        console.log('🎯 Service management page detected, initializing...');
+        
+        try {
+            console.log('🔄 Creating ServiceManagement instance...');
+            window.serviceManagement = new ServiceManagement();
+            console.log('✅ Service Management initialized successfully');
+            console.log('🎯 ServiceManagement instance:', window.serviceManagement);
+            
+        } catch (error) {
+            console.error('❌ Error initializing Service Management:', error);
+            console.error('❌ Error stack:', error.stack);
+        }
+    } else {
+        console.log('ℹ️ Not a service management page or elements not found');
     }
 
     window.initOfferManagement = function() {
