@@ -123,6 +123,92 @@ class ServiceManagement {
         this.renderTable();
     }
 
+    openAdd() {
+        this.isEditMode = false;
+        this.currentService = null;
+        this.showModal('Thêm dịch vụ mới');
+        this.clearForm();
+        this.generateNextMaDV(); // Tự động tạo mã dịch vụ
+    }
+
+    editService(maDV) {
+        const service = this.services.find(d => d.MaDV == maDV);
+        if (!service) return;
+
+        this.isEditMode = true;
+        this.currentService = service;
+        this.showModal('Sửa thông tin dịch vụ');
+        this.fillForm(service);
+    }
+
+    async deleteService(maDV) {
+        const service = this.services.find(d => d.MaDV == maDV);
+        if (!service) return;
+
+        const confirmDelete = () => {
+            return new Promise((resolve) => {
+                const notification = document.createElement('div');
+                notification.className = 'notification notification-show';
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="notification-icon fa-solid fa-exclamation-triangle" aria-hidden="true"></i>
+                        <span class="notification-message">Bạn có chắc muốn xóa dịch vụ "${service.TenDV}" và ảnh liên quan?</span>
+                        <div class="confirm-dialog-actions">
+                            <button class="confirm-button confirm-yes">Xóa</button>
+                            <button class="confirm-button confirm-no">Hủy</button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(notification);
+                requestAnimationFrame(() => notification.classList.add('show'));
+
+                notification.querySelector('.confirm-yes').addEventListener('click', () => {
+                    notification.remove();
+                    resolve(true);
+                });
+
+                notification.querySelector('.confirm-no').addEventListener('click', () => {
+                    notification.remove();
+                    resolve(false);
+                });
+            });
+        };
+
+        const confirmed = await confirmDelete();
+        if (!confirmed) return;
+
+        try {
+            const result = await API.deleteService(maDV);
+            if (result.success) {
+                showNotification('Xóa dịch vụ và ảnh thành công', 'success');
+                await this.loadServices();
+            } else {
+                showNotification(result.error || 'Lỗi khi xóa dịch vụ', 'error');
+            }
+        } catch (error) {
+            console.error('Lỗi khi xóa dịch vụ:', error);
+            showNotification('Lỗi khi xóa dịch vụ', 'error');
+        }
+    }
+
+    showModal(title) {
+        const modal = document.getElementById('serviceModal');
+        const modalTitle = document.getElementById('modalTitle');
+        
+        if (modal && modalTitle) {
+            modalTitle.textContent = title;
+            modal.classList.remove('hidden');
+        }
+    }
+
+    closeModal() {
+        const modal = document.getElementById('serviceModal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    }
+
     clearForm() {
         const fields = ['MaDV', 'TenDV', 'DonGia', 'MoTa', 'Anh'];
         fields.forEach(field => {
@@ -216,6 +302,34 @@ class ServiceManagement {
         }
     }
 
+    // Tạo mã dịch vụ tiếp theo
+    generateNextMaDV() {
+        let maxNumber = 0;
+        
+        // Tìm số lớn nhất trong các mã hiện có
+        this.services.forEach(service => {
+            if (service.MaDV && service.MaDV.startsWith('DV')) {
+                const number = parseInt(service.MaDV.substring(2));
+                if (!isNaN(number) && number > maxNumber) {
+                    maxNumber = number;
+                }
+            }
+        });
+        
+        // Tạo mã mới
+        const nextNumber = maxNumber + 1;
+        const nextMaDV = 'DV' + String(nextNumber).padStart(3, '0');
+        
+        // Hiển thị trong form
+        const maDVElement = document.getElementById('MaDV');
+        if (maDVElement) {
+            maDVElement.value = nextMaDV;
+            maDVElement.disabled = true; // Không cho sửa
+        }
+        
+        console.log('Generated next MaDV:', nextMaDV);
+    }
+
     fillForm(service) {
         const fields = ['MaDV', 'TenDV', 'DonGia', 'MoTa'];
         fields.forEach(field => {
@@ -239,6 +353,30 @@ class ServiceManagement {
             this.showExistingImage(service.Anh);
         } else {
             this.hideImagePreview();
+        }
+    }
+
+    async saveService() {
+        const formData = this.getFormData();
+        
+        if (!this.validateForm(formData)) {
+            return;
+        }
+
+        try {
+            if (this.isEditMode) {
+                await API.updateService(formData);
+                showNotification('Cập nhật dịch vụ thành công', 'success');
+            } else {
+                await API.addService(formData);
+                showNotification('Thêm dịch vụ thành công', 'success');
+            }
+            
+            this.closeModal();
+            await this.loadServices();
+        } catch (error) {
+            console.error('Lỗi khi lưu dịch vụ:', error);
+            showNotification('Lỗi khi lưu dịch vụ', 'error');
         }
     }
 
