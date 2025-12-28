@@ -1,0 +1,153 @@
+/* ================= BOOKING GUIDE COMPONENT ================= */
+.booking-guide-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.booking-guide-slideshow {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* ================= SLIDES ================= */
+.booking-guide-slide {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.booking-guide-slide.active {
+  display: block;
+}
+
+.booking-guide-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background-color: #ffffff;
+}
+
+/* ================= TEXT OVERLAY ================= */
+.booking-guide-text-overlay {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  padding: 15px 20px;
+  box-sizing: border-box;
+}
+
+.booking-guide-text-overlay h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.booking-guide-text-overlay p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* ================= NAVIGATION BUTTONS ================= */
+.booking-guide-prev, .booking-guide-next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  color: #fff;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.booking-guide-slideshow:hover .booking-guide-prev,
+.booking-guide-slideshow:hover .booking-guide-next {
+  opacity: 1;
+}
+
+.booking-guide-prev:hover, .booking-guide-next:hover {
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.booking-guide-prev { left: 10px; }
+.booking-guide-next { right: 10px; }
+
+/* ================= DOT INDICATORS ================= */
+.booking-guide-dots {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.booking-guide-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none;
+}
+
+.booking-guide-dot:hover {
+  background: #999;
+  transform: scale(1.1);
+}
+
+.booking-guide-dot.active {
+  background: var(--gradient-main);
+}
+
+/* ================= LIGHTBOX ================= */
+.booking-guide-lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.booking-guide-lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+}

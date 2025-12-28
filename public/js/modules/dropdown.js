@@ -10,10 +10,22 @@ export function initDropdown() {
       return;
     }
 
-    if (e.target.closest("#header-dropdown") || e.target.closest("#header-user")) {
+    // Chỉ preventDefault khi click vào icon dropdown, không phải toàn bộ header-user
+    if (e.target.closest("#header-dropdown")) {
       e.preventDefault();
       const userDropdownMenu = document.querySelector("#header-dropdown-menu");
       if (userDropdownMenu) {
+        userDropdownMenu.classList.remove("hidden");
+        userDropdownMenu.classList.toggle("show");
+      }
+      return;
+    }
+
+    // Nếu click vào header-user nhưng không phải dropdown icon, vẫn mở dropdown
+    if (e.target.closest("#header-user") && !e.target.closest("#header-dropdown-menu a")) {
+      const userDropdownMenu = document.querySelector("#header-dropdown-menu");
+      if (userDropdownMenu) {
+        userDropdownMenu.classList.remove("hidden");
         userDropdownMenu.classList.toggle("show");
       }
       return;
@@ -27,11 +39,13 @@ export function initDropdown() {
     }
     if (!e.target.closest("#header-user")) {
       userDropdownMenu?.classList.remove("show");
+      userDropdownMenu?.classList.add("hidden");
     }
 
     if (e.target.matches(".dropdown-content a") || e.target.matches("#header-dropdown-menu a")) {
       dropdownContent?.classList.remove("show");
       userDropdownMenu?.classList.remove("show");
+      userDropdownMenu?.classList.add("hidden");
     }
   });
 }

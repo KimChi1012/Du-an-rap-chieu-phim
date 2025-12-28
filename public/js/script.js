@@ -24,6 +24,7 @@ import { initMovieSlider } from "./modules/movie-slider.js";
 import { initOfferModal, initOfferSlider } from "./modules/offer-slider.js";
 import { initAuth } from './modules/auth.js';
 import { initAuthProfile } from './modules/auth-profile.js';
+import BookingGuideComponent from './modules/booking-guide-component.js';
 import BannerManagement from './modules/banner-management.js';
 import { BookingSystem } from './modules/booking.js';
 import { initPrivacyPolicy } from './modules/privacy-policy.js';
@@ -85,6 +86,16 @@ async function initPageSpecific() {
 
   if (currentPage === 'auth-profile.html') {
     initAuthProfile();
+    
+    // Initialize booking guide component when auth-profile page loads
+    setTimeout(() => {
+      const bookingGuideContainer = document.getElementById('booking-guide-container');
+      if (bookingGuideContainer && !window.bookingGuideComponent) {
+        window.bookingGuideComponent = new BookingGuideComponent('booking-guide-container');
+        console.log('✅ BookingGuide component initialized');
+      }
+    }, 500);
+    
     console.log('✅ AuthProfile module initialized');
   }
 

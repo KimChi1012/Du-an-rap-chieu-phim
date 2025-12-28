@@ -339,6 +339,19 @@ function initTabs() {
       if (tab.dataset.tab === 'history' && !window.authProfileHistoryManager) {
         initHistoryInAuthProfile();
       }
+      
+      // Khởi tạo booking guide component khi chuyển sang tab booking-guide
+      if (tab.dataset.tab === 'booking-guide' && !window.bookingGuideComponent) {
+        setTimeout(() => {
+          const bookingGuideContainer = document.getElementById('booking-guide-container');
+          if (bookingGuideContainer) {
+            import('./booking-guide-component.js').then(module => {
+              window.bookingGuideComponent = new module.default('booking-guide-container');
+              console.log('✅ BookingGuide component initialized from tab click');
+            });
+          }
+        }, 100);
+      }
     });
   });
 
@@ -349,7 +362,7 @@ function initTabs() {
 
 function handleHashChange() {
   const hash = window.location.hash.substring(1); // Remove #
-  const validTabs = ['personal', 'account', 'history'];
+  const validTabs = ['personal', 'account', 'history', 'booking-guide'];
   
   // Default to personal if no hash or invalid hash
   const targetTab = validTabs.includes(hash) ? hash : 'personal';
@@ -371,6 +384,19 @@ function handleHashChange() {
     // Initialize history if needed
     if (targetTab === 'history' && !window.authProfileHistoryManager) {
       initHistoryInAuthProfile();
+    }
+    
+    // Initialize booking guide if needed
+    if (targetTab === 'booking-guide' && !window.bookingGuideComponent) {
+      setTimeout(() => {
+        const bookingGuideContainer = document.getElementById('booking-guide-container');
+        if (bookingGuideContainer) {
+          const { default: BookingGuideComponent } = import('./booking-guide-component.js').then(module => {
+            window.bookingGuideComponent = new module.default('booking-guide-container');
+            console.log('✅ BookingGuide component initialized from tab switch');
+          });
+        }
+      }, 100);
     }
     
     // Update hash only if it's not personal (to keep URL clean for default tab)

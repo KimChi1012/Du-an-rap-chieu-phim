@@ -13,4 +13,8 @@ if (!$conn) {
 }
 
 mysqli_set_charset($conn, "utf8mb4");
+
+mysqli_query($conn, "SET time_zone = '+07:00'");
+
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 ?>

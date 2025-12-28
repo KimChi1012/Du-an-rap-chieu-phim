@@ -22,7 +22,6 @@ export async function loadUserInfo() {
     const headerAvatar = document.getElementById("header-avatar");
     const headerUserName = document.getElementById("header-user-name");
     const headerDropdownMenu = document.getElementById("header-dropdown-menu");
-    const headerLogoutBtn = document.getElementById("header-logout-btn");
 
     if (!userContent || !userFooter || !userName || !avatarImg) return;
 
@@ -51,13 +50,6 @@ export async function loadUserInfo() {
             location.reload();
           };
         }
-
-        const headerDropdown = document.getElementById("header-dropdown");
-        if (headerDropdown) {
-          headerDropdown.onclick = () => {
-            headerDropdownMenu.classList.toggle("hidden");
-          };
-        }
       }
 
       const fullName = data.user.HoTen.trim();
@@ -84,7 +76,7 @@ export async function loadUserInfo() {
           <a href="auth-profile.html#history" class="menu-item">
             <i class="bi bi-clock-history"></i> <p class="text-gradient">Lịch sử đặt vé</p>
           </a>
-          <a href="booking-guide.html" class="menu-item">
+          <a href="auth-profile.html#booking-guide" class="menu-item">
             <i class="bi bi-book"></i> <p class="text-gradient">Hướng dẫn đặt vé</p>
           </a>
           ${
