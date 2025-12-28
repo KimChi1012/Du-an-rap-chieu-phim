@@ -39,6 +39,66 @@ class MovieManagement {
         }
     }
 
+    async updateDatabaseStatus() {
+        try {
+            showNotification('Đang cập nhật CSDL...', 'info');
+            
+            const response = await fetch('../api/movie/update_status_direct.php');
+            const result = await response.json();
+            
+            if (result.success) {
+                console.log('📊 Kết quả cập nhật CSDL:', result.data);
+                
+                if (result.data.updatedCount > 0) {
+                    showNotification(`${result.message}`, 'success');
+                    console.table(result.data.updates);
+                    
+                    // Reload lại danh sách phim từ database
+                    setTimeout(() => {
+                        this.loadMovies();
+                    }, 1000);
+                } else {
+                    showNotification(`${result.message}`, 'info');
+                }
+            } else {
+                console.error('❌ Lỗi cập nhật CSDL:', result.error);
+                showNotification(`Lỗi: ${result.error}`, 'warning');
+            }
+        } catch (error) {
+            console.error('❌ Lỗi khi gọi API:', error);
+            showNotification('Không thể kết nối đến server PHP. Vui lòng khởi động XAMPP/WAMP.', 'warning');
+        }
+    }
+
+    // Thêm phương thức để cập nhật trạng thái phim cụ thể
+    async updateMovieStatus(movieId, status) {
+        try {
+            const response = await fetch('../api/movie/update_movie_status.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    MaPhim: movieId, 
+                    TrangThai: status 
+                })
+            });
+            
+            const result = await response.json();
+            if (result.success) {
+                showNotification('Cập nhật trạng thái phim thành công', 'success');
+                await this.loadMovies();
+                return result;
+            } else {
+                throw new Error(result.error || 'Lỗi khi cập nhật trạng thái phim');
+            }
+        } catch (error) {
+            console.error('Lỗi khi cập nhật trạng thái phim:', error);
+            showNotification('Lỗi khi cập nhật trạng thái phim: ' + error.message, 'warning');
+            throw error;
+        }
+    }
+
     renderTable() {
         const tbody = document.getElementById('movieTable');
         if (!tbody) return;
@@ -146,7 +206,7 @@ class MovieManagement {
         return tr;
     }
 
-    searchMovies() {
+    async searchMovies() {
         const searchInput = document.getElementById('searchInput');
         if (!searchInput) return;
 
@@ -155,6 +215,7 @@ class MovieManagement {
         if (!searchTerm) {
             this.filteredMovies = [...this.movies];
         } else {
+            // Có thể sử dụng API search nếu cần
             this.filteredMovies = this.movies.filter(movie => {
                 const tenPhim = removeVietnameseAccents(movie.TenPhim || '');
                 const moTa = removeVietnameseAccents(movie.MoTa || '');
@@ -173,6 +234,154 @@ class MovieManagement {
         }
         
         this.renderTable();
+    }
+
+    // Thêm phương thức để sử dụng search API
+    async searchMoviesAPI(searchTerm) {
+        try {
+            const response = await fetch(`../api/movie/search_movies.php?q=${encodeURIComponent(searchTerm)}`);
+            const result = await response.json();
+            if (result.success) {
+                return result.data;
+            } else {
+                throw new Error(result.error || 'Lỗi khi tìm kiếm phim');
+            }
+        } catch (error) {
+            console.error('Lỗi khi tìm kiếm phim:', error);
+            throw error;
+        }
+    }
+
+    // Thêm phương thức để lấy phim đang chiếu
+    async getNowShowingMovies() {
+        try {
+            const result = await MovieAPI.getNowShowing();
+            if (result.success) {
+                return result.data;
+            } else {
+                throw new Error(result.error || 'Lỗi khi tải phim đang chiếu');
+            }
+        } catch (error) {
+            console.error('Lỗi khi tải phim đang chiếu:', error);
+            throw error;
+        }
+    }
+
+    // Thêm phương thức để lấy phim sắp chiếu
+    async getComingSoonMovies() {
+        try {
+            const result = await MovieAPI.getComingSoon();
+            if (result.success) {
+                return result.data;
+            } else {
+                throw new Error(result.error || 'Lỗi khi tải phim sắp chiếu');
+            }
+        } catch (error) {
+            console.error('Lỗi khi tải phim sắp chiếu:', error);
+            throw error;
+        }
+    }
+
+    // Thêm phương thức để lấy chi tiết phim
+    async getMovieDetail(movieId) {
+        try {
+            const result = await MovieAPI.getMovieDetail(movieId);
+            if (result.success) {
+                return result.data;
+            } else {
+                throw new Error(result.error || 'Lỗi khi tải chi tiết phim');
+            }
+        } catch (error) {
+            console.error('Lỗi khi tải chi tiết phim:', error);
+            throw error;
+        }
+    }
+
+    openAdd() {
+        this.isEditMode = false;
+        this.currentMovie = null;
+        this.showModal('Thêm phim mới');
+        this.clearForm();
+        this.autoGenerateMovieCode();
+    }
+
+    editMovie(maPhim) {
+        const movie = this.movies.find(p => p.MaPhim == maPhim);
+        if (!movie) return;
+
+        this.isEditMode = true;
+        this.currentMovie = movie;
+        this.showModal('Sửa thông tin phim');
+        this.fillForm(movie);
+    }
+
+    async deleteMovie(maPhim) {
+        const movie = this.movies.find(p => p.MaPhim == maPhim);
+        if (!movie) return;
+
+        const confirmDelete = () => {
+            return new Promise((resolve) => {
+                const notification = document.createElement('div');
+                notification.className = 'notification notification-show';
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="notification-icon fa-solid fa-exclamation-triangle" aria-hidden="true"></i>
+                        <span class="notification-message">Bạn có chắc muốn xóa phim "${movie.TenPhim}"?</span>
+                        <div class="confirm-dialog-actions">
+                            <button class="confirm-button confirm-yes">Xóa</button>
+                            <button class="confirm-button confirm-no">Hủy</button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(notification);
+                requestAnimationFrame(() => notification.classList.add('show'));
+
+                notification.querySelector('.confirm-yes').addEventListener('click', () => {
+                    notification.remove();
+                    resolve(true);
+                });
+
+                notification.querySelector('.confirm-no').addEventListener('click', () => {
+                    notification.remove();
+                    resolve(false);
+                });
+            });
+        };
+
+        const confirmed = await confirmDelete();
+        if (!confirmed) return;
+
+        try {
+            const movieAPI = new MovieAPI();
+            const result = await movieAPI.deleteMovieAPI(maPhim);
+            if (result.success) {
+                showNotification('Xóa phim thành công', 'success');
+                await this.loadMovies();
+            } else {
+                showNotification('Lỗi: ' + result.error, 'warning');
+            }
+        } catch (error) {
+            console.error('Lỗi khi xóa phim:', error);
+            showNotification('Lỗi khi xóa phim: ' + error.message, 'warning');
+        }
+    }
+
+    showModal(title) {
+        const modal = document.getElementById('movieModal');
+        const modalTitle = document.getElementById('modalTitle');
+        
+        if (modal && modalTitle) {
+            modalTitle.textContent = title;
+            modal.classList.remove('hidden');
+        }
+    }
+
+    closeModal() {
+        const modal = document.getElementById('movieModal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
     }
 
     viewImage(imageSrc, title) {
@@ -225,6 +434,48 @@ class MovieManagement {
                 }
             }
         });
+    }
+
+    async saveMovie() {
+        const formData = this.getFormData();
+        
+        console.log('Form data before validation:', formData);
+        
+        if (!this.validateForm(formData)) {
+            return;
+        }
+
+        try {
+            console.log('Saving movie, isEditMode:', this.isEditMode);
+            
+            const movieAPI = new MovieAPI();
+            let result;
+            if (this.isEditMode) {
+                result = await movieAPI.updateMovieAPI(formData);
+                console.log('Update result:', result);
+                showNotification('Cập nhật phim thành công', 'success');
+            } else {
+                result = await movieAPI.addMovieAPI(formData);
+                console.log('Add result:', result);
+                showNotification('Thêm phim thành công', 'success');
+            }
+            
+            this.closeModal();
+            await this.loadMovies();
+        } catch (error) {
+            console.error('Lỗi khi lưu phim:', error);
+            
+            // Show detailed error information
+            let errorMessage = error.message;
+            if (error.message.includes('Unexpected end of JSON input')) {
+                errorMessage = 'Server trả về dữ liệu không hợp lệ. Kiểm tra console để xem chi tiết.';
+            }
+            
+            showNotification('Lỗi khi lưu phim: ' + errorMessage, 'warning');
+            
+            // Also show an alert with more details for debugging
+            alert('Chi tiết lỗi:\n' + error.message + '\n\nKiểm tra console (F12) để xem thêm thông tin.');
+        }
     }
 
     getFormData() {
@@ -287,6 +538,34 @@ class MovieManagement {
         return labels[field] || field;
     }
 
+    async autoGenerateMovieCode() {
+        try {
+            const response = await fetch('../api/movie/generate_simple_code.php');
+            const data = await response.json();
+            
+            if (data.success) {
+                const maPhimInput = document.getElementById('MaPhim');
+                if (maPhimInput) {
+                    maPhimInput.value = data.movieCode;
+                }
+            } else {
+                console.error('Lỗi tạo mã phim:', data.error);
+
+                const maPhimInput = document.getElementById('MaPhim');
+                if (maPhimInput) {
+                    maPhimInput.value = 'PH001';
+                }
+            }
+        } catch (error) {
+            console.error('Lỗi khi tạo mã phim:', error);
+
+            const maPhimInput = document.getElementById('MaPhim');
+            if (maPhimInput) {
+                maPhimInput.value = 'PH001';
+            }
+        }
+    }
+
     setupEventListeners() {
         const searchInput = document.getElementById('searchInput');
         if (searchInput) {
@@ -303,6 +582,50 @@ class MovieManagement {
                 }
             });
         }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                this.closeModal();
+                this.closeImageModal();
+            }
+        });
+
+        // Thêm event listener cho filter theo trạng thái (nếu có)
+        const statusFilter = document.getElementById('statusFilter');
+        if (statusFilter) {
+            statusFilter.addEventListener('change', () => this.filterByStatus());
+        }
+    }
+
+    // Thêm phương thức lọc theo trạng thái
+    filterByStatus() {
+        const statusFilter = document.getElementById('statusFilter');
+        if (!statusFilter) return;
+
+        const selectedStatus = statusFilter.value;
+        
+        if (!selectedStatus || selectedStatus === 'all') {
+            this.filteredMovies = [...this.movies];
+        } else {
+            this.filteredMovies = this.movies.filter(movie => 
+                movie.TrangThai === selectedStatus
+            );
+        }
+        
+        this.renderTable();
+    }
+
+    // Thêm phương thức để lấy thống kê phim
+    getMovieStats() {
+        const stats = {
+            total: this.movies.length,
+            nowShowing: this.movies.filter(m => m.TrangThai === 'Phim đang chiếu').length,
+            comingSoon: this.movies.filter(m => m.TrangThai === 'Phim sắp chiếu').length,
+            ended: this.movies.filter(m => m.TrangThai === 'Phim đã kết thúc').length
+        };
+        
+        console.log('📊 Thống kê phim:', stats);
+        return stats;
     }
 }
 
