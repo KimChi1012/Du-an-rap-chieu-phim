@@ -1,0 +1,474 @@
+.hc-search-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 80px 20px 20px 20px;
+}
+
+.hc-search-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+    min-height: calc(100vh - 200px);
+}
+
+.hc-search-sidebar {
+    padding: 18px;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.hc-search-results {
+    min-height: 500px;
+}
+
+.hc-search-form {
+    margin: 0;
+}
+
+.hc-search-form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.hc-search-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.hc-search-form-group label {
+    margin-bottom: 4px;
+    font-weight: 600;
+    background: var(--gradient-text-main);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hc-search-form-group input,
+.hc-search-form-group select {
+    padding: 7px 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.hc-search-form-group input:focus,
+.hc-search-form-group select:focus {
+    outline: none;
+    border-color: #e59d2c;
+    box-shadow: 0 0 0 3px rgba(229, 157, 44, 0.1);
+}
+
+.hc-search-form-group input:hover,
+.hc-search-form-group select:hover {
+    border-color: #bc7709;
+}
+
+.hc-search-year-range {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hc-search-year-range input {
+    flex: 1;
+}
+
+.hc-search-year-range span {
+    color: #8a3b08;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.hc-search-button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.hc-search-btn-search,
+.hc-search-btn-reset {
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: 100%;
+}
+
+.hc-search-btn-search {
+    background: transparent;
+    color: #e59d2c;
+    border: 2px solid;
+    position: relative;
+    overflow: hidden;
+}
+
+.hc-search-btn-search::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-horizontal);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.hc-search-btn-search:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(229, 157, 44, 0.4);
+}
+
+.hc-search-btn-search:hover::before {
+    opacity: 1;
+}
+
+.hc-search-btn-reset {
+    background: rgba(46, 67, 101, 0.1);
+    color: #2e4365;
+    border: 2px solid #2e4365;
+}
+
+.hc-search-btn-reset:hover {
+    background: #2e4365;
+    color: white;
+    transform: translateY(-2px);
+}
+
+body.search .hc-search-results-content {
+    margin-top: 0;
+}
+
+body.search .hc-search-loading-container {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
+}
+
+body.search .hc-search-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(229, 157, 44, 0.2);
+    border-top: 3px solid #e59d2c;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+body.search .hc-search-loading-container p {
+    color: #2e4365;
+    font-weight: 600;
+    font-size: 16px;
+    margin: 0;
+}
+
+body.search .hc-search-error-container {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
+    color: #e74c3c;
+}
+
+body.search .hc-search-error-container i {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+body.search .hc-search-no-results {
+    text-align: center;
+    padding: 50px 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
+    color: #666;
+}
+
+body.search .hc-search-no-results i {
+    font-size: 50px;
+    margin-bottom: 15px;
+    color: #e59d2c;
+    opacity: 0.5;
+}
+
+body.search .hc-search-no-results h3 {
+    margin-bottom: 8px;
+    background: var(--gradient-text-main);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 20px;
+}
+
+.hc-search-results-header {
+    margin-bottom: 25px;
+    padding: 20px;
+}
+
+.hc-search-results-header h3 {
+    margin-bottom: 8px;
+    background: var(--gradient-text-main);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.hc-search-summary {
+    color: #666;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 8px 0;
+    border-top: 1px solid rgba(229, 157, 44, 0.2);
+    margin-top: 8px;
+}
+
+.hc-search-movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.hc-search-movie-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid rgba(229, 157, 44, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.hc-search-movie-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    border-color: rgba(229, 157, 44, 0.3);
+}
+
+.hc-search-movie-card .hc-search-movie-poster {
+    position: relative;
+    height: 320px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border-radius: 0;
+}
+
+.hc-search-movie-card .hc-search-movie-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+    border-radius: 0;
+}
+
+.hc-search-movie-card:hover .hc-search-movie-poster img {
+    transform: scale(1.05);
+}
+
+.hc-search-movie-card .hc-search-movie-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(138, 59, 8, 0.85), rgba(229, 157, 44, 0.85));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hc-search-movie-card:hover .hc-search-movie-overlay {
+    opacity: 1;
+}
+
+.hc-search-movie-card .hc-search-movie-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.hc-search-movie-card .hc-search-btn-info,
+.hc-search-movie-card .hc-search-btn-book {
+    background: white;
+    border: 2px solid;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #e59d2c;
+    font-weight: 600;
+    font-size: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.hc-search-movie-card .hc-search-btn-info::before,
+.hc-search-movie-card .hc-search-btn-book::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-horizontal);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.hc-search-movie-card .hc-search-btn-info:hover,
+.hc-search-movie-card .hc-search-btn-book:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(229, 157, 44, 0.3);
+}
+
+.hc-search-movie-card .hc-search-btn-info:hover::before,
+.hc-search-movie-card .hc-search-btn-book:hover::before {
+    opacity: 1;
+}
+
+.hc-search-movie-card .hc-search-movie-status {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 10px;
+    border-radius: 15px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hc-search-movie-card .hc-search-status-now-showing {
+    background: rgba(39, 174, 96, 0.9);
+    color: white;
+}
+
+.hc-search-movie-card .hc-search-status-coming-soon {
+    background: rgba(243, 156, 18, 0.9);
+    color: white;
+}
+
+.hc-search-movie-card .hc-search-status-ended {
+    background: rgba(149, 165, 166, 0.9);
+    color: white;
+}
+
+.hc-search-movie-card .hc-search-movie-info {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hc-search-movie-card .hc-search-movie-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #2e4365;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 42px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.hc-search-movie-card .hc-search-movie-title:hover {
+    background: var(--gradient-text-main);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hc-search-movie-card .hc-search-movie-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.hc-search-movie-card .hc-search-movie-details span {
+    background: linear-gradient(45deg, rgba(229, 157, 44, 0.1), rgba(138, 59, 8, 0.1));
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    color: #8a3b08;
+    font-weight: 600;
+    border: 1px solid rgba(229, 157, 44, 0.2);
+}
+
+.hc-search-movie-card .hc-search-movie-meta {
+    margin-bottom: 12px;
+    flex: 1;
+}
+
+.hc-search-movie-card .hc-search-movie-meta p {
+    margin: 5px 0;
+    font-size: 11px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.hc-search-movie-card .hc-search-movie-meta i {
+    width: 14px;
+    color: #e59d2c;
+    font-size: 12px;
+}
+
+.hc-search-movie-card .hc-search-movie-description {
+    font-size: 12px;
+    color: white;
+    background: linear-gradient(135deg, rgba(46, 67, 101, 0.9), rgba(138, 59, 8, 0.9));
+    padding: 10px;
+    border-radius: 6px;
+    line-height: 1.5;
+    margin: 6px 0 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 55px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

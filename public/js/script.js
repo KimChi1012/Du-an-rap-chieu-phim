@@ -34,6 +34,7 @@ import './modules/policy-poster-strips.js';
 import ShowtimeManagement from './modules/showtime-management.js';
 import RoomManagement from './modules/room-management.js';
 import ChairManagement from './modules/chair-management.js';
+import SearchSystem from './modules/search.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie_id') || 1;
@@ -160,6 +161,11 @@ async function initPageSpecific() {
   if (currentPage === "copyright-policy.html") {
     console.log('©️ Initializing Copyright Policy page...');
     initCopyrightPolicy();
+  }
+
+  if (currentPage === "search.html") {
+    console.log('🔍 Initializing Search page...');
+    window.searchSystem = new SearchSystem();
   }
 }
 

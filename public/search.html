@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Cinema - Tìm Kiếm</title>
+    <link rel="icon" type="image/png" sizes="1000x1000" href="images/logo-hc.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Stint+Ultra+Expanded" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+AU+TAS:wght@100..400&family=WindSong:wght@400;500&family=Stint+Ultra+Expanded:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="search">
+    <header id="header"></header>
+
+    <div class="hc-search-container">
+        <div class="hc-search-layout">
+            <!-- Cột bên trái - Form tìm kiếm -->
+            <div class="hc-search-sidebar">
+                <form id="hc-search-form">
+                    <div class="hc-search-form-grid">
+                        <!-- Tên phim -->
+                        <div class="hc-search-form-group">
+                            <label for="title">Tên phim</label>
+                            <input type="text" id="title" name="title" placeholder="Nhập tên phim...">
+                        </div>
+
+                        <!-- Đạo diễn -->
+                        <div class="hc-search-form-group">
+                            <label for="director">Đạo diễn</label>
+                            <input type="text" id="director" name="director" placeholder="Nhập tên đạo diễn...">
+                        </div>
+
+                        <!-- Diễn viên -->
+                        <div class="hc-search-form-group">
+                            <label for="actor">Diễn viên</label>
+                            <input type="text" id="actor" name="actor" placeholder="Nhập tên diễn viên...">
+                        </div>
+
+                        <!-- Thể loại -->
+                        <div class="hc-search-form-group">
+                            <label for="genre">Thể loại</label>
+                            <select id="genre" name="genre">
+                                <option value="">Tất cả thể loại</option>
+                                <option value="Action">Hành động</option>
+                                <option value="Comedy">Hài</option>
+                                <option value="Drama">Drama</option>
+                                <option value="Horror">Kinh dị</option>
+                                <option value="Sci-fi">Khoa học viễn tưởng</option>
+                                <option value="Romantic">Lãng mạn</option>
+                                <option value="Animation">Hoạt hình</option>
+                            </select>
+                        </div>
+
+                        <!-- Năm khởi chiếu (từ - đến) -->
+                        <div class="hc-search-form-group">
+                            <label>Năm khởi chiếu</label>
+                            <div class="hc-search-year-range">
+                                <input type="number" name="year_from" placeholder="Từ" min="1900" max="2030">
+                                <span>→</span>
+                                <input type="number" name="year_to" placeholder="Đến" min="1900" max="2030">
+                            </div>
+                        </div>
+
+                        <!-- Độ tuổi -->
+                        <div class="hc-search-form-group">
+                            <label for="rating">Độ tuổi</label>
+                            <select id="rating" name="rating">
+                                <option value="">Tất cả</option>
+                                <option value="P">P - Phù hợp mọi lứa tuổi</option>
+                                <option value="K">K - Dưới 13 tuổi</option>
+                                <option value="T13">T13 - Từ 13 tuổi trở lên</option>
+                                <option value="T16">T16 - Từ 16 tuổi trở lên</option>
+                                <option value="T18">T18 - Từ 18 tuổi trở lên</option>
+                            </select>
+                        </div>
+
+                        <!-- Định dạng -->
+                        <div class="hc-search-form-group">
+                            <label for="format">Định dạng</label>
+                            <select id="format" name="format">
+                                <option value="">Tất cả</option>
+                                <option value="2D">2D</option>
+                                <option value="3D">3D</option>
+                                <option value="IMAX">IMAX</option>
+                                <option value="4DX">4DX</option>
+                            </select>
+                        </div>
+
+                        <!-- Ngôn ngữ -->
+                        <div class="hc-search-form-group">
+                            <label for="language">Ngôn ngữ</label>
+                            <select id="language" name="language">
+                                <option value="">Tất cả</option>
+                                <option value="Phụ đề">Phụ đề</option>
+                                <option value="Lồng tiếng">Lồng tiếng</option>
+                                <option value="Phụ đề/Lồng tiếng">Phụ đề/Lồng tiếng</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="hc-search-button-group">
+                        <button type="submit" class="hc-search-btn-search">Tìm Kiếm</button>
+                        <button type="reset" class="hc-search-btn-reset">Xóa bộ lọc</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Cột bên phải - Kết quả tìm kiếm -->
+            <div class="hc-search-results">
+                <div id="hc-search-results-container" class="hc-search-results-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="footer"></footer>
+    <script src="js/script.js" type="module" defer></script>
+</body>
+</html>
