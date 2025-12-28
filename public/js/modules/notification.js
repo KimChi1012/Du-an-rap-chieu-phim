@@ -67,16 +67,6 @@ function initLinkInterception() {
       showNotification(unavailableLinks[filename], 'info');
       return;
     }
-
-    const text = link.textContent.trim();
-    const blockedTexts = [
-      'Tìm kiếm'
-    ];
-
-    if (blockedTexts.includes(text)) {
-      e.preventDefault();
-      showNotification('Tính năng này đang được phát triển. Vui lòng quay lại sau!', 'info');
-    }
   });
 }
 
