@@ -1,3 +1,5 @@
+import { showNotification } from './notification.js';
+
 export async function loadUserInfo() {
   try {
     const res = await fetch("../api/user/get_user_info.php");
@@ -26,6 +28,9 @@ export async function loadUserInfo() {
     if (!userContent || !userFooter || !userName || !avatarImg) return;
 
     if (data.success && data.user) {
+      // Store user data globally
+      window.currentUser = data.user;
+      
       if (headerLoginBtn && headerUser) {
         headerLoginBtn.classList.add("hidden");
         headerUser.classList.remove("hidden");
@@ -108,23 +113,28 @@ export async function loadUserInfo() {
 
           const adminMode = localStorage.getItem("adminMode") === "true";
           toggleSwitch.classList.toggle("active", adminMode);
+          updateSidebarForAdminMode(adminMode);
         });
 
         toggleSwitch.addEventListener("click", (e) => {
           e.preventDefault();
           e.stopPropagation();
 
+          const isActive = toggleSwitch.classList.contains("active");
+          toggleSwitch.classList.toggle("active");
+          
+          const adminMode = !isActive;
+          localStorage.setItem("adminMode", adminMode.toString());
+          
+          // Update sidebar content
+          updateSidebarForAdminMode(adminMode);
+          
           if (typeof showNotification === 'function') {
             showNotification(
-              "Trang quản trị dành cho admin đang được phát triển. Vui lòng quay lại sau!",
-              "info"
+              adminMode ? "Đã chuyển sang chế độ Admin" : "Đã chuyển về chế độ User",
+              "success"
             );
           }
-
-          toggleSwitch.classList.add("disabled-temp");
-          setTimeout(() => {
-            toggleSwitch.classList.remove("disabled-temp");
-          }, 300);
         });
       }
 
@@ -182,5 +192,127 @@ export async function loadUserInfo() {
     }
   } catch (err) {
     console.error("Lỗi tải thông tin người dùng:", err);
+  }
+}
+
+function updateSidebarForAdminMode(isAdminMode) {
+  const userContent = document.getElementById("userContent");
+  if (!userContent || !window.currentUser) return;
+
+  const isAdmin = window.currentUser.QuyenHan === "Quản trị viên";
+  
+  if (isAdminMode && isAdmin) {
+    // Admin mode content
+    userContent.innerHTML = `
+      <div class="admin-menu">
+        <div class="admin-links">
+          <a href="user-management.html" class="menu-item admin-link">
+            <i class="bi bi-people"></i>
+            <p class="text-gradient">Quản lý người dùng</p>
+          </a>
+          <a href="movie-management.html" class="menu-item admin-link">
+            <i class="bi bi-film"></i>
+            <p class="text-gradient">Quản lý phim</p>
+          </a>
+          <a href="room-management.html" class="menu-item admin-link">
+            <i class="bi bi-door-open"></i>
+            <p class="text-gradient">Quản lý phòng chiếu</p>
+          </a>
+          <a href="chair-management.html" class="menu-item admin-link">
+            <i class="bi bi-grid-3x3"></i>
+            <p class="text-gradient">Quản lý ghế ngồi</p>
+          </a>
+          <a href="showtime-management.html" class="menu-item admin-link">
+            <i class="bi bi-clock"></i>
+            <p class="text-gradient">Quản lý suất chiếu</p>
+          </a>
+          <a href="service-management.html" class="menu-item admin-link">
+            <i class="bi bi-cup-straw"></i>
+            <p class="text-gradient">Quản lý dịch vụ</p>
+          </a>
+          <a href="banner-management.html" class="menu-item admin-link">
+            <i class="bi bi-image"></i>
+            <p class="text-gradient">Quản lý banner</p>
+          </a>
+          <a href="offer-management.html" class="menu-item admin-link">
+            <i class="bi bi-tags"></i>
+            <p class="text-gradient">Quản lý ưu đãi</p>
+          </a>
+          <a href="revenue-management.html" class="menu-item admin-link">
+            <i class="bi bi-graph-up"></i>
+            <p class="text-gradient">Quản lý doanh thu</p>
+          </a>
+        </div>
+        
+        <div class="menu-divider"></div>
+        <div class="admin-toggle-container">
+          <div class="admin-toggle-label">
+            <i class="bi bi-speedometer2"></i>
+            <span class="text-gradient">Chế độ quản trị</span>
+          </div>
+          <div class="toggle-switch active" id="admin-mode-toggle">
+            <div class="toggle-slider"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    // User mode content (original)
+    userContent.innerHTML = `
+      <div class="user-menu">
+        <a href="auth-profile.html" class="menu-item">
+          <i class="bi bi-person"></i> <p class="text-gradient">Thông tin cá nhân</p>
+        </a>
+        <a href="auth-profile.html#history" class="menu-item">
+          <i class="bi bi-clock-history"></i> <p class="text-gradient">Lịch sử đặt vé</p>
+        </a>
+        <a href="auth-profile.html#booking-guide" class="menu-item">
+          <i class="bi bi-book"></i> <p class="text-gradient">Hướng dẫn đặt vé</p>
+        </a>
+        ${
+          isAdmin
+            ? `
+        <div class="menu-divider"></div>
+        <div class="admin-toggle-container">
+          <div class="admin-toggle-label">
+            <i class="bi bi-speedometer2"></i>
+            <span class="text-gradient">Chế độ quản trị</span>
+          </div>
+          <div class="toggle-switch" id="admin-mode-toggle">
+            <div class="toggle-slider"></div>
+          </div>
+        </div>
+        `
+            : ""
+        }
+      </div>
+    `;
+  }
+
+  // Re-attach event listener for toggle switch
+  if (isAdmin) {
+    const toggleSwitch = document.getElementById("admin-mode-toggle");
+    if (toggleSwitch) {
+      toggleSwitch.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const isActive = toggleSwitch.classList.contains("active");
+        toggleSwitch.classList.toggle("active");
+        
+        const adminMode = !isActive;
+        localStorage.setItem("adminMode", adminMode.toString());
+        
+        // Update sidebar content
+        updateSidebarForAdminMode(adminMode);
+        
+        if (typeof showNotification === 'function') {
+          showNotification(
+            adminMode ? "Đã chuyển sang chế độ Admin" : "Đã chuyển về chế độ User",
+            "success"
+          );
+        }
+      });
+    }
   }
 }
